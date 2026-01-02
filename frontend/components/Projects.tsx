@@ -128,7 +128,7 @@ const Projects: React.FC = () => {
                         rel="noopener noreferrer"
                         className="p-2 bg-white text-gray-900 rounded-full hover:bg-primary hover:text-white transition-colors shadow-lg"
                       >
-                        {project.link.includes('github') ? <Github className="h-5 w-5" /> : <ExternalLink className="h-5 w-5" />}
+                        {project.link.includes('github.com') ? <Github className="h-5 w-5" /> : <ExternalLink className="h-5 w-5" />}
                       </a>
                     )}
                   </div>
