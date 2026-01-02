@@ -13,7 +13,7 @@ const Projects: React.FC = () => {
   useEffect(() => {
     const fetchProjects = async () => {
       try {
-        const response = await fetch('http://localhost:5000/api/projects');
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/projects`);
         if (!response.ok) throw new Error('Failed to fetch');
         const result = await response.json();
         setProjects(result.data);
