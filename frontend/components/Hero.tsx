@@ -87,10 +87,8 @@ const Hero: React.FC = () => {
                 href="#projects"
                 className="group inline-flex items-center justify-center px-8 py-3 text-base font-medium text-white bg-primary rounded-full transition-all hover:bg-blue-700 hover:shadow-lg hover:shadow-primary/30"
               >
-                <span className="flex items-center">
-                  View Projects
-                  <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-                </span>
+                View Projects
+                <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
               </a>
 
               <a
@@ -107,20 +105,11 @@ const Hero: React.FC = () => {
               variants={itemVariants}
               className="mt-10 flex items-center justify-center lg:justify-start space-x-6"
             >
-              {[
-                { href: "https://github.com/kushwith03", icon: Github },
-                { href: "https://linkedin.com/in/kushwith03", icon: Linkedin },
-                { href: "mailto:kushwith03@gmail.com", icon: Mail },
-              ].map((social, index) => (
-                <a
+              {[Github, Linkedin, Mail].map((Icon, index) => (
+                <Icon
                   key={index}
-                  href={social.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-gray-500 hover:text-primary dark:text-gray-400 dark:hover:text-white transition-transform hover:scale-110"
-                >
-                  <social.icon className="h-7 w-7" />
-                </a>
+                  className="h-7 w-7 text-gray-500 dark:text-gray-400 hover:text-primary dark:hover:text-white transition-transform hover:scale-110 cursor-pointer"
+                />
               ))}
             </motion.div>
           </motion.div>
@@ -139,21 +128,13 @@ const Hero: React.FC = () => {
             >
               <div className="bg-white/60 dark:bg-gray-900/60 backdrop-blur-xl p-8 rounded-3xl border border-white/20 dark:border-gray-700 shadow-2xl">
                 <div className="text-center">
-                  {/* PROFILE IMAGE */}
-                  <div
-                    className="relative w-32 h-32 mx-auto mb-6 rounded-full overflow-hidden 
-                bg-gray-200 dark:bg-gray-800
-                border-4 border-white/30 dark:border-gray-700 
-                shadow-lg shadow-primary/20
-                transition-transform duration-300 hover:scale-105"
-                  >
+                  <div className="relative w-32 h-32 mx-auto mb-6 rounded-full overflow-hidden bg-gray-200 dark:bg-gray-800 border-4 border-white/30 dark:border-gray-700 shadow-lg shadow-primary/20">
                     <Image
                       src="/profile.jpg"
                       alt="R Khushwith Kumar"
                       fill
                       className="object-cover object-top"
                       priority
-                      sizes="128px"
                     />
                   </div>
 
@@ -164,34 +145,21 @@ const Hero: React.FC = () => {
                     Bengaluru, India
                   </p>
 
-                  <div className="mt-6 flex flex-wrap justify-center gap-2">
-                    {["Java", "React", "Node.js", "SQL"].map((skill) => (
-                      <span
-                        key={skill}
-                        className="px-3 py-1 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 text-xs font-semibold rounded-lg border border-gray-200 dark:border-gray-700"
-                      >
-                        {skill}
-                      </span>
-                    ))}
-                  </div>
-
                   <div className="mt-6 pt-6 border-t border-gray-100 dark:border-gray-800 flex justify-around">
-                    <div>
-                      <p className="text-2xl font-bold">8.41</p>
-                      <p className="text-xs text-gray-500 uppercase">CGPA</p>
-                    </div>
-                    <div>
-                      <p className="text-2xl font-bold">5+</p>
-                      <p className="text-xs text-gray-500 uppercase">
-                        Projects
-                      </p>
-                    </div>
-                    <div>
-                      <p className="text-2xl font-bold">200+</p>
-                      <p className="text-xs text-gray-500 uppercase">
-                        DSA Solved
-                      </p>
-                    </div>
+                    {[
+                      { value: "8.41", label: "CGPA" },
+                      { value: "5+", label: "Projects" },
+                      { value: "200+", label: "DSA Solved" },
+                    ].map((item) => (
+                      <div key={item.label} className="text-center">
+                        <p className="text-2xl font-bold text-gray-900 dark:text-white">
+                          {item.value}
+                        </p>
+                        <p className="text-xs text-gray-500 dark:text-gray-400 uppercase">
+                          {item.label}
+                        </p>
+                      </div>
+                    ))}
                   </div>
                 </div>
               </div>
