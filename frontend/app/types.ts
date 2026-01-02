@@ -25,3 +25,4 @@ export interface SkillsData {
   technical: SkillCategory;
   achievements: Achievement[];
 }
+ 
