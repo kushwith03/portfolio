@@ -7,12 +7,22 @@ import { twMerge } from "tailwind-merge";
 
 const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [isDark, setIsDark] = useState(
-    () => document.documentElement.classList.contains('dark')
-  );
+  const [isDark, setIsDark] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
+    // Set initial theme based on localStorage or system preference
+    const storedTheme = localStorage.getItem('theme');
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+    if (storedTheme === 'dark' || (!storedTheme && prefersDark)) {
+      document.documentElement.classList.add('dark');
+      setIsDark(true);
+    } else {
+      document.documentElement.classList.remove('dark');
+      setIsDark(false);
+    }
+
     const handleScroll = () => {
       setScrolled(window.scrollY > 10);
     };
