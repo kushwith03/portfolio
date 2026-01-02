@@ -1,0 +1,26 @@
+[
+  {
+    "id": "1",
+    "title": "Autonomous Vehicle Simulation",
+    "description": "Built an autonomous driving pipeline using 8,000+ labeled frames. Designed a PyTorch autoencoder for feature extraction (<50 ms latency) and applied behavioral cloning (CNNs) to predict steering/throttle.",
+    "tags": ["Python", "PyTorch", "Computer Vision", "CARLA"],
+    "link": "https://github.com/kushwith03/Autonomous-Vehicle",
+    "imageUrl": "https://placehold.co/600x400/2563eb/ffffff?text=Autonomous+Vehicle"
+  },
+  {
+    "id": "2",
+    "title": "InstaResume — AI Resume Generator",
+    "description": "Developed a resume builder with live preview using React Hook Form. Integrated jsPDF for client-side PDF generation, reducing formatting time by 40%, and optimized rendering to maintain 60 FPS.",
+    "tags": ["React.js", "Node.js", "Tailwind CSS", "jsPDF"],
+    "link": "https://github.com/kushwith03/SCT_WD_3",
+    "imageUrl": "https://placehold.co/600x400/2563eb/ffffff?text=InstaResume"
+  },
+  {
+    "id": "3",
+    "title": "BlogSpace Application",
+    "description": "Designed RESTful APIs using MVC architecture and implemented authentication with JWT. Deployed on Render with secure environment configuration.",
+    "tags": ["Node.js", "Express.js", "PostgreSQL", "JWT"],
+    "link": "https://github.com/kushwith03/blogspace",
+    "imageUrl": "https://placehold.co/600x400/2563eb/ffffff?text=BlogSpace"
+  }
+]
