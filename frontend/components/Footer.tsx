@@ -7,7 +7,7 @@ const Footer: React.FC = () => {
   const [visits, setVisits] = useState<number | null>(null);
 
   useEffect(() => {
-    fetch('http://localhost:5000/api/stats')
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/stats`)
       .then(res => res.json())
       .then(data => { if (data.success) setVisits(data.visits); })
       .catch(() => {});

@@ -14,7 +14,7 @@ const Skills: React.FC = () => {
     const fetchSkills = async () => {
       try {
         const response = await fetch(
-          "https://portfolio-5ms7.onrender.com/api/skills"
+          `${process.env.NEXT_PUBLIC_API_URL}/api/skills`
         );
 
         if (!response.ok) throw new Error("Failed to fetch");
@@ -37,13 +37,23 @@ const Skills: React.FC = () => {
     Tools: Wrench,
   };
 
-  if (loading)
+  if (loading) {
     return (
       <div className="py-20 flex justify-center">
         <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-primary"></div>
       </div>
     );
-  if (error || !skillsData) return null;
+  }
+
+  if (error) {
+    return (
+      <div className="py-20 text-center text-red-500">
+        <p>{error}</p>
+      </div>
+    );
+  }
+
+  if (!skillsData) return null;
 
   const { technical, achievements } = skillsData;
 

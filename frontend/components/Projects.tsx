@@ -14,7 +14,7 @@ const Projects: React.FC = () => {
     const fetchProjects = async () => {
       try {
         const response = await fetch(
-          "https://portfolio-5ms7.onrender.com/api/projects"
+          `${process.env.NEXT_PUBLIC_API_URL}/api/projects`
         );
 
         if (!response.ok) {
@@ -121,16 +121,6 @@ const Projects: React.FC = () => {
 
                   {/* Actions */}
                   <div className="absolute bottom-4 right-4 flex space-x-3 z-20 translate-y-10 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-300">
-                    {project.github && (
-                      <a
-                        href={project.github}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="p-2 bg-white text-gray-900 rounded-full hover:bg-primary hover:text-white transition-colors shadow-lg"
-                      >
-                        <Github className="h-5 w-5" />
-                      </a>
-                    )}
                     {project.link && (
                       <a
                         href={project.link}
@@ -138,7 +128,7 @@ const Projects: React.FC = () => {
                         rel="noopener noreferrer"
                         className="p-2 bg-white text-gray-900 rounded-full hover:bg-primary hover:text-white transition-colors shadow-lg"
                       >
-                        <ExternalLink className="h-5 w-5" />
+                        {project.link.includes('github') ? <Github className="h-5 w-5" /> : <ExternalLink className="h-5 w-5" />}
                       </a>
                     )}
                   </div>

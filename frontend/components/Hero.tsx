@@ -105,12 +105,15 @@ const Hero: React.FC = () => {
               variants={itemVariants}
               className="mt-10 flex items-center justify-center lg:justify-start space-x-6"
             >
-              {[Github, Linkedin, Mail].map((Icon, index) => (
-                <Icon
-                  key={index}
-                  className="h-7 w-7 text-gray-500 dark:text-gray-400 hover:text-primary dark:hover:text-white transition-transform hover:scale-110 cursor-pointer"
-                />
-              ))}
+              <a href="https://github.com/kushwith03" target="_blank" rel="noopener noreferrer">
+                <Github className="h-7 w-7 text-gray-500 dark:text-gray-400 hover:text-primary dark:hover:text-white transition-transform hover:scale-110 cursor-pointer" />
+              </a>
+              <a href="https://linkedin.com/in/kushwith" target="_blank" rel="noopener noreferrer">
+                <Linkedin className="h-7 w-7 text-gray-500 dark:text-gray-400 hover:text-primary dark:hover:text-white transition-transform hover:scale-110 cursor-pointer" />
+              </a>
+              <a href="mailto:kushwith03@gmail.com">
+                <Mail className="h-7 w-7 text-gray-500 dark:text-gray-400 hover:text-primary dark:hover:text-white transition-transform hover:scale-110 cursor-pointer" />
+              </a>
             </motion.div>
           </motion.div>
 
