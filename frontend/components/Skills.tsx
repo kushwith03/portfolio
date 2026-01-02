@@ -18,9 +18,13 @@ const Skills: React.FC = () => {
         );
 
         if (!response.ok) throw new Error("Failed to fetch");
-        const result = await response.json();
+        const resultText = await response.text();
+        console.log("Skills response text:", resultText);
+        const result = JSON.parse(resultText);
+        console.log("Parsed skills JSON:", result);
         setSkillsData(result.data);
       } catch (err) {
+        console.error("Error fetching skills:", err);
         setError("Failed to load skills.");
       } finally {
         setLoading(false);

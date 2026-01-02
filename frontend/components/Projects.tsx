@@ -21,7 +21,10 @@ const Projects: React.FC = () => {
           throw new Error("Failed to fetch projects");
         }
 
-        const result = await response.json();
+        const resultText = await response.text();
+        console.log("Projects response text:", resultText);
+        const result = JSON.parse(resultText);
+        console.log("Parsed projects JSON:", result);
 
         // ✅ SAFETY CHECK
         if (!Array.isArray(result.data)) {
@@ -30,7 +33,7 @@ const Projects: React.FC = () => {
 
         setProjects(result.data);
       } catch (err) {
-        console.error(err);
+        console.error("Error fetching projects:", err);
         setError("Failed to load projects.");
       } finally {
         setLoading(false);
