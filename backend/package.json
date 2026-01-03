@@ -7,8 +7,10 @@
     "dev": "node --watch server.js"
   },
   "dependencies": {
+    "@google/genai": "*",
     "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
     "express": "^4.18.2",
-    "@google/genai": "*"
+    "nodemailer": "^7.0.12"
   }
 }
