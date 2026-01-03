@@ -1,37 +1,40 @@
-require('dotenv').config();
-const nodemailer = require('nodemailer');
+const fs = require('fs');
+const path = require('path');
 
-exports.saveMessage = async (req, res) => {
+const messagesPath = path.join(__dirname, '..', 'data', 'messages.json');
+
+const readData = () => {
+  try {
+    if (!fs.existsSync(messagesPath)) return [];
+    return JSON.parse(fs.readFileSync(messagesPath, 'utf8'));
+  } catch (err) {
+    return [];
+  }
+};
+
+const writeData = (data) => {
+  fs.writeFileSync(messagesPath, JSON.stringify(data, null, 2));
+};
+
+exports.saveMessage = (req, res) => {
   const { name, email, message } = req.body;
   
   if (!name || !email || !message) {
     return res.status(400).json({ error: "All fields are required" });
   }
 
-  const transporter = nodemailer.createTransport({
-    host: process.env.EMAIL_HOST,
-    port: process.env.EMAIL_PORT,
-    secure: process.env.EMAIL_SECURE === 'true', 
-    auth: {
-      user: process.env.EMAIL_USER,
-      pass: process.env.EMAIL_PASS,
-    },
-  });
-
-  const mailOptions = {
-    from: `"Portfolio Contact" <${process.env.EMAIL_USER}>`,
-    to: process.env.RECIPIENT_EMAIL,
-    subject: 'New Contact Form Message',
-    text: `You have a new message from ${name} (${email}):\n\n${message}`,
-    html: `<p>You have a new message from <strong>${name}</strong> (${email}):</p><p>${message}</p>`,
+  const messages = readData();
+  const newMessage = {
+    id: Date.now(),
+    name,
+    email,
+    message,
+    date: new Date().toISOString()
   };
 
-  try {
-    await transporter.sendMail(mailOptions);
-    console.log(`[EMAIL SENT] To: ${process.env.RECIPIENT_EMAIL}`);
-    res.json({ success: true, message: 'Message sent successfully' });
-  } catch (error) {
-    console.error('[EMAIL ERROR]', error);
-    res.status(500).json({ error: 'Failed to send message' });
-  }
+  messages.push(newMessage);
+  writeData(messages);
+
+  console.log(`[CONTACT SAVED] From: ${name} (${email})`);
+  res.json({ success: true, message: 'Message saved successfully' });
 };
