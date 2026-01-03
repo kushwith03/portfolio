@@ -1,86 +1,137 @@
-# Interactive Professional Portfolio
+# Personal Portfolio & AI Chatbot
 
-A modern, full-stack portfolio application featuring a Next.js frontend, Node.js backend, and integrated Gemini AI Chatbot.
+This is the repository for my personal portfolio website, which includes a sophisticated AI-powered chatbot. The portfolio showcases my projects, skills, and experience, while the chatbot provides an interactive way for visitors to learn more about me.
 
-## 📂 Final Project Structure
+## Features
 
-This project is organized for clarity and maintainability, separating concerns for a professional codebase.
+*   **Sleek & Responsive Design:** The portfolio is built with Next.js and Tailwind CSS, providing a modern and responsive user experience across all devices.
+*   **Dynamic Content:** Project and skill information is served from a simple JSON-based backend, making it easy to update.
+*   **Interactive AI Chatbot:** The chatbot, powered by Google's Generative AI, can answer questions about my profile, projects, and skills. It features multiple personas, including:
+    *   **Professional (Default):** A general-purpose assistant.
+    *   **Recruiter Mode:** Focuses on my professional value and project impact.
+    *   **Tech Mentor:** Provides in-depth explanations of the technical aspects of my projects.
+    *   **Developer Mode:** Engages in technical discussions.
+    *   **Resume Reviewer:** Offers feedback on resumes.
+*   **Contact Form:** A functional contact form allows visitors to get in touch.
+
+## Tech Stack
+
+### Frontend
+
+*   **Framework:** [Next.js](https://nextjs.org/) (React)
+*   **Styling:** [Tailwind CSS](https://tailwindcss.com/)
+*   **UI/Animation:** [Framer Motion](https://www.framer.com/motion/), [Lucide React](https://lucide.dev/guide/packages/lucide-react) (icons)
+*   **Language:** [TypeScript](https://www.typescriptlang.org/)
+
+### Backend
+
+*   **Framework:** [Node.js](https://nodejs.org/) with [Express](https://expressjs.com/)
+*   **AI:** [@google/genai](https://www.npmjs.com/package/@google/genai)
+*   **Middleware:** [CORS](https://www.npmjs.com/package/cors)
+
+## Getting Started
+
+To get a local copy up and running, follow these simple steps.
+
+### Prerequisites
+
+*   Node.js and npm (or yarn) installed.
+*   A Google AI API key.
+
+### Installation
+
+1.  **Clone the repo:**
+    ```sh
+    git clone https://github.com/your-username/your-repo-name.git
+    cd your-repo-name
+    ```
+
+2.  **Install frontend dependencies:**
+    ```sh
+    cd frontend
+    npm install
+    ```
+
+3.  **Install backend dependencies:**
+    ```sh
+    cd ../backend
+    npm install
+    ```
+
+4.  **Configure environment variables:**
+
+    *   In the `backend` directory, create a `.env` file and add your Google AI API key:
+        ```
+        API_KEY=your_google_ai_api_key
+        ```
+
+    *   In the `frontend` directory, create a `.env.local` file and add the backend API URL:
+        ```
+        NEXT_PUBLIC_API_URL=http://localhost:5000
+        ```
+
+### Running the Application
+
+1.  **Start the backend server:**
+    ```sh
+    cd backend
+    npm start
+    ```
+
+2.  **Start the frontend development server:**
+    ```sh
+    cd ../frontend
+    npm run dev
+    ```
+
+The frontend will be available at `http://localhost:3000`, and the backend will be running on `http://localhost:5000`.
+
+## Project Structure
+
+The repository is divided into two main parts: `frontend` and `backend`.
 
 ```
-project-root/
-├── backend/                  # Node.js + Express API
-│   ├── controllers/          # Business logic for API endpoints
-│   ├── data/                 # Local JSON data sources
-│   ├── routes/               # API endpoint definitions
-│   ├── node_modules/         # Backend dependencies
-│   ├── package-lock.json
-│   ├── package.json
-│   └── server.js             # Entry point for the backend server
-├── frontend/                 # Next.js 14 (App Router)
-│   ├── app/                  # Main Next.js App Router files (layout, pages, globals)
-│   │   ├── globals.css
-│   │   ├── layout.tsx
-│   │   └── page.tsx
-│   ├── components/
-│   │   ├── features/         # Self-contained, interactive features (e.g., Chatbot)
-│   │   │   └── Chatbot.tsx
-│   │   └── sections/         # Large, distinct UI sections of the main page
-│   │       ├── About.tsx
-│   │       ├── Contact.tsx
-│   │       ├── Footer.tsx
-│   │       ├── Hero.tsx
-│   │       ├── Navbar.tsx
-│   │       ├── Projects.tsx
-│   │       └── Skills.tsx
-│   ├── lib/                  # Shared utilities, helper functions, and type definitions
-│   │   └── types.ts
-│   ├── public/               # Static assets (images, fonts, resume)
-│   │   ├── profile.jpg
-│   │   └── resume.pdf
-│   ├── .gitignore
-│   ├── next-env.d.ts
-│   ├── next.config.js
-│   ├── package-json
-│   ├── postcss.config.js
-│   ├── tailwind.config.ts
-│   └── tsconfig.json
-└── README.md
+.
+├── backend/
+│   ├── controllers/    # API logic
+│   ├── data/           # JSON data files
+│   ├── routes/         # API routes
+│   └── server.js       # Express server setup
+└── frontend/
+    ├── app/            # Next.js 13 app router
+    ├── components/     # React components
+    ├── public/         # Static assets
+    └── ...
 ```
 
-**Note on Structure:**
-The frontend component structure has been refined for better organization. Components are now categorized into `sections` (for major page blocks like Hero, About, Projects) and `features` (for self-contained, interactive functionalities like the Chatbot). Shared types have been moved to a `lib` directory, a common practice in Next.js projects for project-wide utilities. This approach enhances readability and makes it easier to locate specific parts of the UI.
+## API Endpoints
 
-## ⚠️ Important Setup Steps
+The backend exposes the following API endpoints:
 
-### 1. Clean the Project
+*   `GET /api/projects`: Returns a list of projects.
+*   `GET /api/skills`: Returns a list of skills.
+*   `GET /api/stats`: Returns website statistics.
+*   `POST /api/contact`: Submits the contact form.
+*   `POST /api/chat`: Interacts with the AI chatbot.
 
-If you see files like `index.tsx`, `components/` or `app/` in the root, run:
+## Contributing
 
-```bash
-node cleanup.js
-```
+Contributions are what make the open-source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
 
-### 2. Start Backend (Terminal 1)
+If you have a suggestion that would make this better, please fork the repo and create a pull request. You can also simply open an issue with the tag "enhancement".
 
-```bash
-cd backend
-npm install
-# Linux/Mac: export API_KEY="your_gemini_key"
-# Windows: set API_KEY="your_gemini_key"
-npm start
-```
+1.  Fork the Project
+2.  Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
+3.  Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
+4.  Push to the Branch (`git push origin feature/AmazingFeature`)
+5.  Open a Pull Request
 
-### 3. Start Frontend (Terminal 2)
+## License
 
-```bash
-cd frontend
-npm install
-npm run dev
-```
+Distributed under the MIT License. See `LICENSE` for more information.
 
-## ✨ Features
+## Contact
 
-- **AI Persona Chatbot**: Powered by Gemini 1.5 Flash.
-- **Dynamic Content**: Data fetched from local JSON files.
-- **Analytics**: Simple visitor counter.
-- **Clean UI**: Tailwind CSS with Dark Mode.
+Your Name - [@your_twitter](https://twitter.com/your_twitter) - your.email@example.com
+
+Project Link: [https://github.com/your-username/your-repo-name](https://github.com/your-username/your-repo-name)
