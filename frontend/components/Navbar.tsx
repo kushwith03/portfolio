@@ -57,11 +57,7 @@ const Navbar: React.FC = () => {
       transition={{ duration: 0.45, ease: "easeOut" }}
       className={twMerge(
         "sticky top-0 z-50 w-full transition-all duration-300",
-
-        // 🔹 BASE (NO SCROLL)
         "bg-white dark:bg-[#0b1220]",
-
-        // 🔥 SCROLL STATE — GLASS EFFECT
         scrolled &&
           "bg-white/70 dark:bg-[#0b1220]/70 backdrop-blur-xl supports-[backdrop-filter]:bg-white/60 supports-[backdrop-filter]:dark:bg-[#0b1220]/60 shadow-md border-b border-gray-200/60 dark:border-gray-800/60"
       )}

@@ -21,12 +21,8 @@ const Projects: React.FC = () => {
           throw new Error("Failed to fetch projects");
         }
 
-        const resultText = await response.text();
-        console.log("Projects response text:", resultText);
-        const result = JSON.parse(resultText);
-        console.log("Parsed projects JSON:", result);
+        const result = await response.json();
 
-        // ✅ SAFETY CHECK
         if (!Array.isArray(result.data)) {
           throw new Error("Invalid projects format");
         }

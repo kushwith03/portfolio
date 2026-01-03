@@ -5,6 +5,15 @@ import { motion } from "framer-motion";
 import { SkillsData } from "../app/types";
 import { Cpu, Layout, Server, Database, Wrench, Award } from "lucide-react";
 
+// A more human-readable and maintainable config for skill categories
+const categoryConfig: Record<string, { title: string; icon: React.ElementType }> = {
+  languages: { title: "Languages", icon: Cpu },
+  frontend: { title: "Frontend", icon: Layout },
+  backend: { title: "Backend", icon: Server },
+  db_cloud: { title: "DB & Cloud", icon: Database },
+  tools: { title: "Tools", icon: Wrench },
+};
+
 const Skills: React.FC = () => {
   const [skillsData, setSkillsData] = useState<SkillsData | null>(null);
   const [loading, setLoading] = useState(true);
@@ -18,10 +27,7 @@ const Skills: React.FC = () => {
         );
 
         if (!response.ok) throw new Error("Failed to fetch");
-        const resultText = await response.text();
-        console.log("Skills response text:", resultText);
-        const result = JSON.parse(resultText);
-        console.log("Parsed skills JSON:", result);
+        const result = await response.json();
         setSkillsData(result.data);
       } catch (err) {
         console.error("Error fetching skills:", err);
@@ -32,14 +38,6 @@ const Skills: React.FC = () => {
     };
     fetchSkills();
   }, []);
-
-  const icons: Record<string, any> = {
-    Languages: Cpu,
-    Frontend: Layout,
-    Backend: Server,
-    "DB & Cloud": Database,
-    Tools: Wrench,
-  };
 
   if (loading) {
     return (
@@ -105,16 +103,9 @@ const Skills: React.FC = () => {
           viewport={{ once: true, margin: "-50px" }}
         >
           {Object.entries(technical).map(([category, skills]) => {
-            // Map backend keys to display titles
-            const titles: Record<string, string> = {
-              languages: "Languages",
-              frontend: "Frontend",
-              backend: "Backend",
-              db_cloud: "DB & Cloud",
-              tools: "Tools",
-            };
-            const displayTitle = titles[category] || category;
-            const Icon = icons[displayTitle] || Cpu;
+            const config = categoryConfig[category];
+            const displayTitle = config?.title || category;
+            const Icon = config?.icon || Cpu;
 
             return (
               <motion.div

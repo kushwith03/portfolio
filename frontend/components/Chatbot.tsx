@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useRef, useEffect } from 'react';
-import { MessageCircle, X, Send, Bot, Settings2, Sparkles } from 'lucide-react';
+import { MessageCircle, X, Send, Bot, Settings2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 interface Message {
@@ -12,11 +12,19 @@ interface Message {
 
 type Persona = 'professional' | 'recruiter' | 'mentor' | 'developer' | 'resume-reviewer';
 
+const welcomeMessages: Record<Persona, string> = {
+  professional: "Hi! I'm Khushwith's AI Assistant. How can I help you today?",
+  recruiter: "Hello! I can provide data on Khushwith's ROI and project impact. What are you looking for?",
+  mentor: "Greetings. I'm ready to dive into the architecture and code decisions of my projects.",
+  developer: "Hey! Let's talk tech stacks, APIs, and algorithms.",
+  'resume-reviewer': "Paste your resume below for ATS-focused feedback."
+};
+
 const Chatbot: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [persona, setPersona] = useState<Persona>('professional');
   const [messages, setMessages] = useState<Message[]>([
-    { id: 1, text: "Hi! I'm Khushwith's AI Assistant. How can I help you today?", sender: 'bot' }
+    { id: 1, text: welcomeMessages.professional, sender: 'bot' }
   ]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
@@ -26,14 +34,9 @@ const Chatbot: React.FC = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, isOpen, loading]);
 
+  // Update welcome message when persona changes
   useEffect(() => {
-    let welcomeText = "Hi! I'm Khushwith's AI Assistant. How can I help you today?";
-    if (persona === 'recruiter') welcomeText = "Hello! I can provide data on Khushwith's ROI and project impact. What are you looking for?";
-    if (persona === 'mentor') welcomeText = "Greetings. I'm ready to dive into the architecture and code decisions of my projects.";
-    if (persona === 'developer') welcomeText = "Hey! Let's talk tech stacks, APIs, and algorithms.";
-    if (persona === 'resume-reviewer') welcomeText = "Paste your resume below for ATS-focused feedback.";
-
-    setMessages([{ id: Date.now(), text: welcomeText, sender: 'bot' }]);
+    setMessages([{ id: Date.now(), text: welcomeMessages[persona], sender: 'bot' }]);
   }, [persona]);
 
   const handleSendMessage = async (e?: React.FormEvent) => {
@@ -46,7 +49,8 @@ const Chatbot: React.FC = () => {
     setLoading(true);
 
     try {
-      const historyPayload = messages.filter(msg => msg.id !== 1).map(msg => ({
+      // Exclude the initial welcome message from history
+      const history = messages.slice(1).map(msg => ({
         role: msg.sender === 'user' ? 'user' : 'model',
         text: msg.text
       }));
@@ -54,20 +58,22 @@ const Chatbot: React.FC = () => {
       const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/chat`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: userMessage.text, history: historyPayload, persona }),
+        body: JSON.stringify({ message: userMessage.text, history, persona }),
       });
 
       const data = await response.json();
-      setMessages(prev => [...prev, { id: Date.now() + 1, text: data.success ? data.reply : "Offline mode.", sender: 'bot' }]);
-    } catch {
-      setMessages(prev => [...prev, { id: Date.now() + 1, text: "Connection error.", sender: 'bot' }]);
+      const reply = data.success ? data.reply : "Apologies, I'm currently offline.";
+      setMessages(prev => [...prev, { id: Date.now() + 1, text: reply, sender: 'bot' }]);
+    } catch (error) {
+      console.error("Chat API error:", error);
+      setMessages(prev => [...prev, { id: Date.now() + 1, text: "Sorry, I couldn't connect to the server.", sender: 'bot' }]);
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end font-sans">
+    <div className="fixed bottom-6 left-6 z-50 flex flex-col items-end font-sans">
       <AnimatePresence>
         {isOpen && (
           <motion.div

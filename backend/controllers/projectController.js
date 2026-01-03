@@ -3,16 +3,12 @@ const path = require("path");
 
 const projectsPath = path.join(__dirname, "..", "data", "projects.json");
 
-/**
- * Always returns an ARRAY
- */
+// Ensures the data is always an array.
 const readData = () => {
   try {
     if (!fs.existsSync(projectsPath)) return [];
 
     const raw = JSON.parse(fs.readFileSync(projectsPath, "utf8"));
-
-    // ✅ Normalize object → array
     return Array.isArray(raw) ? raw : Object.values(raw);
   } catch (err) {
     console.error("Failed to read projects:", err);
@@ -20,43 +16,34 @@ const readData = () => {
   }
 };
 
-/**
- * Always writes ARRAY
- */
 const writeData = (data) => {
   fs.writeFileSync(projectsPath, JSON.stringify(data, null, 2));
 };
 
 exports.getProjects = (req, res) => {
-  const projects = readData();
   res.json({
     success: true,
-    data: projects,
+    data: readData(),
   });
 };
 
 exports.createProject = (req, res) => {
   const projects = readData();
+  const newProject = { id: Date.now().toString(), ...req.body };
 
-  const newProject = {
-    id: Date.now().toString(),
-    ...req.body,
-  };
+  writeData([...projects, newProject]);
 
-  projects.push(newProject);
-  writeData(projects);
-
-  res.json({
+  res.status(201).json({
     success: true,
     data: newProject,
   });
 };
 
 exports.deleteProject = (req, res) => {
-  let projects = readData();
+  const projects = readData();
+  const updatedProjects = projects.filter((p) => p.id !== req.params.id);
 
-  projects = projects.filter((p) => p.id !== req.params.id);
-  writeData(projects);
+  writeData(updatedProjects);
 
   res.json({
     success: true,
