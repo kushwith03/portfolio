@@ -1,13 +1,12 @@
-const fs = require('fs');
-const path = require('path');
+const fs = require("fs");
+const path = require("path");
 
-const messagesPath = path.join(__dirname, '..', 'data', 'messages.json');
+const messagesPath = path.join(__dirname, "..", "data", "messages.json");
 
 const readData = () => {
   try {
-    const data = fs.readFileSync(messagesPath, 'utf8');
-    return JSON.parse(data);
-  } catch (err) {
+    return JSON.parse(fs.readFileSync(messagesPath, "utf8"));
+  } catch {
     return [];
   }
 };
@@ -18,23 +17,37 @@ const writeData = (data) => {
 
 exports.saveMessage = (req, res) => {
   const { name, email, message } = req.body;
-  
+
   if (!name || !email || !message) {
-    return res.status(400).json({ error: "Missing required fields." });
+    return res.status(400).json({
+      error: "Name, email, and message are required.",
+    });
   }
 
   const messages = readData();
+  const now = new Date();
+
   const newMessage = {
     id: Date.now(),
     name,
     email,
     message,
-    date: new Date().toISOString()
+    createdAt: now.toISOString(), 
+    createdAtReadable: now.toLocaleString("en-IN", {
+      dateStyle: "medium",
+      timeStyle: "short",
+    }), 
   };
 
   messages.push(newMessage);
   writeData(messages);
 
-  console.log(`[Contact Form] Saved message from ${name} (${email})`);
-  res.status(201).json({ success: true, message: 'Message saved successfully.' });
+  console.log(
+    `[Contact] ${name} <${email}> at ${newMessage.createdAtReadable}`
+  );
+
+  res.status(201).json({
+    success: true,
+    message: "Message received successfully.",
+  });
 };
