@@ -5,8 +5,8 @@ const messagesPath = path.join(__dirname, '..', 'data', 'messages.json');
 
 const readData = () => {
   try {
-    if (!fs.existsSync(messagesPath)) return [];
-    return JSON.parse(fs.readFileSync(messagesPath, 'utf8'));
+    const data = fs.readFileSync(messagesPath, 'utf8');
+    return JSON.parse(data);
   } catch (err) {
     return [];
   }
@@ -20,7 +20,7 @@ exports.saveMessage = (req, res) => {
   const { name, email, message } = req.body;
   
   if (!name || !email || !message) {
-    return res.status(400).json({ error: "All fields are required" });
+    return res.status(400).json({ error: "Missing required fields." });
   }
 
   const messages = readData();
@@ -35,6 +35,6 @@ exports.saveMessage = (req, res) => {
   messages.push(newMessage);
   writeData(messages);
 
-  console.log(`[CONTACT SAVED] From: ${name} (${email})`);
-  res.json({ success: true, message: 'Message saved successfully' });
+  console.log(`[Contact Form] Saved message from ${name} (${email})`);
+  res.status(201).json({ success: true, message: 'Message saved successfully.' });
 };

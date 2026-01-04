@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Menu, X, Code2, Sun, Moon } from "lucide-react";
 import {
   motion,
@@ -10,11 +10,18 @@ import {
 } from "framer-motion";
 import { twMerge } from "tailwind-merge";
 
+const navLinks = [
+  { name: "About", href: "#about" },
+  { name: "Skills", href: "#skills" },
+  { name: "Projects", href: "#projects" },
+  { name: "Contact", href: "#contact" },
+];
+
 const Navbar: React.FC = () => {
   const { scrollYProgress } = useScroll();
   const sparkleTranslateX = useTransform(
     scrollYProgress,
-    (value) => `calc(${value * 100}% - 8px)`
+    (v) => `calc(${v * 100}% - 8px)`
   );
 
   const [isOpen, setIsOpen] = useState(false);
@@ -22,77 +29,61 @@ const Navbar: React.FC = () => {
   const [scrolled, setScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState("");
 
-  const navLinks = [
-    { name: "About", href: "#about" },
-    { name: "Skills", href: "#skills" },
-    { name: "Projects", href: "#projects" },
-    { name: "Contact", href: "#contact" },
-  ];
 
-  // Manages theme initialization and persistence.
   useEffect(() => {
-    const storedTheme = localStorage.getItem("theme");
+    const stored = localStorage.getItem("theme");
     const prefersDark = window.matchMedia(
       "(prefers-color-scheme: dark)"
     ).matches;
-    if (storedTheme === "dark" || (!storedTheme && prefersDark)) {
-      document.documentElement.classList.add("dark");
-      setIsDark(true);
-    } else {
-      document.documentElement.classList.remove("dark");
-      setIsDark(false);
-    }
+    const dark = stored === "dark" || (!stored && prefersDark);
+
+    document.documentElement.classList.toggle("dark", dark);
+    setIsDark(dark);
   }, []);
 
-  // Adds a background effect to the navbar when scrolling.
-  useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 10);
-    window.addEventListener("scroll", handleScroll);
-    handleScroll(); // Initial check
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
 
-  // Sets the active nav link based on scroll position.
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setActiveSection(entry.target.id);
-          }
-        });
-      },
-      {
-        root: null,
-        threshold: 0.6,
+    const onScroll = () => {
+      setScrolled(window.scrollY > 10);
+
+      const offset = 120;
+      const scrollPos = window.scrollY + offset;
+
+      let current = "";
+
+      navLinks.forEach(({ href }) => {
+        const section = document.querySelector(href) as HTMLElement | null;
+        if (!section) return;
+
+        const top = section.offsetTop;
+        const bottom = top + section.offsetHeight;
+
+        if (scrollPos >= top && scrollPos < bottom) {
+          current = section.id;
+        }
+      });
+
+      if (current && current !== activeSection) {
+        setActiveSection(current);
       }
-    );
-
-    const elements = navLinks
-      .map((link) => document.querySelector(link.href))
-      .filter((el): el is HTMLElement => el !== null);
-
-    elements.forEach((el) => observer.observe(el));
-
-    return () => {
-      elements.forEach((el) => observer.unobserve(el));
     };
-  }, []);
+
+    window.addEventListener("scroll", onScroll);
+    onScroll();
+
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [activeSection]);
 
   const toggleTheme = () => {
-    if (isDark) {
-      document.documentElement.classList.remove("dark");
-      localStorage.setItem("theme", "light");
-      setIsDark(false);
-    } else {
-      document.documentElement.classList.add("dark");
-      localStorage.setItem("theme", "dark");
-      setIsDark(true);
-    }
+    const next = !isDark;
+    document.documentElement.classList.toggle("dark", next);
+    localStorage.setItem("theme", next ? "dark" : "light");
+    setIsDark(next);
   };
 
   return (
     <>
+     
       <div className="fixed top-0 left-0 right-0 h-1 z-[60]">
         <motion.div
           className="h-full bg-primary origin-[0%]"
@@ -123,16 +114,17 @@ const Navbar: React.FC = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div
             className={twMerge(
-              "flex justify-between items-center transition-all duration-300",
+              "flex items-center justify-between transition-all duration-300",
               scrolled ? "h-16" : "h-20"
             )}
           >
+       
             <div
               className="flex items-center cursor-pointer group"
               onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
             >
               <div className="relative">
-                <div className="absolute -inset-1 bg-primary/30 rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                <div className="absolute -inset-1 bg-primary/30 rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-opacity" />
                 <Code2 className="h-8 w-8 text-primary relative z-10" />
               </div>
               <span className="ml-2 text-xl font-bold text-gray-900 dark:text-white">
@@ -140,6 +132,7 @@ const Navbar: React.FC = () => {
               </span>
             </div>
 
+      
             <div className="hidden md:flex items-center space-x-2">
               {navLinks.map((link) => {
                 const isActive = activeSection === link.href.slice(1);
@@ -147,13 +140,12 @@ const Navbar: React.FC = () => {
                   <motion.a
                     key={link.name}
                     href={link.href}
-                    onClick={() => setActiveSection(link.href.slice(1))}
                     className="relative px-3 py-2 text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-primary transition-colors"
                   >
                     {link.name}
                     {isActive && (
                       <motion.div
-                        layoutId="active-nav-indicator"
+                        layoutId="active-nav-dot"
                         className="absolute bottom-0 left-1/2 w-1.5 h-1.5 bg-primary rounded-full"
                         style={{ x: "-50%" }}
                         transition={{
@@ -230,10 +222,7 @@ const Navbar: React.FC = () => {
                   <a
                     key={link.name}
                     href={link.href}
-                    onClick={() => {
-                      setActiveSection(link.href.slice(1));
-                      setIsOpen(false);
-                    }}
+                    onClick={() => setIsOpen(false)}
                     className="block px-3 py-3 rounded-lg text-gray-700 dark:text-gray-200 hover:text-primary"
                   >
                     {link.name}
