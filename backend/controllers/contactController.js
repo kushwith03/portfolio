@@ -3,17 +3,17 @@ const path = require("path");
 
 const messagesPath = path.join(__dirname, "..", "data", "messages.json");
 
-const readData = () => {
+function readMessages() {
   try {
     return JSON.parse(fs.readFileSync(messagesPath, "utf8"));
   } catch {
     return [];
   }
-};
+}
 
-const writeData = (data) => {
+function writeMessages(data) {
   fs.writeFileSync(messagesPath, JSON.stringify(data, null, 2));
-};
+}
 
 exports.saveMessage = (req, res) => {
   const { name, email, message } = req.body;
@@ -24,26 +24,28 @@ exports.saveMessage = (req, res) => {
     });
   }
 
-  const messages = readData();
   const now = new Date();
 
-  const newMessage = {
+  const entry = {
     id: Date.now(),
     name,
     email,
     message,
-    createdAt: now.toISOString(), 
+    createdAt: now.toISOString(),
     createdAtReadable: now.toLocaleString("en-IN", {
       dateStyle: "medium",
       timeStyle: "short",
-    }), 
+    }),
   };
 
-  messages.push(newMessage);
-  writeData(messages);
+  const messages = readMessages();
+  messages.push(entry);
+  writeMessages(messages);
+
+  const preview = message.length > 80 ? message.slice(0, 80) + "…" : message;
 
   console.log(
-    `[Contact] ${name} <${email}> at ${newMessage.createdAtReadable}`
+    `[CONTACT] ${entry.createdAtReadable} | ${name} <${email}> | "${preview}"`
   );
 
   res.status(201).json({
