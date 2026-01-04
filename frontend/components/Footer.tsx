@@ -56,8 +56,8 @@ const Footer: React.FC = () => {
 
         <div className="mt-8 border-t border-gray-100 dark:border-gray-900 pt-8 flex flex-col md:flex-row justify-between items-center text-sm text-gray-500 dark:text-gray-400">
           <p>
-            &copy; {new Date().getFullYear()} R Khushwith Kumar. All rights
-            reserved.
+            &copy; {new Date().getFullYear()} R Khushwith Kumar. <br />
+            Made with ❤️ by kushwith_03
           </p>
 
           {visits !== null && (
