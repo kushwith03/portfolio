@@ -94,7 +94,6 @@ const Skills: React.FC = () => {
           </p>
         </motion.div>
 
-        {/* Skills Grid */}
         <motion.div
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6"
           variants={containerVariants}
@@ -111,7 +110,8 @@ const Skills: React.FC = () => {
               <motion.div
                 key={category}
                 variants={cardVariants}
-                className="bg-white dark:bg-gray-900 p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group"
+                whileHover={{ y: -5, transition: { type: 'spring', stiffness: 300 } }}
+                className="bg-white dark:bg-gray-900 p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 hover:shadow-xl transition-shadow duration-300 group"
               >
                 <div className="flex items-center space-x-3 mb-4">
                   <div className="p-2 bg-gray-50 dark:bg-gray-800 rounded-lg text-primary group-hover:bg-primary group-hover:text-white transition-colors">
@@ -136,7 +136,6 @@ const Skills: React.FC = () => {
           })}
         </motion.div>
 
-        {/* Achievements Section */}
         <motion.div
           className="mt-20 pt-10 border-t border-gray-200 dark:border-gray-800"
           initial={{ opacity: 0 }}
@@ -155,7 +154,7 @@ const Skills: React.FC = () => {
             {achievements.map((item, idx) => (
               <motion.div
                 key={idx}
-                whileHover={{ scale: 1.02 }}
+                whileHover={{ scale: 1.03, transition: { type: 'spring', stiffness: 300 } }}
                 className="p-6 bg-white dark:bg-gray-900 rounded-xl shadow-sm border border-gray-100 dark:border-gray-800 relative overflow-hidden"
               >
                 <div className="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-primary to-purple-600" />

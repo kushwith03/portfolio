@@ -29,3 +29,30 @@ body {
     transform: translateY(0);
   }
 }
+.scroll-progress-bar::after {
+  content: '';
+  position: absolute;
+  top: -4px;
+  right: -8px;
+  width: 16px;
+  height: 16px;
+  background: radial-gradient(circle, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0) 60%);
+  border-radius: 50%;
+  animation: sparkle 1.5s infinite;
+  transform: scale(0);
+}
+
+@keyframes sparkle {
+  0%, 100% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(2.5);
+    opacity: 1;
+  }
+  60% {
+    transform: scale(2.0);
+    opacity: 0.8;
+  }
+}

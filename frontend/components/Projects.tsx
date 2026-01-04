@@ -16,21 +16,14 @@ const Projects: React.FC = () => {
         const response = await fetch(
           `${process.env.NEXT_PUBLIC_API_URL}/api/projects`
         );
-
         if (!response.ok) {
-          throw new Error("Failed to fetch projects");
+          throw new Error("Failed to fetch projects.");
         }
-
         const result = await response.json();
-
-        if (!Array.isArray(result.data)) {
-          throw new Error("Invalid projects format");
-        }
-
         setProjects(result.data);
-      } catch (err) {
+      } catch (err: any) {
         console.error("Error fetching projects:", err);
-        setError("Failed to load projects.");
+        setError(err.message || "An unknown error occurred.");
       } finally {
         setLoading(false);
       }
@@ -59,7 +52,6 @@ const Projects: React.FC = () => {
       className="py-24 bg-white dark:bg-gray-900 transition-colors duration-300"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Heading */}
         <motion.div
           className="text-center mb-16"
           initial={{ opacity: 0, y: 20 }}
@@ -74,21 +66,18 @@ const Projects: React.FC = () => {
           </p>
         </motion.div>
 
-        {/* Loading */}
         {loading && (
           <div className="flex justify-center py-20">
             <div className="w-10 h-10 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
           </div>
         )}
 
-        {/* Error */}
         {error && (
           <div className="text-center p-4 bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 rounded-lg">
             {error}
           </div>
         )}
 
-        {/* Projects Grid */}
         {!loading && !error && (
           <motion.div
             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
@@ -101,9 +90,9 @@ const Projects: React.FC = () => {
               <motion.div
                 key={project.id}
                 variants={cardVariants}
-                className="group flex flex-col bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm hover:shadow-2xl transition-all duration-300 overflow-hidden hover:-translate-y-2"
+                whileHover={{ y: -8, transition: { type: 'spring', stiffness: 300 } }}
+                className="group flex flex-col bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm hover:shadow-2xl transition-shadow duration-300 overflow-hidden"
               >
-                {/* Image */}
                 <div className="relative h-48 w-full overflow-hidden bg-gray-200 dark:bg-gray-700">
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
@@ -118,7 +107,6 @@ const Projects: React.FC = () => {
                     className="h-full w-full object-cover transform group-hover:scale-110 transition-transform duration-700"
                   />
 
-                  {/* Actions */}
                   <div className="absolute bottom-4 right-4 flex space-x-3 z-20 translate-y-10 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-300">
                     {project.link && (
                       <a
@@ -133,7 +121,6 @@ const Projects: React.FC = () => {
                   </div>
                 </div>
 
-                {/* Content */}
                 <div className="flex-1 p-6 flex flex-col">
                   <h3 className="text-xl font-bold text-gray-900 dark:text-white group-hover:text-primary transition-colors mb-3">
                     {project.title}

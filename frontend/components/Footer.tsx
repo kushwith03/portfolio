@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { Github, Linkedin, Mail, Eye } from "lucide-react";
+import { motion } from "framer-motion";
 
 const Footer: React.FC = () => {
   const [visits, setVisits] = useState<number | null>(null);
@@ -12,7 +13,7 @@ const Footer: React.FC = () => {
       .then((data) => {
         if (data.success) setVisits(data.visits);
       })
-      .catch(() => {});
+      .catch((err) => console.error("Failed to fetch visit stats:", err));
   }, []);
 
   const socialLinks = [
@@ -26,7 +27,13 @@ const Footer: React.FC = () => {
   ];
 
   return (
-    <footer className="bg-white dark:bg-black border-t border-gray-200 dark:border-gray-800 transition-colors duration-300">
+    <motion.footer
+      className="bg-white dark:bg-black border-t border-gray-200 dark:border-gray-800 transition-colors duration-300"
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.6 }}
+    >
       <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col md:flex-row justify-between items-center space-y-6 md:space-y-0">
           <div className="text-center md:text-left">
@@ -40,22 +47,23 @@ const Footer: React.FC = () => {
 
           <div className="flex space-x-6">
             {socialLinks.map((link) => (
-              <a
+              <motion.a
                 key={link.label}
                 href={link.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-gray-400 hover:text-primary dark:hover:text-white transition-colors transform hover:-translate-y-1"
+                whileHover={{ y: -3, transition: { type: 'spring', stiffness: 300 } }}
+                className="text-gray-400 hover:text-primary dark:hover:text-white transition-colors"
                 aria-label={link.label}
               >
                 <link.icon className="h-6 w-6" />
-              </a>
+              </motion.a>
             ))}
           </div>
         </div>
 
         <div className="mt-8 border-t border-gray-100 dark:border-gray-900 pt-8 flex flex-col md:flex-row justify-between items-center text-sm text-gray-500 dark:text-gray-400">
-          <p>
+          <p className="text-center md:text-left">
             &copy; {new Date().getFullYear()} R Khushwith Kumar. <br />
             Made with ❤️ by kushwith_03
           </p>
@@ -70,7 +78,7 @@ const Footer: React.FC = () => {
           )}
         </div>
       </div>
-    </footer>
+    </motion.footer>
   );
 };
 

@@ -31,7 +31,6 @@ const About: React.FC = () => {
           whileInView="visible"
           viewport={{ once: true, margin: "-100px" }}
         >
-          {/* Left Column */}
           <div className="mb-12 lg:mb-0 relative">
             <div className="absolute -top-10 -left-10 w-32 h-32 bg-primary/10 rounded-full blur-2xl opacity-60" />
 
@@ -85,7 +84,6 @@ const About: React.FC = () => {
             </motion.div>
           </div>
 
-          {/* Right Column */}
           <motion.div className="space-y-6 text-lg text-gray-600 dark:text-gray-300 leading-relaxed">
             <motion.p variants={itemVariants}>
               I am a final-year <strong>Computer Science & Engineering</strong>{" "}
