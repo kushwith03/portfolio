@@ -108,7 +108,7 @@ const Hero: React.FC = () => {
               <a href="https://github.com/kushwith03" target="_blank" rel="noopener noreferrer">
                 <Github className="h-7 w-7 text-gray-500 dark:text-gray-400 hover:text-primary dark:hover:text-white transition-transform hover:scale-110 cursor-pointer" />
               </a>
-              <a href="https://linkedin.com/in/kushwith" target="_blank" rel="noopener noreferrer">
+              <a href="https://linkedin.com/in/kushwith03" target="_blank" rel="noopener noreferrer">
                 <Linkedin className="h-7 w-7 text-gray-500 dark:text-gray-400 hover:text-primary dark:hover:text-white transition-transform hover:scale-110 cursor-pointer" />
               </a>
               <a href="mailto:kushwith03@gmail.com">
