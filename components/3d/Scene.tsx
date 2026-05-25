@@ -114,12 +114,12 @@ export default function Scene() {
               intensity={tier === 'low' ? 0.5 : 1} 
               radius={0.3} 
             />
-            {tier === 'high' && (
+            {tier === 'high' ? (
               <Noise 
                 opacity={0.03} 
                 blendFunction={BlendFunction.OVERLAY} 
               />
-            )}
+            ) : null}
             <Vignette offset={0.3} darkness={0.9} />
           </EffectComposer>
           
