@@ -22,10 +22,8 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark">
       <body className={`${inter.className} bg-[#050505] text-white antialiased overflow-x-hidden`}>
-        <SmoothScroll>
           <Scene />
           {children}
-        </SmoothScroll>
       </body>
     </html>
   );

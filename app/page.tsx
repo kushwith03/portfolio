@@ -6,12 +6,12 @@ import CinematicController from '../components/motion/CinematicController';
 export default function Home() {
   return (
     <main className="relative">
-      <CinematicController />
+      {/* <CinematicController /> */}
 
       <div className="relative">
         <Hero />
         <Projects />
-        <div className="h-[200vh]" /> {/* Emotional Cooldown Space */}
+        <div className="h-[200vh]" /> 
       </div>
 
       <NeuralCore />
