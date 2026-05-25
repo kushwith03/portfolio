@@ -19,3 +19,6 @@ Thumbs.db
 # Logs
 logs/
 *.log
+
+# Local AI Orchestration Brain
+PLAN.md
