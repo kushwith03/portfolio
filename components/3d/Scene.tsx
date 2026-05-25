@@ -10,6 +10,7 @@ import { useStore } from "@/lib/store";
 import Entity from "./Entity";
 import Particles from "./Particles";
 import CameraRig from "./CameraRig";
+import Archive from "./Archive";
 import { Environment, ContactShadows } from "@react-three/drei";
 
 export default function Scene() {
@@ -35,6 +36,7 @@ export default function Scene() {
           
           {/* Spatial Inhabitants */}
           <Entity />
+          <Archive />
           <Particles count={2500} />
           
           <ContactShadows
