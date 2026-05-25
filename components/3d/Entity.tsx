@@ -4,50 +4,53 @@ import { useRef, useMemo } from "react";
 import { useFrame } from "@react-three/fiber";
 import { MeshTransmissionMaterial, Float } from "@react-three/drei";
 import * as THREE from "three";
-import gsap from "gsap";
 
 export default function Entity() {
   const meshRef = useRef<THREE.Mesh>(null);
   const groupRef = useRef<THREE.Group>(null);
   
-  // Spring-based target for cursor follow
   const targetPos = useRef(new THREE.Vector3(0, 0, 0));
   const currentPos = useRef(new THREE.Vector3(0, 0, 0));
+  const mouseVel = useRef(new THREE.Vector2(0, 0));
+  const prevMouse = useRef(new THREE.Vector2(0, 0));
 
   useFrame((state) => {
     const { mouse, clock } = state;
     const t = clock.getElapsedTime();
 
-    // 1. Update Target Position (Cursor follow)
-    // We map mouse (-1 to 1) to a reasonable 3D range
+    // 1. Target Position Calculation
     targetPos.current.set(mouse.x * 2.5, mouse.y * 1.5, 0);
 
-    // 2. Smooth Lerp/Inertia for Movement
+    // 2. Motion Inertia (Spring feel)
     currentPos.current.lerp(targetPos.current, 0.04);
     
+    // 3. Mouse Velocity for Dynamic Distortion
+    mouseVel.current.set(mouse.x - prevMouse.current.x, mouse.y - prevMouse.current.y);
+    const speed = mouseVel.current.length();
+    prevMouse.current.copy(mouse);
+
     if (groupRef.current) {
       groupRef.current.position.copy(currentPos.current);
       
-      // 3. Subtle Rotation Based on Movement
-      groupRef.current.rotation.y = THREE.MathUtils.lerp(
-        groupRef.current.rotation.y,
-        mouse.x * 0.4,
-        0.05
-      );
-      groupRef.current.rotation.x = THREE.MathUtils.lerp(
-        groupRef.current.rotation.x,
-        -mouse.y * 0.4,
-        0.05
-      );
+      // Look towards mouse with inertia
+      groupRef.current.rotation.y = THREE.MathUtils.lerp(groupRef.current.rotation.y, mouse.x * 0.4, 0.05);
+      groupRef.current.rotation.x = THREE.MathUtils.lerp(groupRef.current.rotation.x, -mouse.y * 0.4, 0.05);
+      
+      // Dynamic tilt based on speed
+      groupRef.current.rotation.z = THREE.MathUtils.lerp(groupRef.current.rotation.z, -mouseVel.current.x * 2, 0.05);
     }
 
-    // 4. Idle "Breathing" and Vertex Distortion
     if (meshRef.current) {
       const material = meshRef.current.material as any;
-      if (material.distort !== undefined) {
-        // Slow, organic pulse
-        material.distort = THREE.MathUtils.lerp(material.distort, 0.3 + Math.sin(t * 0.5) * 0.1, 0.02);
-      }
+      
+      // 4. Emotional Breathing & Velocity Distortion
+      // Material-level "squish" when moving fast
+      material.distortion = THREE.MathUtils.lerp(material.distortion, 0.2 + speed * 5, 0.05);
+      material.thickness = THREE.MathUtils.lerp(material.thickness, 1 + speed * 2, 0.05);
+      
+      // Subtle pulse
+      const pulse = Math.sin(t * 1.5) * 0.05;
+      meshRef.current.scale.setScalar(1 + pulse);
     }
   });
 
@@ -56,10 +59,6 @@ export default function Entity() {
       <Float speed={1.5} rotationIntensity={0.2} floatIntensity={0.4}>
         <mesh ref={meshRef} castShadow>
           <sphereGeometry args={[1.2, 64, 64]} />
-          {/* 
-            Premium Refractive Material 
-            Gives the "Soft Futuristic/Glass" feeling
-          */}
           <MeshTransmissionMaterial
             backside
             backsideThickness={0.5}
@@ -68,11 +67,11 @@ export default function Entity() {
             transmission={0.95}
             clearcoat={1}
             clearcoatRoughness={0}
-            roughness={0.1}
-            chromaticAberration={0.05}
-            anisotropy={0.1}
+            roughness={0.15}
+            chromaticAberration={0.06}
+            anisotropy={0.2}
             distortion={0.2}
-            distortionScale={0.5}
+            distortionScale={0.4}
             temporalDistortion={0.1}
             color="#ffffff"
             attenuationDistance={0.5}
@@ -81,8 +80,9 @@ export default function Entity() {
         </mesh>
       </Float>
 
-      {/* Localized warm light attached to the entity */}
-      <pointLight position={[2, 2, 2]} intensity={0.5} color="#ffcc88" />
+      {/* Atmospheric internal glow */}
+      <pointLight position={[0, 0, 0]} intensity={1.5} color="#00ffff" distance={3} />
+      <pointLight position={[2, 2, 2]} intensity={0.8} color="#ffaa00" distance={5} />
     </group>
   );
 }
