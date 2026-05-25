@@ -51,6 +51,8 @@ function TestBox() {
   );
 }
 
+import Particles from "./Particles";
+
 export default function Scene() {
   const [mounted, setMounted] = useState(false);
 
@@ -64,15 +66,19 @@ export default function Scene() {
     <div className="fixed inset-0 -z-10 bg-[#020202]">
       <Canvas
         camera={{ position: [0, 0, 8], fov: 35 }}
+        // Tight DPR clamp for production safety
+        dpr={[1, 1.25]}
         gl={{ antialias: true }}
       >
         <Suspense fallback={null}>
           <ambientLight intensity={0.5} />
           <pointLight position={[10, 10, 10]} />
           <CameraRig />
+          <Particles />
           <TestBox />
         </Suspense>
       </Canvas>
     </div>
   );
+}
 }

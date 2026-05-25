@@ -4,29 +4,28 @@ import { useRef, useMemo } from "react";
 import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 
-export default function Particles({ count = 2500 }) {
+/**
+ * Step 2: Minimal Atmospheric Particles
+ * Strict 100 count limit, static material, memoized geometry.
+ */
+export default function Particles() {
   const meshRef = useRef<THREE.Points>(null);
+  const count = 100;
 
-  const [particles, sizes] = useMemo(() => {
+  const [positions] = useMemo(() => {
     const pos = new Float32Array(count * 3);
-    const sz = new Float32Array(count);
     for (let i = 0; i < count; i++) {
-      pos[i * 3] = (Math.random() - 0.5) * 30;
-      pos[i * 3 + 1] = (Math.random() - 0.5) * 30;
-      pos[i * 3 + 2] = (Math.random() - 0.5) * 30;
-      sz[i] = Math.random();
+      pos[i * 3] = (Math.random() - 0.5) * 20;
+      pos[i * 3 + 1] = (Math.random() - 0.5) * 20;
+      pos[i * 3 + 2] = (Math.random() - 0.5) * 20;
     }
-    return [pos, sz];
-  }, [count]);
+    return [pos];
+  }, []);
 
   useFrame((state) => {
     const t = state.clock.getElapsedTime();
     if (meshRef.current) {
-      meshRef.current.rotation.y = t * 0.02;
-      meshRef.current.rotation.x = t * 0.01;
-      
-      // Gentle sway
-      meshRef.current.position.y = Math.sin(t * 0.5) * 0.1;
+      meshRef.current.rotation.y = t * 0.05;
     }
   });
 
@@ -35,24 +34,17 @@ export default function Particles({ count = 2500 }) {
       <bufferGeometry>
         <bufferAttribute
           attach="attributes-position"
-          count={particles.length / 3}
-          array={particles}
+          count={positions.length / 3}
+          array={positions}
           itemSize={3}
-        />
-        <bufferAttribute
-          attach="attributes-size"
-          count={sizes.length}
-          array={sizes}
-          itemSize={1}
         />
       </bufferGeometry>
       <pointsMaterial
-        size={0.015}
+        size={0.05}
         color="#ffffff"
         transparent
-        opacity={0.15}
+        opacity={0.3}
         sizeAttenuation
-        blending={THREE.AdditiveBlending}
         depthWrite={false}
       />
     </points>
