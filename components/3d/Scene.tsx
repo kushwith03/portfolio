@@ -9,26 +9,8 @@ import * as THREE from "three";
 import { useStore } from "@/lib/store";
 import Entity from "./Entity";
 import Particles from "./Particles";
+import CameraRig from "./CameraRig";
 import { Environment, ContactShadows } from "@react-three/drei";
-
-function CameraRig() {
-  const scrollProgress = useStore((state) => state.scrollProgress);
-  
-  useFrame((state) => {
-    // Smoother camera inertia
-    state.camera.position.lerp(
-      new THREE.Vector3(
-        state.mouse.x * 1,
-        state.mouse.y * 1,
-        8 - scrollProgress * 5
-      ),
-      0.03
-    );
-    state.camera.lookAt(0, 0, 0);
-  });
-  
-  return null;
-}
 
 export default function Scene() {
   return (
@@ -44,23 +26,23 @@ export default function Scene() {
         dpr={[1, 2]}
       >
         <Suspense fallback={null}>
+          {/* Orchestration System */}
           <CameraRig />
           
-          {/* Environmental Lighting for Refractive Materials */}
+          {/* Global Lighting Atmosphere */}
           <Environment preset="city" />
           <ambientLight intensity={0.1} />
           
-          {/* Main Entity */}
+          {/* Spatial Inhabitants */}
           <Entity />
-          
-          <Particles count={2000} />
+          <Particles count={2500} />
           
           <ContactShadows
             position={[0, -3.5, 0]}
-            opacity={0.4}
+            opacity={0.3}
             scale={20}
-            blur={2}
-            far={4.5}
+            blur={2.5}
+            far={4}
           />
           
           <Preload all />

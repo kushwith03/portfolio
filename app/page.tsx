@@ -1,22 +1,19 @@
 import Hero from '../components/Hero';
 import Projects from '../components/Projects';
 import AIAssistant from '../components/Chatbot';
+import CinematicController from '../components/motion/CinematicController';
 
 export default function Home() {
   return (
     <main className="relative">
-      <Hero />
-      <Projects />
-      <AIAssistant />
+      <CinematicController />
 
-      {/* 
-        Future Sections:
-        <About />
-        <Skills />
-        <Contact />
-        <Footer />
-        <Chatbot /> 
-      */}
+      <div className="relative z-10">
+        <Hero />
+        <Projects />
+      </div>
+
+      <AIAssistant />
     </main>
   );
 }
