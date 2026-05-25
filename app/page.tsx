@@ -1,6 +1,6 @@
 import Hero from '../components/Hero';
 import Projects from '../components/Projects';
-import AIAssistant from '../components/Chatbot';
+import NeuralCore from '../components/NeuralCore';
 import CinematicController from '../components/motion/CinematicController';
 
 export default function Home() {
@@ -8,12 +8,13 @@ export default function Home() {
     <main className="relative">
       <CinematicController />
 
-      <div className="relative z-10">
+      <div className="relative">
         <Hero />
         <Projects />
+        <div className="h-[200vh]" /> {/* Emotional Cooldown Space */}
       </div>
 
-      <AIAssistant />
+      <NeuralCore />
     </main>
   );
 }

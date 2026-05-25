@@ -40,24 +40,25 @@ export default function Entity() {
       groupRef.current.rotation.z = THREE.MathUtils.lerp(groupRef.current.rotation.z, -mouseVel.current.x * 4, 0.04);
     }
 
+    // 4. Emotional Breathing & Scene Reaction
+    const isCore = activeScene === 2;
+    const breatheSpeed = isCore ? 0.4 : 0.8;
+    const breatheIntensity = isCore ? 0.01 : 0.03;
+    const breathe = Math.sin(t * breatheSpeed) * breatheIntensity; 
+    
     if (meshRef.current) {
       const material = meshRef.current.material as any;
-      
-      // 3. Elastic Response (Squish/Stretch)
-      material.distortion = THREE.MathUtils.lerp(material.distortion, 0.15 + speed * 8, 0.06);
-      material.thickness = THREE.MathUtils.lerp(material.thickness, 0.8 + speed * 3, 0.06);
-      
-      // 4. Emotional Breathing (Biological Pace)
-      const breathe = Math.sin(t * 0.8) * 0.03; 
-      meshRef.current.scale.setScalar(1.2 + breathe + speed * 0.5);
+      material.distortion = THREE.MathUtils.lerp(material.distortion, (isCore ? 0.05 : 0.15) + speed * 8, 0.06);
+      meshRef.current.scale.setScalar(THREE.MathUtils.lerp(meshRef.current.scale.x, (isCore ? 0.8 : 1.2) + breathe + speed * 0.5, 0.05));
 
       // 5. Reactive Internal Glow
       if (internalLightRef.current) {
         internalLightRef.current.intensity = THREE.MathUtils.lerp(
           internalLightRef.current.intensity,
-          1.5 + speed * 15,
+          (isCore ? 0.5 : 1.5) + speed * 15,
           0.1
         );
+        internalLightRef.current.color.lerp(new THREE.Color(isCore ? "#ffffff" : "#44ccff"), 0.05);
       }
     }
   });
