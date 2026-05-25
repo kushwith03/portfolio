@@ -2,7 +2,7 @@
 
 import { useRef, useState } from "react";
 import { useFrame } from "@react-three/fiber";
-import { Text, Image, Float, MeshTransmissionMaterial, Gltf } from "@react-three/drei";
+import { Text, Image, Float, MeshTransmissionMaterial } from "@react-three/drei";
 import * as THREE from "three";
 import { useStore } from "@/lib/store";
 
@@ -19,10 +19,6 @@ export default function ProjectMonolith({ project, index, position }: MonolithPr
   const scrollProgress = useStore((state) => state.scrollProgress);
   const [hovered, setHovered] = useState(false);
 
-  // 1. Emotional Identity Overrides based on Project ID
-  // ID 1: Autonomous Vehicle -> Cold Simulation
-  // ID 2: InstaResume -> Luminous AI Workspace
-  // ID 3: BlogSpace -> Warm Editorial Archive
   const themes = [
     { color: "#2563eb", glow: "#0088ff", name: "OBSERVATORY_ALPHA" },
     { color: "#facc15", glow: "#ffaa00", name: "NEURAL_FORGE" },
@@ -40,115 +36,115 @@ export default function ProjectMonolith({ project, index, position }: MonolithPr
     if (!meshRef.current || !contentRef.current) return;
 
     const dist = Math.abs(scrollProgress - projectFocus);
-    const opacity = THREE.MathUtils.smoothstep(dist, 0.15, 0);
+    const opacity = THREE.MathUtils.smoothstep(dist, 0.2, 0);
     
     const t = state.clock.getElapsedTime();
 
-    // Reveal Animation
-    contentRef.current.scale.setScalar(THREE.MathUtils.lerp(0.5, 1, opacity));
-    contentRef.current.position.z = THREE.MathUtils.lerp(-2, 0, opacity);
+    contentRef.current.scale.setScalar(THREE.MathUtils.lerp(0.4, 1.2, opacity));
+    contentRef.current.position.z = THREE.MathUtils.lerp(-4, 0, opacity);
+    contentRef.current.position.y = Math.sin(t * 0.5 + index) * 0.2;
     
-    // Interaction Physics
     meshRef.current.rotation.y = THREE.MathUtils.lerp(
       meshRef.current.rotation.y, 
-      (hovered ? 0.2 : 0) + (state.mouse.x * 0.1), 
-      0.05
+      (hovered ? 0.3 : 0) + (state.mouse.x * 0.15), 
+      0.04
     );
 
-    // Atmospheric Lighting
     if (lightRef.current) {
-      lightRef.current.intensity = THREE.MathUtils.lerp(lightRef.current.intensity, opacity * 12, 0.1);
+      lightRef.current.intensity = THREE.MathUtils.lerp(lightRef.current.intensity, opacity * 15, 0.1);
+      lightRef.current.target.position.set(position[0], position[1], position[2]);
     }
   });
 
   return (
     <group ref={meshRef} position={position} onPointerEnter={() => setHovered(true)} onPointerLeave={() => setHovered(false)}>
       <group ref={contentRef}>
-        <Float speed={1.5} rotationIntensity={0.1} floatIntensity={0.2}>
-          
-          {/* Main Visual Artifact (The "Screen") */}
+        <Float speed={2} rotationIntensity={0.2} floatIntensity={0.5}>
           <group>
-            <mesh position={[0, 0, -0.05]}>
-              <planeGeometry args={[4.2, 2.6]} />
-              <meshBasicMaterial color={theme.color} transparent opacity={0.05 * (hovered ? 2 : 1)} />
+            <mesh position={[0, 0, -0.1]}>
+              <boxGeometry args={[4.8, 2.8, 0.05]} />
+              <MeshTransmissionMaterial
+                backside
+                thickness={0.5}
+                samples={8}
+                chromaticAberration={0.2}
+                transmission={1}
+                roughness={0}
+                color={theme.color}
+                opacity={0.1}
+              />
             </mesh>
             <Image
               url={project.imageUrl}
-              scale={[4, 2.5]}
+              scale={[4.5, 2.7]}
               transparent
-              opacity={0.9}
+              opacity={0.8}
               toneMapped={false}
             />
           </group>
 
-          {/* Exploded UI Fragments (Architecture Visibility) */}
-          <group position={[2.5, -0.5, 0.5]} rotation={[0, -0.2, 0.1]}>
+          <group position={[2.8, 1, 0.8]} rotation={[0, -0.3, 0]}>
              <mesh>
-               <planeGeometry args={[1.2, 0.8]} />
+                <planeGeometry args={[1.5, 0.05]} />
+                <meshBasicMaterial color={theme.color} />
+             </mesh>
+             <Text
+                position={[0, 0.15, 0]}
+                fontSize={0.07}
+                color={theme.color}
+                anchorX="center"
+              >
+                {`SYSTEM_NOMINAL // STACK_ACTIVE`}
+              </Text>
+          </group>
+
+          <group position={[-2.8, -1.2, 1.2]} rotation={[0, 0.4, 0.2]}>
+             <mesh>
+               <boxGeometry args={[1.8, 1, 0.02]} />
                <MeshTransmissionMaterial
-                 backside
-                 samples={4}
-                 thickness={0.2}
-                 chromaticAberration={0.1}
+                 thickness={1}
+                 chromaticAberration={0.5}
                  transmission={1}
-                 roughness={0.1}
+                 roughness={0.05}
                  color={theme.color}
                />
              </mesh>
              <Text
-                position={[0, 0, 0.01]}
-                fontSize={0.08}
+                position={[0, 0, 0.02]}
+                fontSize={0.1}
                 color="white"
-                font="/fonts/GeistMono-Bold.woff"
                 anchorX="center"
+                maxWidth={1.5}
               >
-                {`STACK // ${project.tags[0]}`}
+                {project.tags.join(" • ")}
               </Text>
           </group>
 
-          {/* Technical Metadata Tags */}
           <Text
-            position={[-2, 1.4, 0.2]}
-            fontSize={0.1}
-            color={theme.color}
-            font="/fonts/GeistMono-Bold.woff"
-            anchorX="left"
-            fillOpacity={0.6}
-          >
-            {`${theme.name} // 0${index + 1}`}
-          </Text>
-
-          {/* Monumental Title */}
-          <Text
-            position={[-2.2, -1.3, 0.4]}
-            fontSize={0.45}
+            position={[-2.4, 1.6, 0.2]}
+            fontSize={0.08}
             color="white"
-            maxWidth={4}
-            lineHeight={0.8}
-            font="/fonts/MonumentExtended-Regular.woff"
+            fillOpacity={0.2}
             anchorX="left"
-            textAlign="left"
           >
-            {project.title.toUpperCase()}
+            {`AUTHENTIC_DATA_EXTRACTED // [ ${theme.name} ]`}
           </Text>
 
-          {/* Environmental "Dust" for the World */}
-          <mesh position={[0, 0, -1]}>
-            <sphereGeometry args={[5, 32, 32]} />
-            <meshBasicMaterial color={theme.glow} transparent opacity={0.01} side={THREE.BackSide} />
+          <mesh position={[0, 0, -2]} scale={1.5}>
+             <sphereGeometry args={[5, 32, 32]} />
+             <meshBasicMaterial color={theme.glow} transparent opacity={0.005} side={THREE.BackSide} />
           </mesh>
         </Float>
       </group>
 
-      {/* Atmospheric Spotlight */}
       <spotLight
         ref={lightRef}
-        position={[0, 8, 4]}
+        position={[2, 10, 5]}
         angle={0.4}
         penumbra={1}
         intensity={0}
         color={theme.color}
-        distance={20}
+        distance={25}
         castShadow
       />
     </group>

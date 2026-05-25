@@ -2,7 +2,7 @@
 
 import { useRef } from "react";
 import { useFrame } from "@react-three/fiber";
-import { MeshTransmissionMaterial, Float, useCursor } from "@react-three/drei";
+import { MeshTransmissionMaterial, Float } from "@react-three/drei";
 import * as THREE from "three";
 import { useStore } from "@/lib/store";
 
@@ -10,6 +10,7 @@ export default function Entity() {
   const meshRef = useRef<THREE.Mesh>(null);
   const groupRef = useRef<THREE.Group>(null);
   const internalLightRef = useRef<THREE.PointLight>(null);
+  const rimLightRef = useRef<THREE.SpotLight>(null);
   
   const targetPos = useRef(new THREE.Vector3(0, 0, 0));
   const currentPos = useRef(new THREE.Vector3(0, 0, 0));
@@ -23,11 +24,12 @@ export default function Entity() {
     const { mouse, clock } = state;
     const t = clock.getElapsedTime();
 
-    // 1. Viscous Cursor Tracking
-    targetPos.current.set(mouse.x * 3, mouse.y * 2, scrollProgress * 2);
-    currentPos.current.lerp(targetPos.current, 0.035); // Heavy inertia
+    // 1. Cinematic Viscous Tracking
+    // Larger range and deeper Z involvement
+    targetPos.current.set(mouse.x * 4, mouse.y * 3, Math.sin(t * 0.2) * 0.5 + scrollProgress * 5);
+    currentPos.current.lerp(targetPos.current, 0.03); // Heavy, luxurious inertia
     
-    // 2. Velocity Sensing
+    // 2. Velocity Sensing for Physical Reaction
     mouseVel.current.set(mouse.x - prevMouse.current.x, mouse.y - prevMouse.current.y);
     const speed = mouseVel.current.length();
     prevMouse.current.copy(mouse);
@@ -35,69 +37,94 @@ export default function Entity() {
     if (groupRef.current) {
       groupRef.current.position.copy(currentPos.current);
       
-      // Luxurious Rotation
-      groupRef.current.rotation.y = THREE.MathUtils.lerp(groupRef.current.rotation.y, mouse.x * 0.5, 0.04);
-      groupRef.current.rotation.x = THREE.MathUtils.lerp(groupRef.current.rotation.x, -mouse.y * 0.5, 0.04);
-      groupRef.current.rotation.z = THREE.MathUtils.lerp(groupRef.current.rotation.z, -mouseVel.current.x * 4, 0.04);
+      // Luxurious Spatial Rotation
+      groupRef.current.rotation.y = THREE.MathUtils.lerp(groupRef.current.rotation.y, mouse.x * 0.8, 0.03);
+      groupRef.current.rotation.x = THREE.MathUtils.lerp(groupRef.current.rotation.x, -mouse.y * 0.8, 0.03);
+      groupRef.current.rotation.z = THREE.MathUtils.lerp(groupRef.current.rotation.z, -mouseVel.current.x * 6, 0.03);
     }
 
-    // 4. Emotional Breathing & Scene Reaction
+    // 3. Emotional State Logic
     const isCore = activeScene === 2;
-    const breatheSpeed = isCore ? 0.4 : 0.8;
-    const breatheIntensity = isCore ? 0.01 : 0.03;
-    const breathe = Math.sin(t * breatheSpeed) * breatheIntensity; 
+    const isArchive = activeScene === 1;
     
+    const breatheSpeed = isCore ? 0.3 : 1.2;
+    const breatheIntensity = isCore ? 0.02 : 0.05;
+    const breathe = Math.sin(t * breatheSpeed) * breatheIntensity; 
+
     if (meshRef.current) {
       const material = meshRef.current.material as any;
-      material.distortion = THREE.MathUtils.lerp(material.distortion, (isCore ? 0.05 : 0.15) + speed * 8, 0.06);
-      meshRef.current.scale.setScalar(THREE.MathUtils.lerp(meshRef.current.scale.x, (isCore ? 0.8 : 1.2) + breathe + speed * 0.5, 0.05));
+      
+      // Physical "Squish" and Distortion
+      const targetDistortion = (isCore ? 0.05 : 0.2) + speed * 12;
+      material.distortion = THREE.MathUtils.lerp(material.distortion, targetDistortion, 0.05);
+      material.thickness = THREE.MathUtils.lerp(material.thickness, 1.5 + speed * 5, 0.05);
+      
+      // Cinematic Scaling (Entity becomes more prominent in Hero)
+      const baseScale = isCore ? 1.2 : isArchive ? 1.5 : 2.2;
+      meshRef.current.scale.setScalar(THREE.MathUtils.lerp(meshRef.current.scale.x, baseScale + breathe + speed * 0.8, 0.05));
 
-      // 5. Reactive Internal Glow
+      // 4. Intelligence Pulse (Light System)
       if (internalLightRef.current) {
         internalLightRef.current.intensity = THREE.MathUtils.lerp(
           internalLightRef.current.intensity,
-          (isCore ? 0.5 : 1.5) + speed * 15,
+          (isCore ? 1 : 2.5) + speed * 25 + Math.sin(t * 4) * 0.2,
           0.1
         );
-        internalLightRef.current.color.lerp(new THREE.Color(isCore ? "#ffffff" : "#44ccff"), 0.05);
+        const targetColor = isCore ? "#ffffff" : isArchive ? "#ffaa00" : "#44ccff";
+        internalLightRef.current.color.lerp(new THREE.Color(targetColor), 0.05);
+      }
+
+      if (rimLightRef.current) {
+        rimLightRef.current.position.set(mouse.x * 10, mouse.y * 10, 5);
+        rimLightRef.current.intensity = 2 + speed * 10;
       }
     }
   });
 
   return (
     <group ref={groupRef}>
-      <Float speed={1} rotationIntensity={0.1} floatIntensity={0.2}>
+      <Float speed={1.2} rotationIntensity={0.2} floatIntensity={0.3}>
         <mesh ref={meshRef} castShadow>
-          <sphereGeometry args={[1, 128, 128]} />
+          <sphereGeometry args={[1, 256, 256]} /> {/* High detail for smoothness */}
           <MeshTransmissionMaterial
             backside
-            backsideThickness={0.2}
-            thickness={0.8}
-            samples={12} // Balanced for fluidity
+            backsideThickness={0.3}
+            thickness={1.5}
+            samples={16}
             transmission={1}
             clearcoat={1}
             clearcoatRoughness={0}
-            roughness={0.1}
-            chromaticAberration={0.08}
-            anisotropy={0.3}
-            distortion={0.15}
-            distortionScale={0.3}
-            temporalDistortion={0.05}
+            roughness={0.05}
+            chromaticAberration={0.12}
+            anisotropy={0.5}
+            distortion={0.2}
+            distortionScale={0.4}
+            temporalDistortion={0.08}
             color="#ffffff"
-            attenuationDistance={0.4}
+            attenuationDistance={0.6}
             attenuationColor="#ffffff"
+            transparent
           />
         </mesh>
       </Float>
 
-      {/* The Entity's "Soul" */}
-      <pointLight ref={internalLightRef} position={[0, 0, 0]} intensity={1.5} color="#44ccff" distance={4} />
-      <pointLight position={[1, 1, 1]} intensity={0.5} color="#ffaa00" distance={6} />
+      {/* Internal Intelligence Core */}
+      <pointLight ref={internalLightRef} position={[0, 0, 0]} intensity={2} color="#44ccff" distance={6} />
       
-      {/* Subtle Halo */}
-      <mesh scale={1.05}>
-        <sphereGeometry args={[1, 32, 32]} />
-        <meshBasicMaterial color="#44ccff" transparent opacity={0.02} side={THREE.BackSide} />
+      {/* Cinematic Rim Lighting */}
+      <spotLight 
+        ref={rimLightRef} 
+        position={[5, 5, 5]} 
+        intensity={2} 
+        angle={0.5} 
+        penumbra={1} 
+        color="#ffffff" 
+      />
+      
+      {/* Subtle Spatial Bloom Proxy */}
+      <mesh scale={1.1}>
+        <sphereGeometry args={[1, 64, 64]} />
+        <meshBasicMaterial color="#44ccff" transparent opacity={0.01} side={THREE.BackSide} />
       </mesh>
     </group>
   );
