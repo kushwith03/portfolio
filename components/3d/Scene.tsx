@@ -1,7 +1,7 @@
 "use client";
 
 import { Canvas, useFrame } from "@react-three/fiber";
-import { Suspense, useRef, useEffect } from "react";
+import { Suspense, useRef, useState, useEffect } from "react";
 import { Preload, Environment, ContactShadows, usePerformanceMonitor } from "@react-three/drei";
 import * as THREE from "three";
 import { 
@@ -51,21 +51,20 @@ function MovingLights() {
 function PerformanceController() {
   const setTier = useStore((state) => state.setPerformanceTier);
   
-  // Use Drei's performance monitor to scale down if FPS drops
   usePerformanceMonitor({
     onIncline: () => setTier('high'),
     onDecline: () => setTier('low'),
-    // Initial dpr will be adjusted based on this
   });
   
   return null;
 }
 
 function HighTierEffects({ tier }: { tier: string }) {
+  // Defensive guard for Noise effect which can be GPU heavy during init
   if (tier !== 'high') return <></>;
   return (
     <Noise 
-      opacity={0.03} 
+      opacity={0.02} 
       blendFunction={BlendFunction.OVERLAY} 
     />
   );
@@ -73,27 +72,41 @@ function HighTierEffects({ tier }: { tier: string }) {
 
 export default function Scene() {
   const tier = useStore((state) => state.performanceTier);
+  const [isMounted, setIsMounted] = useState(false);
+
+  // Guard against SSR and early render access
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  if (!isMounted) return <div className="fixed inset-0 bg-[#020202]" />;
 
   return (
     <div className="fixed inset-0 -z-10 bg-[#020202]">
       <Canvas
         shadows={tier === 'high'}
         camera={{ position: [0, 0, 8], fov: 35 }}
+        onCreated={(state) => {
+          // Prevent Context Lost by managing pixel ratio aggressively
+          state.gl.setClearColor("#020202");
+          // Defensive null check for renderer
+          if (state.gl) {
+            state.gl.powerPreference = "high-performance";
+          }
+        }}
         gl={{ 
           antialias: false,
           alpha: true,
-          powerPreference: "high-performance",
           stencil: false,
           depth: true,
-          // Tone mapping for cinematic highlights
           toneMapping: THREE.ACESFilmicToneMapping,
+          failIfMajorPerformanceCaveat: true // Graceful fallback
         }}
-        // DPR Clamping: Never exceed 1.5 for performance, drop to 1 on low tier
         dpr={tier === 'low' ? 1 : [1, 1.5]}
       >
         <PerformanceController />
         <color attach="background" args={["#020202"]} />
-        <fogExp2 attach="fog" args={["#020202", 0.05]} />
+        <fogExp2 attach="fog" args={["#020202", 0.04]} />
 
         <Suspense fallback={null}>
           <CameraRig />
@@ -104,14 +117,14 @@ export default function Scene() {
           
           <Entity />
           <Archive />
-          <Particles count={tier === 'low' ? 1000 : 3000} />
+          <Particles count={tier === 'low' ? 500 : 2500} />
 
           {tier !== 'low' ? (
             <ContactShadows
               position={[0, -4, 0]}
-              opacity={0.4}
+              opacity={0.3}
               scale={20}
-              blur={2}
+              blur={3}
               far={4.5}
               color="#000000"
             />
@@ -121,11 +134,11 @@ export default function Scene() {
             <Bloom 
               luminanceThreshold={1.2} 
               mipmapBlur 
-              intensity={tier === 'low' ? 0.5 : 1} 
+              intensity={tier === 'low' ? 0.4 : 0.8} 
               radius={0.3} 
             />
             <HighTierEffects tier={tier} />
-            <Vignette offset={0.3} darkness={0.9} />
+            <Vignette offset={0.4} darkness={0.8} />
           </EffectComposer>
           
           <Preload all />
