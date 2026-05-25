@@ -34,24 +34,9 @@ function CameraRig() {
   return null;
 }
 
-function TestBox() {
-  const meshRef = useRef<THREE.Mesh>(null);
-  useFrame((state, delta) => {
-    if (meshRef.current) {
-      meshRef.current.rotation.x += delta * 0.5;
-      meshRef.current.rotation.y += delta * 0.5;
-    }
-  });
-
-  return (
-    <mesh ref={meshRef}>
-      <boxGeometry args={[1, 1, 1]} />
-      <meshStandardMaterial color="white" />
-    </mesh>
-  );
-}
-
+import { Preload } from "@react-three/drei";
 import Particles from "./Particles";
+import Entity from "./Entity";
 
 export default function Scene() {
   const [mounted, setMounted] = useState(false);
@@ -71,11 +56,13 @@ export default function Scene() {
         gl={{ antialias: true }}
       >
         <Suspense fallback={null}>
-          <ambientLight intensity={0.5} />
-          <pointLight position={[10, 10, 10]} />
+          <ambientLight intensity={0.1} />
+          
           <CameraRig />
           <Particles />
-          <TestBox />
+          <Entity />
+          
+          <Preload all />
         </Suspense>
       </Canvas>
     </div>
