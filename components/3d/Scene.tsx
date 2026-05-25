@@ -34,7 +34,7 @@ function MovingLights() {
     <group ref={group}>
       <pointLight position={[10, 10, 10]} intensity={1} color="#44ccff" />
       <pointLight position={[-10, -10, -10]} intensity={0.5} color="#ffaa00" />
-      {tier !== 'low' && (
+      {tier !== 'low' ? (
         <spotLight 
           position={[0, 15, 0]} 
           angle={0.3} 
@@ -43,7 +43,7 @@ function MovingLights() {
           castShadow 
           color="#ffffff"
         />
-      )}
+      ) : null}
     </group>
   );
 }
@@ -59,6 +59,16 @@ function PerformanceController() {
   });
   
   return null;
+}
+
+function HighTierEffects({ tier }: { tier: string }) {
+  if (tier !== 'high') return <></>;
+  return (
+    <Noise 
+      opacity={0.03} 
+      blendFunction={BlendFunction.OVERLAY} 
+    />
+  );
 }
 
 export default function Scene() {
@@ -96,7 +106,7 @@ export default function Scene() {
           <Archive />
           <Particles count={tier === 'low' ? 1000 : 3000} />
 
-          {tier !== 'low' && (
+          {tier !== 'low' ? (
             <ContactShadows
               position={[0, -4, 0]}
               opacity={0.4}
@@ -105,21 +115,16 @@ export default function Scene() {
               far={4.5}
               color="#000000"
             />
-          )}
+          ) : null}
 
-          <EffectComposer multisampling={0} disableNormalPass>
+          <EffectComposer multisampling={0} enableNormalPass={false}>
             <Bloom 
               luminanceThreshold={1.2} 
               mipmapBlur 
               intensity={tier === 'low' ? 0.5 : 1} 
               radius={0.3} 
             />
-            {tier === 'high' ? (
-              <Noise 
-                opacity={0.03} 
-                blendFunction={BlendFunction.OVERLAY} 
-              />
-            ) : null}
+            <HighTierEffects tier={tier} />
             <Vignette offset={0.3} darkness={0.9} />
           </EffectComposer>
           
