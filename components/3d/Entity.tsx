@@ -1,23 +1,24 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import { useFrame } from "@react-three/fiber";
 import { Float } from "@react-three/drei";
 import * as THREE from "three";
 import { useStore } from "@/lib/store";
 
 /**
- * The Entity: Intelligent Architectural Presence
- * Refined for Pass 3:
- * - Adds 'Cursor Awareness': Hotspot tracking and geometric leaning.
- * - States: Dormant (slow) vs Attentive (responsive).
- * - Narrative Evolution: Changes state/position based on scroll depth.
+ * Character System: The Architect Companion (Pass 1)
+ * A procedural, lightweight assistant that humanizes the engineering identity.
+ * Features: 
+ * - Procedural head geometry
+ * - Cursor-responsive eye tracking
+ * - Heavy-inertia motion logic
  */
 export default function Entity() {
-  const meshRef = useRef<THREE.Mesh>(null);
   const groupRef = useRef<THREE.Group>(null);
-  const internalLightRef = useRef<THREE.PointLight>(null);
-  const hotspotRef = useRef<THREE.Mesh>(null);
+  const headRef = useRef<THREE.Mesh>(null);
+  const eyeLeftRef = useRef<THREE.Mesh>(null);
+  const eyeRightRef = useRef<THREE.Mesh>(null);
   
   const targetPos = useRef(new THREE.Vector3(0, 0, 0));
   const currentPos = useRef(new THREE.Vector3(0, 0, 0));
@@ -33,17 +34,14 @@ export default function Entity() {
     // 1. Scene State Logic
     const isHero = activeScene === 0;
     const isArchive = activeScene === 1;
-    const isCore = activeScene === 2;
 
-    // 2. Cursor Awareness (Attentive State)
+    // 2. Cursor Smoothing
     mouseSmooth.current.lerp(mouse, 0.05);
-    const mouseActive = mouse.length() > 0.05;
 
-    // 3. Dynamic Spatial Position
-    // Improved Hero -> Archive Relocation
-    const xTarget = isHero ? mouse.x * 1.2 : isArchive ? -2.5 + mouse.x * 0.3 : 0;
-    const yTarget = isHero ? mouse.y * 1.0 : isArchive ? 0.8 + mouse.y * 0.2 : 0;
-    const zTarget = isHero ? 0 : isArchive ? -2 + scrollProgress * 4 : 3;
+    // 3. Narrative Spatial Positioning
+    const xTarget = isHero ? mouse.x * 0.8 : -2.5 + mouse.x * 0.2;
+    const yTarget = isHero ? mouse.y * 0.6 : 0.8 + mouse.y * 0.1;
+    const zTarget = isHero ? 0 : -2 + scrollProgress * 4;
 
     targetPos.current.set(xTarget, yTarget, zTarget);
     currentPos.current.lerp(targetPos.current, 0.025);
@@ -51,76 +49,74 @@ export default function Entity() {
     if (groupRef.current) {
       groupRef.current.position.copy(currentPos.current);
       
-      // Intelligent Leaning: Object 'faces' the cursor slightly
-      const leanX = -mouseSmooth.current.y * (isHero ? 0.3 : 0.1);
-      const leanY = mouseSmooth.current.x * (isHero ? 0.3 : 0.1);
-      groupRef.current.rotation.x = THREE.MathUtils.lerp(groupRef.current.rotation.x, leanX, 0.05);
-      groupRef.current.rotation.y = THREE.MathUtils.lerp(groupRef.current.rotation.y, leanY, 0.05);
+      // Subtle head follow rotation
+      const headRotX = -mouseSmooth.current.y * 0.2;
+      const headRotY = mouseSmooth.current.x * 0.2;
+      groupRef.current.rotation.x = THREE.MathUtils.lerp(groupRef.current.rotation.x, headRotX, 0.05);
+      groupRef.current.rotation.y = THREE.MathUtils.lerp(groupRef.current.rotation.y, headRotY, 0.05);
     }
 
-    // 4. Physical "Life" Simulation
-    if (meshRef.current) {
-      // Dormant vs Attentive Breathing
-      const breatheSpeed = mouseActive ? 1.2 : 0.6;
-      const breatheIntensity = mouseActive ? 0.02 : 0.01;
-      const breathe = Math.sin(t * breatheSpeed) * breatheIntensity;
+    // 4. Eye Tracking & Life (Procedural)
+    if (eyeLeftRef.current && eyeRightRef.current) {
+      // Eyes follow cursor more sharply than the head
+      const eyeX = mouseSmooth.current.x * 0.15;
+      const eyeY = mouseSmooth.current.y * 0.15;
       
-      const baseScale = isHero ? 1.5 : isArchive ? 0.7 : 0.1;
-      meshRef.current.scale.setScalar(THREE.MathUtils.lerp(meshRef.current.scale.x, baseScale + breathe, 0.05));
-      
-      // Reflective Hotspot tracking
-      if (hotspotRef.current) {
-        hotspotRef.current.position.set(
-          mouseSmooth.current.x * 0.5,
-          mouseSmooth.current.y * 0.5,
-          0.8
-        );
-      }
+      // Limit eye movement to stay within 'socket' area
+      eyeLeftRef.current.position.set(-0.35 + eyeX, 0.1 + eyeY, 0.8);
+      eyeRightRef.current.position.set(0.35 + eyeX, 0.1 + eyeY, 0.8);
 
-      // Material Reaction
-      const mat = meshRef.current.material as THREE.MeshStandardMaterial;
-      mat.emissiveIntensity = THREE.MathUtils.lerp(mat.emissiveIntensity, mouseActive ? 0.1 : 0.02, 0.05);
+      // Subtle scaling for "focus"
+      const eyeScale = 1 + Math.sin(t * 1.5) * 0.02;
+      eyeLeftRef.current.scale.setScalar(eyeScale);
+      eyeRightRef.current.scale.setScalar(eyeScale);
     }
 
-    // 5. Internal Pulse
-    if (internalLightRef.current) {
-      const pulse = Math.sin(t * 2) * 0.1;
-      const targetIntensity = isHero ? 1.5 : isArchive ? 0.4 : 1.0;
-      internalLightRef.current.intensity = THREE.MathUtils.lerp(
-        internalLightRef.current.intensity, 
-        targetIntensity + (mouseActive ? 0.5 : 0) + pulse, 
-        0.05
-      );
+    if (headRef.current) {
+      // Gentle breathing
+      const breathe = Math.sin(t * 0.8) * 0.01;
+      headRef.current.scale.setScalar(1.2 + breathe);
     }
   });
 
   return (
     <group ref={groupRef}>
-      <Float speed={0.5} rotationIntensity={0.05} floatIntensity={0.1}>
-        <mesh ref={meshRef} castShadow>
-          <icosahedronGeometry args={[1, 32]} /> 
-          <meshStandardMaterial
-            color="#ffffff"
-            metalness={0.2}
-            roughness={0.4}
-            emissive="#ffffff"
-            emissiveIntensity={0.02}
-          />
-          
-          {/* Subtle Reflective Hotspot (The 'Glance') */}
-          <mesh ref={hotspotRef} scale={0.15}>
-             <sphereGeometry args={[1, 16, 16]} />
-             <meshBasicMaterial color="#ffffff" transparent opacity={0.3} />
+      <Float speed={0.4} rotationIntensity={0.05} floatIntensity={0.1}>
+        <group>
+          {/* Main Head Structure: Procedural & Lightweight */}
+          <mesh ref={headRef} castShadow>
+            <sphereGeometry args={[1, 64, 64]} />
+            <meshStandardMaterial
+              color="#ffffff"
+              metalness={0.1}
+              roughness={0.4}
+              emissive="#ffffff"
+              emissiveIntensity={0.02}
+            />
           </mesh>
-        </mesh>
+
+          {/* Intelligent Eyes: Emissive tracking points */}
+          <mesh ref={eyeLeftRef} position={[-0.35, 0.1, 0.8]}>
+             <sphereGeometry args={[0.08, 32, 32]} />
+             <meshStandardMaterial color="#ffffff" emissive="#ffffff" emissiveIntensity={2} />
+          </mesh>
+          
+          <mesh ref={eyeRightRef} position={[0.35, 0.1, 0.8]}>
+             <sphereGeometry args={[0.08, 32, 32]} />
+             <meshStandardMaterial color="#ffffff" emissive="#ffffff" emissiveIntensity={2} />
+          </mesh>
+          
+          {/* Subtle neural halo */}
+          <mesh rotation={[Math.PI / 2, 0, 0]} position={[0, -0.05, 0]}>
+             <torusGeometry args={[1.05, 0.005, 16, 100]} />
+             <meshBasicMaterial color="#ffffff" transparent opacity={0.05} />
+          </mesh>
+        </group>
       </Float>
 
-      {/* Primary Neural Light */}
-      <pointLight ref={internalLightRef} position={[0, 0, 1]} intensity={1} distance={8} color="#ffffff" />
-      
       {/* Narrative Ambient Lights */}
-      <pointLight position={[-3, 2, -2]} intensity={0.2} color="#3399ff" />
-      <pointLight position={[3, -2, -2]} intensity={0.1} color="#ffaa00" />
+      <pointLight position={[2, 2, 2]} intensity={0.5} />
+      <pointLight position={[-2, -2, -2]} intensity={0.2} color="#3399ff" />
     </group>
   );
 }
