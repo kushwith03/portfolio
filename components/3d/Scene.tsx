@@ -1,6 +1,6 @@
 "use client";
 
-import { Canvas, useFrame } from "@react-three/fiber";
+import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { Suspense, useRef, useState, useEffect } from "react";
 import { Preload, Environment, ContactShadows, usePerformanceMonitor } from "@react-three/drei";
 import * as THREE from "three";
@@ -50,17 +50,14 @@ function MovingLights() {
 
 function PerformanceController() {
   const setTier = useStore((state) => state.setPerformanceTier);
-  
   usePerformanceMonitor({
     onIncline: () => setTier('high'),
     onDecline: () => setTier('low'),
   });
-  
   return null;
 }
 
 function HighTierEffects({ tier }: { tier: string }) {
-  // Defensive guard for Noise effect which can be GPU heavy during init
   if (tier !== 'high') return <></>;
   return (
     <Noise 
@@ -70,11 +67,42 @@ function HighTierEffects({ tier }: { tier: string }) {
   );
 }
 
+/**
+ * Defensive PostProcessing Layer
+ * Prevents "Cannot read properties of null (reading 'subscribe')" by delaying mounting
+ * until the Three.js renderer and scene are fully initialized.
+ */
+function CinematicEffects({ tier }: { tier: string }) {
+  const [ready, setReady] = useState(false);
+  const gl = useThree((state) => state.gl);
+
+  useEffect(() => {
+    if (gl) {
+      const timeout = setTimeout(() => setReady(true), 500);
+      return () => clearTimeout(timeout);
+    }
+  }, [gl]);
+
+  if (!ready) return null;
+
+  return (
+    <EffectComposer multisampling={0} enableNormalPass={false}>
+      <Bloom 
+        luminanceThreshold={1.2} 
+        mipmapBlur 
+        intensity={tier === 'low' ? 0.3 : 0.6} 
+        radius={0.3} 
+      />
+      <HighTierEffects tier={tier} />
+      <Vignette offset={0.5} darkness={0.7} />
+    </EffectComposer>
+  );
+}
+
 export default function Scene() {
   const tier = useStore((state) => state.performanceTier);
   const [isMounted, setIsMounted] = useState(false);
 
-  // Guard against SSR and early render access
   useEffect(() => {
     setIsMounted(true);
   }, []);
@@ -86,19 +114,18 @@ export default function Scene() {
       <Canvas
         shadows={tier === 'high'}
         camera={{ position: [0, 0, 8], fov: 35 }}
-        onCreated={(state) => {
-          // Prevent Context Lost by managing clear color safely
-          state.gl.setClearColor("#020202");
-        }}
         gl={{ 
           antialias: false,
           alpha: true,
           stencil: false,
           depth: true,
           toneMapping: THREE.ACESFilmicToneMapping,
-          failIfMajorPerformanceCaveat: true // Graceful fallback
+          failIfMajorPerformanceCaveat: true
         }}
         dpr={tier === 'low' ? 1 : [1, 1.5]}
+        onCreated={(state) => {
+          state.gl.setClearColor("#020202");
+        }}
       >
         <PerformanceController />
         <color attach="background" args={["#020202"]} />
@@ -113,7 +140,7 @@ export default function Scene() {
           
           <Entity />
           <Archive />
-          <Particles count={tier === 'low' ? 500 : 2500} />
+          <Particles count={tier === 'low' ? 500 : 1500} />
 
           {tier !== 'low' ? (
             <ContactShadows
@@ -126,16 +153,7 @@ export default function Scene() {
             />
           ) : null}
 
-          <EffectComposer multisampling={0} enableNormalPass={false}>
-            <Bloom 
-              luminanceThreshold={1.2} 
-              mipmapBlur 
-              intensity={tier === 'low' ? 0.4 : 0.8} 
-              radius={0.3} 
-            />
-            <HighTierEffects tier={tier} />
-            <Vignette offset={0.4} darkness={0.8} />
-          </EffectComposer>
+          <CinematicEffects tier={tier} />
           
           <Preload all />
         </Suspense>

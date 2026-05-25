@@ -22,9 +22,6 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark">
       <body className={`${inter.className} bg-[#050505] text-white antialiased overflow-x-hidden`}>
-        {/* Cinematic Grain Overlay */}
-        <div className="fixed inset-0 pointer-events-none z-[999] opacity-[0.03] bg-[url('https://grainy-gradients.vercel.app/noise.svg')] brightness-100 contrast-150" />
-        
         <SmoothScroll>
           <Scene />
           {children}
