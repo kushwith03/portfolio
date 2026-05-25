@@ -87,22 +87,16 @@ export default function Entity() {
         <mesh ref={meshRef} castShadow>
           <sphereGeometry args={[1, 256, 256]} /> {/* High detail for smoothness */}
           <MeshTransmissionMaterial
-            backside
-            backsideThickness={0.3}
-            thickness={1.5}
-            samples={16}
+            thickness={1}
+            samples={4}
             transmission={1}
-            clearcoat={1}
-            clearcoatRoughness={0}
-            roughness={0.05}
-            chromaticAberration={0.12}
-            anisotropy={0.5}
-            distortion={0.2}
-            distortionScale={0.4}
-            temporalDistortion={0.08}
+            roughness={0.1}
+            chromaticAberration={0.02}
+            anisotropy={0.1}
+            distortion={0}
+            distortionScale={0.1}
+            temporalDistortion={0}
             color="#ffffff"
-            attenuationDistance={0.6}
-            attenuationColor="#ffffff"
             transparent
           />
         </mesh>

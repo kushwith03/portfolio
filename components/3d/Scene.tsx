@@ -57,8 +57,8 @@ export default function Scene() {
           <Archive />
           <Particles count={tier === "low" ? 500 : 1500} />
 
-          {/* Conditional post-processing with safe mounting */}
-          <CinematicEffects tier={tier} />
+          {/* TEMPORARILY DISABLED FOR STABILIZATION ISOLATION */}
+          {/* <CinematicEffects tier={tier} /> */}
         </Suspense>
       </Canvas>
     </div>
