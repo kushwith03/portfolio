@@ -14,11 +14,12 @@ export async function getChatReply(message: string, history: any[], persona: str
   const contextData = `
     MY PROFILE:
     Name: R Khushwith Kumar
-    Role: Full Stack Developer / Data Science Student
-    Education: RNS Institute of Technology, Bengaluru (Final Year)
+    Role: Full Stack Software Engineer Intern
+    Education: RNS Institute of Technology, Bengaluru (B.E. CSE - Data Science, Expected May 2026)
     CGPA: 8.41/10.0
-    Availability: Internship starting Jan 2026
-
+    Recent Experience: Software Engineering Intern at ATSPL (Jan 2026 -- Apr 2026). 
+    Architected production features with React, Node.js, and PostgreSQL. Built CI/CD pipelines with GitHub Actions.
+    
     MY SKILLS:
     ${JSON.stringify(skills)}
 

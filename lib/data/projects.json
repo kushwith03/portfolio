@@ -2,25 +2,43 @@
   {
     "id": "1",
     "title": "Autonomous Vehicle Simulation",
-    "description": "Built an autonomous driving pipeline using 8,000+ labeled frames. Designed a PyTorch autoencoder for feature extraction (<50 ms latency) and applied behavioral cloning (CNNs) to predict steering/throttle.",
-    "tags": ["Python", "PyTorch", "Computer Vision", "CARLA"],
+    "timeline": "Aug 2025 -- Feb 2026",
+    "description": "Built an end-to-end autonomous driving pipeline trained on 8,000+ Cityscapes and CARLA simulation images using PyTorch-based deep learning workflows. Implemented behavioral cloning with CNN-based steering prediction systems, reducing navigation error rates and improving simulated driving stability.",
+    "tags": ["Python", "PyTorch", "CARLA", "Computer Vision"],
     "link": "https://github.com/kushwith03/Autonomous-Vehicle",
-    "imageUrl": "https://placehold.co/600x400/2563eb/ffffff?text=Autonomous+Vehicle"
+    "imageUrl": "https://placehold.co/800x500/2563eb/ffffff?text=Autonomous+Vehicle",
+    "highlights": [
+      "8,000+ Cityscapes & CARLA images",
+      "Behavioral Cloning & CNNs",
+      "Sub-50ms Prediction Latency"
+    ]
   },
   {
     "id": "2",
-    "title": "InstaResume — AI Resume Generator",
-    "description": "Developed a resume builder with live preview using React Hook Form. Integrated jsPDF for client-side PDF generation, reducing formatting time by 40%, and optimized rendering to maintain 60 FPS.",
-    "tags": ["React.js", "Node.js", "Tailwind CSS", "jsPDF"],
-    "link": "https://github.com/kushwith03/SCT_WD_3",
-    "imageUrl": "https://placehold.co/600x400/2563eb/ffffff?text=InstaResume"
+    "title": "InstaResume — AI Resume Platform",
+    "timeline": "Mar 2025 -- Jul 2025",
+    "description": "Engineered a real-time AI-powered resume builder using React Hook Form with optimized state synchronization and live-preview rendering systems. Integrated Google Gemini AI to generate ATS-optimized resume content and implemented client-side PDF export workflows using @react-pdf/renderer.",
+    "tags": ["React.js", "Node.js", "Gemini AI", "@react-pdf/renderer"],
+    "link": "https://github.com/kushwith03/ai-resume-builder",
+    "imageUrl": "https://placehold.co/800x500/2563eb/ffffff?text=InstaResume",
+    "highlights": [
+      "Gemini AI Integration",
+      "ATS-Optimized Content",
+      "Optimized State Sync"
+    ]
   },
   {
     "id": "3",
-    "title": "BlogSpace Application",
-    "description": "Designed RESTful APIs using MVC architecture and implemented authentication with JWT. Deployed on Render with secure environment configuration.",
+    "title": "BlogSpace Publishing Platform",
+    "timeline": "Nov 2024 -- Jan 2025",
+    "description": "Architected modular REST APIs using MVC patterns with scalable routing, middleware orchestration, and PostgreSQL-backed relational data modeling. Implemented JWT-based authentication and authorization systems securing protected CRUD workflows and session-aware user operations.",
     "tags": ["Node.js", "Express.js", "PostgreSQL", "JWT"],
     "link": "https://github.com/kushwith03/blogspace",
-    "imageUrl": "https://placehold.co/600x400/2563eb/ffffff?text=BlogSpace"
+    "imageUrl": "https://placehold.co/800x500/2563eb/ffffff?text=BlogSpace",
+    "highlights": [
+      "MVC Architecture",
+      "JWT Authentication",
+      "Secure API Design"
+    ]
   }
 ]

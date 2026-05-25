@@ -1,14 +1,14 @@
 {
   "technical": {
     "languages": ["Java", "JavaScript (ES6+)", "Python", "SQL", "C++"],
-    "frontend": ["React.js", "HTML5", "CSS3", "Responsive Design"],
+    "frontend": ["React.js", "HTML5", "CSS3", "Tailwind CSS", "Framer Motion"],
     "backend": ["Node.js", "Express.js", "REST APIs", "JWT Authentication", "MVC Architecture"],
-    "db_cloud": ["PostgreSQL", "MongoDB", "MySQL", "Docker", "Vercel", "Render"],
-    "tools": ["Git/GitHub", "VS Code", "Postman", "Linux CLI"]
+    "db_cloud": ["PostgreSQL", "MongoDB", "MySQL", "AWS S3", "CloudFront", "Cloudflare CDN", "GitHub Actions (CI/CD)", "Vercel", "Render"],
+    "tools": ["Git", "Postman", "Linux CLI", "VS Code", "CARLA Simulator"]
   },
   "achievements": [
-    { "title": "200+ DSA Problems Solved", "desc": "Strong in Arrays, Linked Lists, Strings, and Recursion" },
-    { "title": "Microsoft Certified", "desc": "Azure Data Fundamentals (DP-900)" },
-    { "title": "State-Level Athlete", "desc": "Powerlifting and Kabaddi Competitions" }
+    { "title": "200+ DSA Problems Solved", "desc": "Arrays, Linked Lists, Strings, and Recursion using Java" },
+    { "title": "Microsoft Certified", "desc": "Azure AI Fundamentals (AI-900) & Data Fundamentals (DP-900)" },
+    { "title": "State-Level Athlete", "desc": "College representative in Powerlifting and Kabaddi" }
   ]
 }
