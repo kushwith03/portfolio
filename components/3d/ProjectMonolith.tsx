@@ -113,7 +113,7 @@ export default function ProjectMonolith({ project, index, position }: MonolithPr
             color={theme.color}
             font="/fonts/GeistMono-Bold.woff"
             anchorX="left"
-            opacity={0.6}
+            fillOpacity={0.6}
           >
             {`${theme.name} // 0${index + 1}`}
           </Text>

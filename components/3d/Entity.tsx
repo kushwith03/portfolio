@@ -17,6 +17,7 @@ export default function Entity() {
   const prevMouse = useRef(new THREE.Vector2(0, 0));
   
   const scrollProgress = useStore((state) => state.scrollProgress);
+  const activeScene = useStore((state) => state.activeScene);
 
   useFrame((state) => {
     const { mouse, clock } = state;

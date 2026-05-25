@@ -50,8 +50,9 @@ export default function CameraRig() {
     currentLookAt.current.lerp(targetLookAt.current, 0.04);
     camera.lookAt(currentLookAt.current);
     
-    camera.fov = THREE.MathUtils.lerp(35, 45, scrollProgress);
-    camera.updateProjectionMatrix();
+    const pCamera = camera as THREE.PerspectiveCamera;
+    pCamera.fov = THREE.MathUtils.lerp(35, 45, scrollProgress);
+    pCamera.updateProjectionMatrix();
   });
   
   return null;
