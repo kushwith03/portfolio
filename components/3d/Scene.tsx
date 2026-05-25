@@ -10,7 +10,6 @@ import Entity from "./Entity";
 
 /**
  * Step 4: Stabilized Camera Rig
- * Refined for "heavier" motion and better framing.
  */
 function CameraRig() {
   const scrollProgress = useStore((state) => state.setScrollProgress);
@@ -21,16 +20,12 @@ function CameraRig() {
   const targetLookAt = useRef(new THREE.Vector3(0, 0, 0));
 
   useFrame(() => {
-    // 1. Heavier Z-Plunge (Decreased interpolation speed)
     const zPos = THREE.MathUtils.lerp(8, -10, useStore.getState().scrollProgress);
-    
-    // 2. Viscous Mouse Parallax
     const xPos = mouse.x * 1.0;
     const yPos = mouse.y * 0.6;
 
     camera.position.lerp(new THREE.Vector3(xPos, yPos, zPos), 0.035);
 
-    // 3. Narrative Focus Points
     if (activeScene === 0) targetLookAt.current.set(0, 0, 0);
     if (activeScene === 1) targetLookAt.current.set(mouse.x * 0.5, -0.2, zPos - 5);
 
@@ -54,7 +49,6 @@ export default function Scene() {
     <div className="fixed inset-0 -z-10 bg-[#010101]">
       <Canvas
         camera={{ position: [0, 0, 8], fov: 32 }}
-        // Tight DPR clamp for production consistency
         dpr={[1, 1.25]}
         gl={{ 
           antialias: true,
@@ -63,8 +57,8 @@ export default function Scene() {
         }}
       >
         <color attach="background" args={["#010101"]} />
-        {/* Step 4: Atmospheric Fog for Depth */}
-        <fogExp2 attach="fog" args={["#010101", 0.06]} />
+        {/* Step 9: Lightened fog to prevent swallowing head silhouette */}
+        <fogExp2 attach="fog" args={["#010101", 0.04]} />
 
         <Suspense fallback={null}>
           <ambientLight intensity={0.05} />

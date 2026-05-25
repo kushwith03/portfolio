@@ -7,10 +7,10 @@ import * as THREE from "three";
 import { useStore } from "@/lib/store";
 
 /**
- * Character System: The Architect Companion (Pass 8 - CERAMIC FORM)
- * - Material: 'Soft Engineered Ceramic' (Matte Graphite #6A6A6A).
- * - Silhouette: Enhanced rim separation and soft front-facing gradient.
- * - Atmosphere: Larger, cooler atmospheric halo for separation from the void.
+ * Character System: The Architect Companion (Pass 9 - FORCED SILHOUETTE)
+ * - Material: Lighter 'Engineered Gray' (#9A9A9A) for maximum background separation.
+ * - Lighting: High-visibility rim lights (top/right/bottom) and frontal fill.
+ * - Visibility Priority: Forcing head presence while keeping glowing cyan eyes focal.
  */
 export default function Entity() {
   const groupRef = useRef<THREE.Group>(null);
@@ -38,7 +38,7 @@ export default function Entity() {
     // 1. Damped Mouse State
     mouseSmooth.current.lerp(mouse, 0.05);
 
-    // 2. Spatial Positioning (Optimized Right-Side)
+    // 2. Spatial Positioning
     const xTarget = isHero ? 2.5 + mouse.x * 0.4 : -2.5 + mouse.x * 0.15;
     const yTarget = isHero ? 0.6 + mouse.y * 0.3 : 0.8 + mouse.y * 0.1;
     const zTarget = isHero ? -1 : -3 + scrollProgress * 5;
@@ -49,14 +49,14 @@ export default function Entity() {
     if (groupRef.current) {
       groupRef.current.position.copy(currentPos.current);
       
-      // Deliberate Head Rotation
+      // Intelligent Rotation
       const headRotX = -mouseSmooth.current.y * 0.25;
       const headRotY = (mouseSmooth.current.x - 0.5) * 0.25; 
       groupRef.current.rotation.x = THREE.MathUtils.lerp(groupRef.current.rotation.x, headRotX, 0.03);
       groupRef.current.rotation.y = THREE.MathUtils.lerp(groupRef.current.rotation.y, headRotY, 0.03);
     }
 
-    // 3. Pupil Interaction (Fast)
+    // 3. Pupil Tracking (Fast)
     if (pupilLeft.current && pupilRight.current) {
       const targetPupilX = mouse.x * 0.15; 
       const targetPupilY = mouse.y * 0.12;
@@ -67,7 +67,7 @@ export default function Entity() {
       pupilRight.current.position.x = THREE.MathUtils.lerp(pupilRight.current.position.x, targetPupilX, 0.15);
       pupilRight.current.position.y = THREE.MathUtils.lerp(pupilRight.current.position.y, targetPupilY, 0.15);
 
-      // Procedural Blink Cycle
+      // Blink
       const blinkTrigger = Math.sin(t * 0.25 + Math.cos(t * 0.5)) > 0.98;
       const blinkScale = blinkTrigger ? 0.02 : 1;
       
@@ -87,14 +87,14 @@ export default function Entity() {
     <group ref={groupRef}>
       <Float speed={0.4} rotationIntensity={0.02} floatIntensity={0.05}>
         <group>
-          {/* 1. Main Head Structure - CERAMIC MATERIAL PASS */}
+          {/* 1. Main Head Structure - LIGHTER GRAY FORCED VISIBILITY */}
           <mesh ref={headRef} castShadow>
             <sphereGeometry args={[1, 64, 64]} />
             <meshStandardMaterial
-              color="#6A6A6A" // Soft engineered graphite/ceramic
+              color="#9A9A9A" // Lighter Industrial Gray
               metalness={0.0}
-              roughness={0.95} // Ultra-matte finish
-              emissive="#1a1a1a"
+              roughness={0.9} // Matte finish
+              emissive="#222222"
               emissiveIntensity={0.01}
             />
           </mesh>
@@ -102,11 +102,11 @@ export default function Entity() {
           {/* 2. Structured Eye Sockets */}
           <mesh position={[-0.35, 0.15, 0.92]} scale={[0.3, 0.3, 0.05]}>
              <sphereGeometry args={[1, 16, 16]} />
-             <meshStandardMaterial color="#000000" roughness={1} opacity={0.6} transparent />
+             <meshStandardMaterial color="#000000" roughness={1} />
           </mesh>
           <mesh position={[0.35, 0.15, 0.92]} scale={[0.3, 0.3, 0.05]}>
              <sphereGeometry args={[1, 16, 16]} />
-             <meshStandardMaterial color="#000000" roughness={1} opacity={0.6} transparent />
+             <meshStandardMaterial color="#000000" roughness={1} />
           </mesh>
 
           {/* 3. Eyes System - FORCED OFFSET FORWARD */}
@@ -145,25 +145,27 @@ export default function Entity() {
                 </mesh>
              </group>
           </group>
-          
-          {/* 4. Atmospheric Separation Halo (Refined: Softer & Larger) */}
-          <mesh position={[0, 0, -1]} scale={2.5}>
-             <sphereGeometry args={[1, 32, 32]} />
-             <meshBasicMaterial color="#3399ff" transparent opacity={0.005} side={THREE.BackSide} />
-          </mesh>
         </group>
       </Float>
 
-      {/* Narrative Lighting: Ceramic Form Definition */}
-      <pointLight position={[2, 2, 5]} intensity={1.2} color="#ffffff" distance={12} />
-      <pointLight position={[-4, 1, 4]} intensity={0.6} color="#ffffff" distance={10} />
+      {/* 4. STRATEGIC LIGHTING PASS (FORCED VISIBILITY) */}
       
-      {/* Separation Rim Lighting */}
-      <spotLight position={[5, 10, 5]} intensity={1.5} angle={0.2} penumbra={1} castShadow />
-      <pointLight position={[0, 0, -5]} intensity={3.5} color="#ffffff" distance={15} />
+      {/* Front Fill: Camera Direction */}
+      <pointLight position={[0, 0, 5]} intensity={0.5} color="#ffffff" distance={15} />
       
-      {/* Soft Blue Side Tint */}
-      <pointLight position={[-8, 4, 0]} intensity={0.4} color="#3399ff" distance={15} />
+      {/* High-Visibility Rim Lights */}
+      <pointLight position={[0, 5, 2]} intensity={1.5} color="#ffffff" distance={10} /> {/* Top Rim */}
+      <pointLight position={[5, 0, 2]} intensity={1.5} color="#ffffff" distance={10} /> {/* Right Rim */}
+      <pointLight position={[0, -5, 2]} intensity={1.0} color="#ffffff" distance={10} /> {/* Bottom Rim */}
+      
+      {/* Separation Back Rim */}
+      <pointLight position={[0, 0, -3]} intensity={4.0} color="#ffffff" distance={20} />
+      
+      {/* Atmospheric Softness (No longer dark aura) */}
+      <mesh position={[0, 0, -2]} scale={3}>
+         <sphereGeometry args={[1, 32, 32]} />
+         <meshBasicMaterial color="#3399ff" transparent opacity={0.003} side={THREE.BackSide} />
+      </mesh>
     </group>
   );
 }
