@@ -1,30 +1,32 @@
 "use client";
 
-import { useRef, useMemo } from "react";
+import { useRef } from "react";
 import { useFrame } from "@react-three/fiber";
-import { MeshTransmissionMaterial, Float } from "@react-three/drei";
+import { MeshTransmissionMaterial, Float, useCursor } from "@react-three/drei";
 import * as THREE from "three";
+import { useStore } from "@/lib/store";
 
 export default function Entity() {
   const meshRef = useRef<THREE.Mesh>(null);
   const groupRef = useRef<THREE.Group>(null);
+  const internalLightRef = useRef<THREE.PointLight>(null);
   
   const targetPos = useRef(new THREE.Vector3(0, 0, 0));
   const currentPos = useRef(new THREE.Vector3(0, 0, 0));
   const mouseVel = useRef(new THREE.Vector2(0, 0));
   const prevMouse = useRef(new THREE.Vector2(0, 0));
+  
+  const scrollProgress = useStore((state) => state.scrollProgress);
 
   useFrame((state) => {
     const { mouse, clock } = state;
     const t = clock.getElapsedTime();
 
-    // 1. Target Position Calculation
-    targetPos.current.set(mouse.x * 2.5, mouse.y * 1.5, 0);
-
-    // 2. Motion Inertia (Spring feel)
-    currentPos.current.lerp(targetPos.current, 0.04);
+    // 1. Viscous Cursor Tracking
+    targetPos.current.set(mouse.x * 3, mouse.y * 2, scrollProgress * 2);
+    currentPos.current.lerp(targetPos.current, 0.035); // Heavy inertia
     
-    // 3. Mouse Velocity for Dynamic Distortion
+    // 2. Velocity Sensing
     mouseVel.current.set(mouse.x - prevMouse.current.x, mouse.y - prevMouse.current.y);
     const speed = mouseVel.current.length();
     prevMouse.current.copy(mouse);
@@ -32,57 +34,69 @@ export default function Entity() {
     if (groupRef.current) {
       groupRef.current.position.copy(currentPos.current);
       
-      // Look towards mouse with inertia
-      groupRef.current.rotation.y = THREE.MathUtils.lerp(groupRef.current.rotation.y, mouse.x * 0.4, 0.05);
-      groupRef.current.rotation.x = THREE.MathUtils.lerp(groupRef.current.rotation.x, -mouse.y * 0.4, 0.05);
-      
-      // Dynamic tilt based on speed
-      groupRef.current.rotation.z = THREE.MathUtils.lerp(groupRef.current.rotation.z, -mouseVel.current.x * 2, 0.05);
+      // Luxurious Rotation
+      groupRef.current.rotation.y = THREE.MathUtils.lerp(groupRef.current.rotation.y, mouse.x * 0.5, 0.04);
+      groupRef.current.rotation.x = THREE.MathUtils.lerp(groupRef.current.rotation.x, -mouse.y * 0.5, 0.04);
+      groupRef.current.rotation.z = THREE.MathUtils.lerp(groupRef.current.rotation.z, -mouseVel.current.x * 4, 0.04);
     }
 
     if (meshRef.current) {
       const material = meshRef.current.material as any;
       
-      // 4. Emotional Breathing & Velocity Distortion
-      // Material-level "squish" when moving fast
-      material.distortion = THREE.MathUtils.lerp(material.distortion, 0.2 + speed * 5, 0.05);
-      material.thickness = THREE.MathUtils.lerp(material.thickness, 1 + speed * 2, 0.05);
+      // 3. Elastic Response (Squish/Stretch)
+      material.distortion = THREE.MathUtils.lerp(material.distortion, 0.15 + speed * 8, 0.06);
+      material.thickness = THREE.MathUtils.lerp(material.thickness, 0.8 + speed * 3, 0.06);
       
-      // Subtle pulse
-      const pulse = Math.sin(t * 1.5) * 0.05;
-      meshRef.current.scale.setScalar(1 + pulse);
+      // 4. Emotional Breathing (Biological Pace)
+      const breathe = Math.sin(t * 0.8) * 0.03; 
+      meshRef.current.scale.setScalar(1.2 + breathe + speed * 0.5);
+
+      // 5. Reactive Internal Glow
+      if (internalLightRef.current) {
+        internalLightRef.current.intensity = THREE.MathUtils.lerp(
+          internalLightRef.current.intensity,
+          1.5 + speed * 15,
+          0.1
+        );
+      }
     }
   });
 
   return (
     <group ref={groupRef}>
-      <Float speed={1.5} rotationIntensity={0.2} floatIntensity={0.4}>
+      <Float speed={1} rotationIntensity={0.1} floatIntensity={0.2}>
         <mesh ref={meshRef} castShadow>
-          <sphereGeometry args={[1.2, 64, 64]} />
+          <sphereGeometry args={[1, 128, 128]} />
           <MeshTransmissionMaterial
             backside
-            backsideThickness={0.5}
-            thickness={1}
-            samples={16}
-            transmission={0.95}
+            backsideThickness={0.2}
+            thickness={0.8}
+            samples={12} // Balanced for fluidity
+            transmission={1}
             clearcoat={1}
             clearcoatRoughness={0}
-            roughness={0.15}
-            chromaticAberration={0.06}
-            anisotropy={0.2}
-            distortion={0.2}
-            distortionScale={0.4}
-            temporalDistortion={0.1}
+            roughness={0.1}
+            chromaticAberration={0.08}
+            anisotropy={0.3}
+            distortion={0.15}
+            distortionScale={0.3}
+            temporalDistortion={0.05}
             color="#ffffff"
-            attenuationDistance={0.5}
+            attenuationDistance={0.4}
             attenuationColor="#ffffff"
           />
         </mesh>
       </Float>
 
-      {/* Atmospheric internal glow */}
-      <pointLight position={[0, 0, 0]} intensity={1.5} color="#00ffff" distance={3} />
-      <pointLight position={[2, 2, 2]} intensity={0.8} color="#ffaa00" distance={5} />
+      {/* The Entity's "Soul" */}
+      <pointLight ref={internalLightRef} position={[0, 0, 0]} intensity={1.5} color="#44ccff" distance={4} />
+      <pointLight position={[1, 1, 1]} intensity={0.5} color="#ffaa00" distance={6} />
+      
+      {/* Subtle Halo */}
+      <mesh scale={1.05}>
+        <sphereGeometry args={[1, 32, 32]} />
+        <meshBasicMaterial color="#44ccff" transparent opacity={0.02} side={THREE.BackSide} />
+      </mesh>
     </group>
   );
 }
