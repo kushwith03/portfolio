@@ -12,7 +12,7 @@ import Entity from "./Entity";
  * Step 4: Stabilized Camera Rig
  */
 function CameraRig() {
-  const scrollProgress = useStore((state) => state.setScrollProgress);
+  const scrollProgress = useStore((state) => state.scrollProgress);
   const activeScene = useStore((state) => state.activeScene);
   const { camera, mouse } = useThree();
   
@@ -20,7 +20,7 @@ function CameraRig() {
   const targetLookAt = useRef(new THREE.Vector3(0, 0, 0));
 
   useFrame(() => {
-    const zPos = THREE.MathUtils.lerp(8, -10, useStore.getState().scrollProgress);
+    const zPos = THREE.MathUtils.lerp(8, -10, scrollProgress);
     const xPos = mouse.x * 1.0;
     const yPos = mouse.y * 0.6;
 
@@ -57,14 +57,21 @@ export default function Scene() {
         }}
       >
         <color attach="background" args={["#010101"]} />
-        {/* Step 9: Lightened fog to prevent swallowing head silhouette */}
-        <fogExp2 attach="fog" args={["#010101", 0.04]} />
+        {/* Pass 10: Environmental contrast through fog gradient and lightened void */}
+        <fogExp2 attach="fog" args={["#020202", 0.03]} />
 
         <Suspense fallback={null}>
           <ambientLight intensity={0.05} />
           
           <CameraRig />
           <Particles />
+          
+          {/* Background Gradient Plane for Character Separation */}
+          <mesh position={[4, 0, -5]} rotation={[0, -0.2, 0]}>
+             <planeGeometry args={[10, 10]} />
+             <meshBasicMaterial color="#ffffff" transparent opacity={0.01} />
+          </mesh>
+
           <Entity />
           
           <Preload all />

@@ -7,16 +7,15 @@ import * as THREE from "three";
 import { useStore } from "@/lib/store";
 
 /**
- * Character System: The Architect Companion (Pass 9 - FORCED SILHOUETTE)
- * - Material: Lighter 'Engineered Gray' (#9A9A9A) for maximum background separation.
- * - Lighting: High-visibility rim lights (top/right/bottom) and frontal fill.
- * - Visibility Priority: Forcing head presence while keeping glowing cyan eyes focal.
+ * Character System: The Architect Companion (Pass 10 - ICONIC INTELLIGENCE)
+ * - Aesthetic: Matte Silver-Gray (#B0B0B0) / Engineered Ceramic.
+ * - Details: Procedural 'Etched' panel lines for a technical silhouette.
+ * - Contrast: Strategic environmental separation and facial gradients.
+ * - Behavior: Aggressive pupil tracking for visible curiosity.
  */
 export default function Entity() {
   const groupRef = useRef<THREE.Group>(null);
   const headRef = useRef<THREE.Mesh>(null);
-  
-  // Eye Components
   const eyeLeft = useRef<THREE.Group>(null);
   const eyeRight = useRef<THREE.Group>(null);
   const pupilLeft = useRef<THREE.Mesh>(null);
@@ -39,7 +38,7 @@ export default function Entity() {
     mouseSmooth.current.lerp(mouse, 0.05);
 
     // 2. Spatial Positioning
-    const xTarget = isHero ? 2.5 + mouse.x * 0.4 : -2.5 + mouse.x * 0.15;
+    const xTarget = isHero ? 2.8 + mouse.x * 0.4 : -2.5 + mouse.x * 0.15;
     const yTarget = isHero ? 0.6 + mouse.y * 0.3 : 0.8 + mouse.y * 0.1;
     const zTarget = isHero ? -1 : -3 + scrollProgress * 5;
 
@@ -49,15 +48,16 @@ export default function Entity() {
     if (groupRef.current) {
       groupRef.current.position.copy(currentPos.current);
       
-      // Intelligent Rotation
+      // Deliberate Head Rotation
       const headRotX = -mouseSmooth.current.y * 0.25;
       const headRotY = (mouseSmooth.current.x - 0.5) * 0.25; 
       groupRef.current.rotation.x = THREE.MathUtils.lerp(groupRef.current.rotation.x, headRotX, 0.03);
       groupRef.current.rotation.y = THREE.MathUtils.lerp(groupRef.current.rotation.y, headRotY, 0.03);
     }
 
-    // 3. Pupil Tracking (Fast)
+    // 3. EYE TRACKING (Aggressive Visibility)
     if (pupilLeft.current && pupilRight.current) {
+      // Increased tracking range for unmistakable cursor follow
       const targetPupilX = mouse.x * 0.15; 
       const targetPupilY = mouse.y * 0.12;
 
@@ -68,8 +68,8 @@ export default function Entity() {
       pupilRight.current.position.y = THREE.MathUtils.lerp(pupilRight.current.position.y, targetPupilY, 0.15);
 
       // Blink
-      const blinkTrigger = Math.sin(t * 0.25 + Math.cos(t * 0.5)) > 0.98;
-      const blinkScale = blinkTrigger ? 0.02 : 1;
+      const blinkTrigger = Math.sin(t * 0.25 + Math.cos(t * 0.5)) > 0.985;
+      const blinkScale = blinkTrigger ? 0.01 : 1;
       
       if (eyeLeft.current && eyeRight.current) {
         eyeLeft.current.scale.y = THREE.MathUtils.lerp(eyeLeft.current.scale.y, blinkScale, 0.25);
@@ -87,42 +87,56 @@ export default function Entity() {
     <group ref={groupRef}>
       <Float speed={0.4} rotationIntensity={0.02} floatIntensity={0.05}>
         <group>
-          {/* 1. Main Head Structure - LIGHTER GRAY FORCED VISIBILITY */}
+          {/* 1. Main Head Structure - MATTE SILVER-GRAY */}
           <mesh ref={headRef} castShadow>
             <sphereGeometry args={[1, 64, 64]} />
             <meshStandardMaterial
-              color="#9A9A9A" // Lighter Industrial Gray
-              metalness={0.0}
+              color="#B0B0B0" 
+              metalness={0.05}
               roughness={0.9} // Matte finish
               emissive="#222222"
-              emissiveIntensity={0.01}
+              emissiveIntensity={0.05}
             />
           </mesh>
 
-          {/* 2. Structured Eye Sockets */}
-          <mesh position={[-0.35, 0.15, 0.92]} scale={[0.3, 0.3, 0.05]}>
+          {/* 2. Procedural Engineered Panel Lines (Etched Seams) */}
+          <group>
+             {/* Main Horizontal Seam */}
+             <mesh rotation={[Math.PI / 2, 0, 0]} position={[0, 0, 0]}>
+                <torusGeometry args={[1.001, 0.005, 8, 64]} />
+                <meshStandardMaterial color="#000000" transparent opacity={0.2} />
+             </mesh>
+             {/* Face Shield Seam */}
+             <mesh rotation={[0, 0, 0]} position={[0, 0, 0.1]}>
+                <torusGeometry args={[0.9, 0.003, 8, 64]} />
+                <meshStandardMaterial color="#000000" transparent opacity={0.1} />
+             </mesh>
+          </group>
+
+          {/* 3. High-Contrast Eye Sockets */}
+          <mesh position={[-0.35, 0.15, 0.92]} scale={[0.3, 0.3, 0.02]}>
              <sphereGeometry args={[1, 16, 16]} />
              <meshStandardMaterial color="#000000" roughness={1} />
           </mesh>
-          <mesh position={[0.35, 0.15, 0.92]} scale={[0.3, 0.3, 0.05]}>
+          <mesh position={[0.35, 0.15, 0.92]} scale={[0.3, 0.3, 0.02]}>
              <sphereGeometry args={[1, 16, 16]} />
              <meshStandardMaterial color="#000000" roughness={1} />
           </mesh>
 
-          {/* 3. Eyes System - FORCED OFFSET FORWARD */}
+          {/* 4. Eyes System - FORCED Z-OFFSET */}
           <group position={[-0.35, 0.15, 0.98]}>
              <group ref={eyeLeft}>
                 <mesh>
-                   <sphereGeometry args={[0.2, 32, 32]} />
+                   <sphereGeometry args={[0.18, 32, 32]} />
                    <meshStandardMaterial 
                     color="#ffffff" 
                     emissive="#00ffff" 
-                    emissiveIntensity={12} 
+                    emissiveIntensity={15} 
                     toneMapped={false}
                    />
                 </mesh>
                 <mesh ref={pupilLeft} position={[0, 0, 0.12]}>
-                   <sphereGeometry args={[0.08, 16, 16]} />
+                   <sphereGeometry args={[0.07, 16, 16]} />
                    <meshStandardMaterial color="#000000" roughness={1} />
                 </mesh>
              </group>
@@ -131,16 +145,16 @@ export default function Entity() {
           <group position={[0.35, 0.15, 0.98]}>
              <group ref={eyeRight}>
                 <mesh>
-                   <sphereGeometry args={[0.2, 32, 32]} />
+                   <sphereGeometry args={[0.18, 32, 32]} />
                    <meshStandardMaterial 
                     color="#ffffff" 
                     emissive="#00ffff" 
-                    emissiveIntensity={12} 
+                    emissiveIntensity={15} 
                     toneMapped={false}
                    />
                 </mesh>
                 <mesh ref={pupilRight} position={[0, 0, 0.12]}>
-                   <sphereGeometry args={[0.08, 16, 16]} />
+                   <sphereGeometry args={[0.07, 16, 16]} />
                    <meshStandardMaterial color="#000000" roughness={1} />
                 </mesh>
              </group>
@@ -148,24 +162,20 @@ export default function Entity() {
         </group>
       </Float>
 
-      {/* 4. STRATEGIC LIGHTING PASS (FORCED VISIBILITY) */}
+      {/* 5. STRATEGIC LIGHTING: Sculpted & Visible */}
       
-      {/* Front Fill: Camera Direction */}
-      <pointLight position={[0, 0, 5]} intensity={0.5} color="#ffffff" distance={15} />
+      {/* Dynamic Key Light: Defines the face volume */}
+      <pointLight position={[-3, 2, 5]} intensity={1.5} color="#ffffff" distance={15} />
       
-      {/* High-Visibility Rim Lights */}
-      <pointLight position={[0, 5, 2]} intensity={1.5} color="#ffffff" distance={10} /> {/* Top Rim */}
-      <pointLight position={[5, 0, 2]} intensity={1.5} color="#ffffff" distance={10} /> {/* Right Rim */}
-      <pointLight position={[0, -5, 2]} intensity={1.0} color="#ffffff" distance={10} /> {/* Bottom Rim */}
+      {/* Separation Rim: Top and Right */}
+      <pointLight position={[2, 5, 2]} intensity={1.2} color="#ffffff" distance={10} />
+      <pointLight position={[5, 0, 2]} intensity={1.2} color="#ffffff" distance={10} />
       
-      {/* Separation Back Rim */}
-      <pointLight position={[0, 0, -3]} intensity={4.0} color="#ffffff" distance={20} />
+      {/* Intense Background Separation */}
+      <pointLight position={[0, 0, -4]} intensity={5.0} color="#ffffff" distance={20} />
       
-      {/* Atmospheric Softness (No longer dark aura) */}
-      <mesh position={[0, 0, -2]} scale={3}>
-         <sphereGeometry args={[1, 32, 32]} />
-         <meshBasicMaterial color="#3399ff" transparent opacity={0.003} side={THREE.BackSide} />
-      </mesh>
+      {/* Frontal Ambient Gradient */}
+      <pointLight position={[0, 0, 8]} intensity={0.2} color="#44ccff" distance={20} />
     </group>
   );
 }
