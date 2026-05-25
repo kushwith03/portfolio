@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import SmoothScroll from "@/components/motion/SmoothScroll";
 import Scene from "@/components/3d/Scene";
+import CustomCursor from "@/components/motion/CustomCursor";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -22,6 +23,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark">
       <body className={`${inter.className} bg-[#050505] text-white antialiased overflow-x-hidden`}>
+        <CustomCursor />
         <SmoothScroll>
           <Scene />
           {children}

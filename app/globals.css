@@ -4,14 +4,14 @@
 
 :root {
   --foreground-rgb: 255, 255, 255;
-  --background-start-rgb: 5, 5, 5;
-  --background-end-rgb: 5, 5, 5;
+  --background-start-rgb: 2, 2, 2;
+  --background-end-rgb: 2, 2, 2;
 }
 
 body {
   color: rgb(var(--foreground-rgb));
   background: rgb(var(--background-start-rgb));
-  cursor: crosshair;
+  cursor: none; /* Hide default cursor for the premium CustomCursor system */
 }
 
 @layer utilities {
@@ -40,4 +40,9 @@ body {
 
 canvas {
   touch-action: none;
+}
+
+/* Ensure all interactive elements trigger the 'none' cursor to maintain CustomCursor dominance */
+a, button, [role="button"], .cursor-pointer {
+  cursor: none !important;
 }
