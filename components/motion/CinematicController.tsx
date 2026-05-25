@@ -9,8 +9,8 @@ gsap.registerPlugin(ScrollTrigger);
 
 /**
  * Global Cinematic Controller
- * Tighter timeline calibration for Pass 4.
- * Projects now begin immediately after Hero (0.25 threshold).
+ * Tighter narrative pacing Pass 5.
+ * Calibrated for immediate Hero -> Archive engagement.
  */
 export default function CinematicController() {
   const activeScene = useStore((state) => state.activeScene);
@@ -18,17 +18,16 @@ export default function CinematicController() {
   const setScrollProgress = useStore((state) => state.setScrollProgress);
 
   useEffect(() => {
-    // Calibrated Narrative Milestones
-    // 0.0 - 0.25: Hero Discovery
-    // 0.25 - 0.85: Archive Review
-    // 0.85 - 1.0: Reflection & Closure
+    // 1. Narrative Milestone Thresholds
+    // Calibrated for a fast, continuous flow (0.0 to 1.0)
     const scenes = [
-      { id: 0, start: 0, end: 0.25 },
-      { id: 1, start: 0.26, end: 0.85 },
-      { id: 2, start: 0.86, end: 1.0 },
+      { id: 0, start: 0, end: 0.15 },    // Arrival (Immediate exit)
+      { id: 1, start: 0.16, end: 0.85 },   // Archive (Longer focus on systems)
+      { id: 2, start: 0.86, end: 1.0 },    // Closure
     ];
 
     const ctx = gsap.context(() => {
+      // 2. Linear Scroll Synchronization
       ScrollTrigger.create({
         trigger: document.body,
         start: "top top",
@@ -38,6 +37,7 @@ export default function CinematicController() {
         }
       });
 
+      // 3. Narrative Milestone Triggering
       scenes.forEach((scene) => {
         ScrollTrigger.create({
           trigger: document.body,
@@ -53,5 +53,5 @@ export default function CinematicController() {
     return () => ctx.revert();
   }, [setActiveScene, setScrollProgress]);
 
-  return null; // HUD removed for maximum focus during stabilization
+  return null;
 }
