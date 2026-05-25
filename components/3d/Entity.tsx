@@ -1,24 +1,24 @@
 "use client";
 
-import { useRef, useMemo } from "react";
+import { useRef } from "react";
 import { useFrame } from "@react-three/fiber";
 import { Float } from "@react-three/drei";
 import * as THREE from "three";
 import { useStore } from "@/lib/store";
 
 /**
- * Character System: The Architect Companion (Pass 3)
- * - Editorial Split: Positioned in the right third of the screen.
- * - Intelligent Attention: Independent eye-tracking with pupil system.
- * - Behavior: Eyes lead, head follows with heavy inertia.
+ * Character System: The Architect Companion (Pass 4)
+ * - Fixed Eye Tracking: Real-time pupil movement constrained within sockets.
+ * - Dynamic Attention: Pupil leads, head follows with heavy inertia.
+ * - Enhanced Readability: Improved rim lighting and silhouette contrast.
  */
 export default function Entity() {
   const groupRef = useRef<THREE.Group>(null);
   const headRef = useRef<THREE.Mesh>(null);
   
-  // Independent Eye References
-  const eyeLeftGroup = useRef<THREE.Group>(null);
-  const eyeRightGroup = useRef<THREE.Group>(null);
+  // Independent Eye Elements
+  const eyeLeft = useRef<THREE.Group>(null);
+  const eyeRight = useRef<THREE.Group>(null);
   const pupilLeft = useRef<THREE.Mesh>(null);
   const pupilRight = useRef<THREE.Mesh>(null);
   
@@ -34,13 +34,11 @@ export default function Entity() {
     const t = clock.getElapsedTime();
 
     const isHero = activeScene === 0;
-    const isArchive = activeScene === 1;
 
-    // 1. Damped Mouse State
+    // 1. Damped Mouse State for head/body
     mouseSmooth.current.lerp(mouse, 0.05);
 
-    // 2. Editorial Composition (Right Third Positioning)
-    // Desktop: Shifted to right (+2.5). Mobile: Subtle background centering.
+    // 2. Spatial Positioning (Editorial Right Split)
     const xTarget = isHero ? 2.5 + mouse.x * 0.4 : -2.5 + mouse.x * 0.15;
     const yTarget = isHero ? 0.2 + mouse.y * 0.3 : 0.8 + mouse.y * 0.1;
     const zTarget = isHero ? -1 : -3 + scrollProgress * 5;
@@ -53,29 +51,32 @@ export default function Entity() {
       
       // Intelligent Head Rotation (Delayed Follow)
       const headRotX = -mouseSmooth.current.y * 0.25;
-      const headRotY = (mouseSmooth.current.x - 0.5) * 0.25; // Adjusted for right-side bias
+      const headRotY = (mouseSmooth.current.x - 0.5) * 0.25; 
       groupRef.current.rotation.x = THREE.MathUtils.lerp(groupRef.current.rotation.x, headRotX, 0.03);
       groupRef.current.rotation.y = THREE.MathUtils.lerp(groupRef.current.rotation.y, headRotY, 0.03);
     }
 
-    // 3. High-Fidelity Eye Tracking (Independent & Responsive)
-    if (eyeLeftGroup.current && eyeRightGroup.current) {
-      // Eyes lead the movement (Fast response)
-      const lookX = mouse.x * 0.4;
-      const lookY = mouse.y * 0.3;
+    // 3. ACTUAL EYE TRACKING (Visible Pupil Movement)
+    if (pupilLeft.current && pupilRight.current) {
+      // Pupils react instantly to mouse within constrained sockets
+      // Range is clamped to stay within the white of the eye
+      const targetPupilX = mouse.x * 0.08;
+      const targetPupilY = mouse.y * 0.06;
 
-      eyeLeftGroup.current.rotation.set(lookY, lookX, 0);
-      eyeRightGroup.current.rotation.set(lookY, lookX, 0);
+      pupilLeft.current.position.x = THREE.MathUtils.lerp(pupilLeft.current.position.x, targetPupilX, 0.1);
+      pupilLeft.current.position.y = THREE.MathUtils.lerp(pupilLeft.current.position.y, targetPupilY, 0.1);
+      
+      pupilRight.current.position.x = THREE.MathUtils.lerp(pupilRight.current.position.x, targetPupilX, 0.1);
+      pupilRight.current.position.y = THREE.MathUtils.lerp(pupilRight.current.position.y, targetPupilY, 0.1);
 
-      // Procedural Blink & Gaze Drift
-      const blink = Math.sin(t * 0.3) > 0.99 ? 0.05 : 1;
-      const drift = Math.sin(t * 1.5) * 0.005;
+      // Procedural Blink
+      const blinkTrigger = Math.sin(t * 0.25 + Math.cos(t * 0.5)) > 0.98;
+      const blinkScale = blinkTrigger ? 0.05 : 1;
       
-      eyeLeftGroup.current.scale.y = THREE.MathUtils.lerp(eyeLeftGroup.current.scale.y, blink, 0.25);
-      eyeRightGroup.current.scale.y = THREE.MathUtils.lerp(eyeRightGroup.current.scale.y, blink, 0.25);
-      
-      eyeLeftGroup.current.position.y = 0.15 + drift;
-      eyeRightGroup.current.position.y = 0.15 + drift;
+      if (eyeLeft.current && eyeRight.current) {
+        eyeLeft.current.scale.y = THREE.MathUtils.lerp(eyeLeft.current.scale.y, blinkScale, 0.2);
+        eyeRight.current.scale.y = THREE.MathUtils.lerp(eyeRight.current.scale.y, blinkScale, 0.2);
+      }
     }
 
     if (headRef.current) {
@@ -97,59 +98,63 @@ export default function Entity() {
               metalness={0.05}
               roughness={0.7}
               emissive="#ffffff"
-              emissiveIntensity={0.02}
+              emissiveIntensity={0.01}
             />
           </mesh>
 
-          {/* 2. Structured Eye Sockets */}
-          <group position={[-0.35, 0.15, 0.85]}>
-             <mesh scale={[0.3, 0.3, 0.1]}>
+          {/* 2. Structured Eyes */}
+          <group position={[-0.35, 0.15, 0.88]}>
+             {/* Socket Depth */}
+             <mesh scale={[0.25, 0.25, 0.05]}>
                 <sphereGeometry args={[1, 16, 16]} />
-                <meshStandardMaterial color="#000000" roughness={1} opacity={0.4} transparent />
+                <meshStandardMaterial color="#000000" roughness={1} opacity={0.5} transparent />
              </mesh>
-             {/* Independent Eye Ball (invisible, used for rotation) */}
-             <group ref={eyeLeftGroup}>
-                {/* Visual Pupil/Iris system */}
-                <mesh position={[0, 0, 0.1]}>
-                   <sphereGeometry args={[0.15, 16, 16]} />
-                   <meshStandardMaterial color="#ffffff" emissive="#ffffff" emissiveIntensity={0.5} />
+             {/* Eye Whites */}
+             <group ref={eyeLeft}>
+                <mesh position={[0, 0, 0.05]}>
+                   <sphereGeometry args={[0.18, 16, 16]} />
+                   <meshStandardMaterial color="#ffffff" emissive="#ffffff" emissiveIntensity={0.2} />
                 </mesh>
-                <mesh ref={pupilLeft} position={[0, 0, 0.18]}>
-                   <sphereGeometry args={[0.06, 16, 16]} />
-                   <meshStandardMaterial color="#000000" emissive="#44ccff" emissiveIntensity={1} />
+                {/* Pupil - The moving element */}
+                <mesh ref={pupilLeft} position={[0, 0, 0.15]}>
+                   <sphereGeometry args={[0.07, 16, 16]} />
+                   <meshStandardMaterial color="#000000" emissive="#00ffff" emissiveIntensity={2} />
                 </mesh>
              </group>
           </group>
 
-          <group position={[0.35, 0.15, 0.85]}>
-             <mesh scale={[0.3, 0.3, 0.1]}>
+          <group position={[0.35, 0.15, 0.88]}>
+             <mesh scale={[0.25, 0.25, 0.05]}>
                 <sphereGeometry args={[1, 16, 16]} />
-                <meshStandardMaterial color="#000000" roughness={1} opacity={0.4} transparent />
+                <meshStandardMaterial color="#000000" roughness={1} opacity={0.5} transparent />
              </mesh>
-             <group ref={eyeRightGroup}>
-                <mesh position={[0, 0, 0.1]}>
-                   <sphereGeometry args={[0.15, 16, 16]} />
-                   <meshStandardMaterial color="#ffffff" emissive="#ffffff" emissiveIntensity={0.5} />
+             <group ref={eyeRight}>
+                <mesh position={[0, 0, 0.05]}>
+                   <sphereGeometry args={[0.18, 16, 16]} />
+                   <meshStandardMaterial color="#ffffff" emissive="#ffffff" emissiveIntensity={0.2} />
                 </mesh>
-                <mesh ref={pupilRight} position={[0, 0, 0.18]}>
-                   <sphereGeometry args={[0.06, 16, 16]} />
-                   <meshStandardMaterial color="#000000" emissive="#44ccff" emissiveIntensity={1} />
+                <mesh ref={pupilRight} position={[0, 0, 0.15]}>
+                   <sphereGeometry args={[0.07, 16, 16]} />
+                   <meshStandardMaterial color="#000000" emissive="#00ffff" emissiveIntensity={2} />
                 </mesh>
              </group>
           </group>
           
-          {/* 3. Defined Jaw/Chin silhouette */}
-          <mesh position={[0, -0.6, 0.6]} rotation={[0.4, 0, 0]} scale={[0.6, 0.1, 0.2]}>
+          {/* Subtle Shadow Planes for Face Definition */}
+          <mesh position={[0, -0.4, 0.8]} rotation={[0.5, 0, 0]} scale={[0.6, 0.05, 0.1]}>
              <boxGeometry args={[1, 1, 1]} />
-             <meshStandardMaterial color="#000000" opacity={0.15} transparent />
+             <meshStandardMaterial color="#000000" opacity={0.1} transparent />
           </mesh>
         </group>
       </Float>
 
-      {/* Narrative Lighting */}
-      <pointLight position={[1, 1, 2]} intensity={0.5} color="#ffffff" />
-      <pointLight position={[-4, 2, -2]} intensity={0.2} color="#3399ff" />
-      <spotLight position={[5, 10, 5]} intensity={0.4} angle={0.2} penumbra={1} castShadow />
+      {/* Narrative Lighting: Strategic Rim & Face Isolation */}
+      <pointLight position={[1, 1, 2.5]} intensity={0.6} color="#ffffff" />
+      <pointLight position={[-4, 2, 1]} intensity={0.4} color="#44ccff" />
+      <spotLight position={[5, 10, 5]} intensity={0.8} angle={0.2} penumbra={1} castShadow />
+      
+      {/* High-Contrast Rim Light (Backside) */}
+      <pointLight position={[0, 0, -2]} intensity={0.5} color="#ffffff" />
     </group>
   );
 }
