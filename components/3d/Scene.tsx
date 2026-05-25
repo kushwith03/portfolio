@@ -7,20 +7,22 @@ import { Preload } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 import { useStore } from "@/lib/store";
-import Centerpiece from "./Centerpiece";
+import Entity from "./Entity";
 import Particles from "./Particles";
+import { Environment, ContactShadows } from "@react-three/drei";
 
 function CameraRig() {
   const scrollProgress = useStore((state) => state.scrollProgress);
   
   useFrame((state) => {
+    // Smoother camera inertia
     state.camera.position.lerp(
       new THREE.Vector3(
-        state.mouse.x * 2,
-        state.mouse.y * 2,
+        state.mouse.x * 1,
+        state.mouse.y * 1,
         8 - scrollProgress * 5
       ),
-      0.05
+      0.03
     );
     state.camera.lookAt(0, 0, 0);
   });
@@ -34,14 +36,33 @@ export default function Scene() {
       <Canvas
         shadows
         camera={{ position: [0, 0, 8], fov: 35 }}
-        gl={{ antialias: true, alpha: true }}
+        gl={{ 
+          antialias: true, 
+          alpha: true,
+          powerPreference: "high-performance"
+        }}
         dpr={[1, 2]}
       >
         <Suspense fallback={null}>
           <CameraRig />
-          <ambientLight intensity={0.2} />
-          <Centerpiece />
+          
+          {/* Environmental Lighting for Refractive Materials */}
+          <Environment preset="city" />
+          <ambientLight intensity={0.1} />
+          
+          {/* Main Entity */}
+          <Entity />
+          
           <Particles count={2000} />
+          
+          <ContactShadows
+            position={[0, -3.5, 0]}
+            opacity={0.4}
+            scale={20}
+            blur={2}
+            far={4.5}
+          />
+          
           <Preload all />
         </Suspense>
       </Canvas>
