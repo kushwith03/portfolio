@@ -1,19 +1,45 @@
 "use client";
 
-import { Canvas, useFrame } from "@react-three/fiber";
+import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { Suspense, useRef, useState, useEffect } from "react";
 import * as THREE from "three";
+import { useStore } from "@/lib/store";
 
-/**
- * Step 1: Base Test Component
- * Purely local state, no store, no external assets.
- */
+function CameraRig() {
+  const scrollProgress = useStore((state) => state.scrollProgress);
+  const activeScene = useStore((state) => state.activeScene);
+  const { camera, mouse } = useThree();
+  
+  const currentLookAt = useRef(new THREE.Vector3(0, 0, 0));
+  const targetLookAt = useRef(new THREE.Vector3(0, 0, 0));
+
+  useFrame(() => {
+    // 1. Z-Plunge logic (Verified safe range)
+    const zPos = THREE.MathUtils.lerp(8, -8, scrollProgress);
+    
+    // 2. Spatial Inertia
+    const xPos = mouse.x * 1.2;
+    const yPos = mouse.y * 0.8;
+
+    camera.position.lerp(new THREE.Vector3(xPos, yPos, zPos), 0.05);
+
+    // 3. Dynamic Scene Focus
+    if (activeScene === 0) targetLookAt.current.set(0, 0, 0);
+    if (activeScene === 1) targetLookAt.current.set(mouse.x * 1, -0.5, zPos - 4);
+
+    currentLookAt.current.lerp(targetLookAt.current, 0.03);
+    camera.lookAt(currentLookAt.current);
+  });
+  
+  return null;
+}
+
 function TestBox() {
   const meshRef = useRef<THREE.Mesh>(null);
   useFrame((state, delta) => {
     if (meshRef.current) {
-      meshRef.current.rotation.x += delta;
-      meshRef.current.rotation.y += delta;
+      meshRef.current.rotation.x += delta * 0.5;
+      meshRef.current.rotation.y += delta * 0.5;
     }
   });
 
@@ -37,12 +63,13 @@ export default function Scene() {
   return (
     <div className="fixed inset-0 -z-10 bg-[#020202]">
       <Canvas
-        camera={{ position: [0, 0, 5], fov: 35 }}
+        camera={{ position: [0, 0, 8], fov: 35 }}
         gl={{ antialias: true }}
       >
         <Suspense fallback={null}>
           <ambientLight intensity={0.5} />
           <pointLight position={[10, 10, 10]} />
+          <CameraRig />
           <TestBox />
         </Suspense>
       </Canvas>
