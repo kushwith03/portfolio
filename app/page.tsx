@@ -8,7 +8,7 @@ import CinematicController from '../components/motion/CinematicController';
 
 /**
  * Root Page: Unified Narrative Stream
- * Compressed layout pass: Reduced vertical spacers and tightened section flow.
+ * Pacing Pass 3: Tighter spacers and transition corridor integration.
  */
 export default function Home() {
   return (
@@ -16,16 +16,23 @@ export default function Home() {
       <CinematicController />
 
       <div className="relative">
+        {/* Entry Phase */}
         <Hero />
         
-        {/* Compressed Archive Zone */}
+        {/* Transition Corridor (Hero -> Archive) */}
+        <div className="h-[40vh]" />
+
+        {/* Discovery Phase (Archive) */}
         <div className="relative">
            <Projects />
-           <div className="h-[250vh]" /> {/* Compressed from 300vh+ total cumulative */}
+           <div className="h-[220vh]" /> {/* Compressed for more efficient technical review */}
         </div>
 
-        {/* Narrative Closure */}
-        <div className="relative bg-gradient-to-b from-transparent to-[#020202]">
+        {/* Transition Corridor (Archive -> Core) */}
+        <div className="h-[20vh]" />
+
+        {/* Reflection Phase (Core & Epilogue) */}
+        <div className="relative bg-gradient-to-b from-transparent via-[#020202] to-[#050505]">
            <NeuralCore />
            <Epilogue />
         </div>
