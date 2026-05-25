@@ -9,8 +9,8 @@ gsap.registerPlugin(ScrollTrigger);
 
 /**
  * Global Cinematic Controller
- * Tighter narrative pacing Pass 3.
- * Bridges the Hero -> Archive gap with an intentional transition corridor.
+ * Tighter timeline calibration for Pass 4.
+ * Projects now begin immediately after Hero (0.25 threshold).
  */
 export default function CinematicController() {
   const activeScene = useStore((state) => state.activeScene);
@@ -18,16 +18,17 @@ export default function CinematicController() {
   const setScrollProgress = useStore((state) => state.setScrollProgress);
 
   useEffect(() => {
-    // 1. Narrative Milestone Thresholds
-    // Pass 3: Tighter thresholds to eliminate dead space.
+    // Calibrated Narrative Milestones
+    // 0.0 - 0.25: Hero Discovery
+    // 0.25 - 0.85: Archive Review
+    // 0.85 - 1.0: Reflection & Closure
     const scenes = [
-      { id: 0, start: 0, end: 0.18 },    // Arrival (Earlier exit for faster reveal)
-      { id: 1, start: 0.22, end: 0.78 },   // Archive (Expanded archive window)
-      { id: 2, start: 0.85, end: 1.0 },    // Core & Closure
+      { id: 0, start: 0, end: 0.25 },
+      { id: 1, start: 0.26, end: 0.85 },
+      { id: 2, start: 0.86, end: 1.0 },
     ];
 
     const ctx = gsap.context(() => {
-      // 2. Continuous Scroll Sync
       ScrollTrigger.create({
         trigger: document.body,
         start: "top top",
@@ -37,7 +38,6 @@ export default function CinematicController() {
         }
       });
 
-      // 3. Narrative Step Triggering
       scenes.forEach((scene) => {
         ScrollTrigger.create({
           trigger: document.body,
@@ -53,22 +53,5 @@ export default function CinematicController() {
     return () => ctx.revert();
   }, [setActiveScene, setScrollProgress]);
 
-  return (
-    <div className="fixed top-1/2 left-10 -translate-y-1/2 z-50 pointer-events-none hidden md:block">
-      <div className="flex flex-col gap-5 opacity-10">
-        {[0, 1, 2].map((i) => (
-          <div key={i} className="flex items-center gap-3">
-            <span className="text-[7px] font-black tracking-[0.4em] text-white/50 uppercase">
-              {i === 0 ? "Entry" : i === 1 ? "Archive" : "Core"}
-            </span>
-            <div 
-              className={`h-px transition-all duration-1000 ${
-                i === activeScene ? "w-8 bg-white opacity-100" : "w-2 bg-white/20"
-              }`} 
-            />
-          </div>
-        ))}
-      </div>
-    </div>
-  );
+  return null; // HUD removed for maximum focus during stabilization
 }
