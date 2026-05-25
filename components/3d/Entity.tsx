@@ -7,9 +7,9 @@ import * as THREE from "three";
 import { useStore } from "@/lib/store";
 
 /**
- * Step 3: Premium Sculptural Entity
- * Uses MeshStandardMaterial for production stability.
- * Focuses on silhouette and restrained motion.
+ * Step 4: Refined Sculptural Entity
+ * Introduces asymmetrical geometry and organic procedural drift.
+ * Maintains MeshStandardMaterial for absolute stability.
  */
 export default function Entity() {
   const meshRef = useRef<THREE.Mesh>(null);
@@ -24,47 +24,68 @@ export default function Entity() {
     const { mouse, clock } = state;
     const t = clock.getElapsedTime();
 
-    // 1. Position Sync (Viscous follow)
-    targetPos.current.set(mouse.x * 2, mouse.y * 1.5, scrollProgress * 2);
-    currentPos.current.lerp(targetPos.current, 0.04);
+    // 1. Heavier Position Sync (Viscous follow)
+    // Decreased lerp speed for "expensive" weight
+    targetPos.current.set(mouse.x * 1.8, mouse.y * 1.2, scrollProgress * 3);
+    currentPos.current.lerp(targetPos.current, 0.025); 
     
     if (groupRef.current) {
       groupRef.current.position.copy(currentPos.current);
       
-      // Subdued Rotation
-      groupRef.current.rotation.y = THREE.MathUtils.lerp(groupRef.current.rotation.y, mouse.x * 0.3, 0.05);
-      groupRef.current.rotation.x = THREE.MathUtils.lerp(groupRef.current.rotation.x, -mouse.y * 0.3, 0.05);
+      // Deliberate Rotation
+      groupRef.current.rotation.y = THREE.MathUtils.lerp(groupRef.current.rotation.y, mouse.x * 0.25, 0.03);
+      groupRef.current.rotation.x = THREE.MathUtils.lerp(groupRef.current.rotation.x, -mouse.y * 0.25, 0.03);
     }
 
     if (meshRef.current) {
-      // 2. Gentle Breathing Scale
-      const breathe = Math.sin(t * 0.8) * 0.02;
-      meshRef.current.scale.setScalar(1.2 + breathe);
+      // 2. Procedural Organic Wobble (Low frequency)
+      const wobble = Math.sin(t * 0.4) * 0.015;
+      meshRef.current.scale.set(
+        1.1 + wobble, 
+        1.25 - wobble, 
+        1.15 + Math.cos(t * 0.3) * 0.01
+      );
       
-      // 3. Constant Sculptural Drift
-      meshRef.current.rotation.z = t * 0.1;
+      // 3. Luxurious Drift
+      meshRef.current.rotation.z = t * 0.05;
+      meshRef.current.rotation.x = Math.sin(t * 0.2) * 0.1;
     }
   });
 
   return (
     <group ref={groupRef}>
-      <Float speed={1} rotationIntensity={0.2} floatIntensity={0.2}>
+      <Float speed={0.8} rotationIntensity={0.15} floatIntensity={0.15}>
         <mesh ref={meshRef} castShadow>
-          {/* Using Icosahedron for premium sculptural geometry */}
-          <icosahedronGeometry args={[1, 15]} /> 
+          {/* Using higher detail for smoother lighting falloff */}
+          <icosahedronGeometry args={[1, 32]} /> 
           <meshStandardMaterial
-            color="#f0f0f0"
-            metalness={0.15}
-            roughness={0.35}
+            color="#e0e0e0"
+            metalness={0.2}
+            roughness={0.4}
             emissive="#ffffff"
-            emissiveIntensity={0.05}
+            emissiveIntensity={0.03}
           />
         </mesh>
       </Float>
 
-      {/* Local Lighting: 1 Key, 1 Rim */}
-      <pointLight position={[2, 2, 2]} intensity={0.8} />
-      <pointLight position={[-2, -2, -2]} intensity={0.4} color="#44ccff" />
+      {/* Strategic Lighting: Precise Rim and Key */}
+      <spotLight 
+        position={[5, 5, 5]} 
+        intensity={1.2} 
+        angle={0.3} 
+        penumbra={1} 
+        castShadow 
+      />
+      <pointLight 
+        position={[-8, 2, -5]} 
+        intensity={0.6} 
+        color="#3399ff" 
+      />
+      <pointLight 
+        position={[0, -5, 2]} 
+        intensity={0.2} 
+        color="#ffffff" 
+      />
     </group>
   );
 }
