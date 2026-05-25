@@ -87,12 +87,8 @@ export default function Scene() {
         shadows={tier === 'high'}
         camera={{ position: [0, 0, 8], fov: 35 }}
         onCreated={(state) => {
-          // Prevent Context Lost by managing pixel ratio aggressively
+          // Prevent Context Lost by managing clear color safely
           state.gl.setClearColor("#020202");
-          // Defensive null check for renderer
-          if (state.gl) {
-            state.gl.powerPreference = "high-performance";
-          }
         }}
         gl={{ 
           antialias: false,
