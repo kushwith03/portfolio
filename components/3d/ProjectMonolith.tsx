@@ -14,7 +14,7 @@ interface MonolithProps {
 
 /**
  * Project Monolith: Immersive Spatial Artifact
- * Re-engineered for Step 4 to focus on physical presence and depth.
+ * Compressed pacing pass: Tighter Z-axis positioning and more efficient reveal windows.
  */
 export default function ProjectMonolith({ project, index, position }: MonolithProps) {
   const meshRef = useRef<THREE.Group>(null);
@@ -23,12 +23,12 @@ export default function ProjectMonolith({ project, index, position }: MonolithPr
   const scrollProgress = useStore((state) => state.scrollProgress);
   const [hovered, setHovered] = useState(false);
 
-  // Identity logic
   const colors = ["#ffffff", "#ffaa00", "#44ccff"];
   const themeColor = colors[index % colors.length];
 
-  const sceneStart = 0.35;
-  const sceneEnd = 0.7;
+  // Compressed project thresholds
+  const sceneStart = 0.3;
+  const sceneEnd = 0.75;
   const projectStep = (sceneEnd - sceneStart) / 3;
   const projectFocus = sceneStart + index * projectStep + projectStep / 2;
 
@@ -36,17 +36,16 @@ export default function ProjectMonolith({ project, index, position }: MonolithPr
     if (!meshRef.current || !contentRef.current) return;
 
     const dist = Math.abs(scrollProgress - projectFocus);
-    // Artifact reveal: tighter window for more impact
-    const opacity = THREE.MathUtils.smoothstep(dist, 0.18, 0.05);
+    // Artifact reveal: tighter window (0.15) for denser pacing
+    const opacity = THREE.MathUtils.smoothstep(dist, 0.15, 0.02);
     
     const t = state.clock.getElapsedTime();
 
     // 1. Viscous Reveal Animation
-    contentRef.current.scale.setScalar(THREE.MathUtils.lerp(0.3, 1, opacity));
-    contentRef.current.position.z = THREE.MathUtils.lerp(-5, 0, opacity);
+    contentRef.current.scale.setScalar(THREE.MathUtils.lerp(0.2, 1, opacity));
+    contentRef.current.position.z = THREE.MathUtils.lerp(-3, 0, opacity);
     
     // 2. Artifact Stability
-    // Subdued rotation that reacts to mouse but stays sculptural
     meshRef.current.rotation.y = THREE.MathUtils.lerp(
       meshRef.current.rotation.y, 
       (hovered ? 0.2 : 0) + (state.mouse.x * 0.05), 
@@ -55,79 +54,58 @@ export default function ProjectMonolith({ project, index, position }: MonolithPr
 
     // 3. Environmental Light Sync
     if (lightRef.current) {
-      lightRef.current.intensity = THREE.MathUtils.lerp(lightRef.current.intensity, opacity * 10, 0.1);
+      lightRef.current.intensity = THREE.MathUtils.lerp(lightRef.current.intensity, opacity * 8, 0.1);
     }
   });
 
   return (
     <group ref={meshRef} position={position} onPointerEnter={() => setHovered(true)} onPointerLeave={() => setHovered(false)}>
       <group ref={contentRef}>
-        <Float speed={0.5} rotationIntensity={0.1} floatIntensity={0.2}>
+        <Float speed={0.4} rotationIntensity={0.05} floatIntensity={0.1}>
           
           {/* Main Visual Archetype */}
           <group>
-            {/* Structural Core (Subtle contrast frame) */}
             <mesh position={[0, 0, -0.05]}>
               <planeGeometry args={[4.4, 2.6]} />
-              <meshStandardMaterial color="#000000" metalness={0.8} roughness={0.1} transparent opacity={0.5} />
+              <meshStandardMaterial color="#000000" metalness={0.8} roughness={0.1} transparent opacity={0.4} />
             </mesh>
             
-            {/* The Projection (Content) */}
             <Image
               url={project.imageUrl}
               scale={[4.2, 2.4]}
               transparent
-              opacity={0.95}
+              opacity={0.9}
               toneMapped={false}
             />
           </group>
 
-          {/* Technical Metadata Plates (Floating Layers) */}
-          <group position={[-2.4, 1.4, 0.3]} rotation={[0, 0, 0]}>
-             <mesh>
-                <planeGeometry args={[0.8, 0.02]} />
-                <meshBasicMaterial color={themeColor} transparent opacity={0.4} />
-             </mesh>
-             <Text
-                position={[0.5, 0, 0]}
-                fontSize={0.06}
-                color="white"
-                anchorX="left"
-                fillOpacity={0.2}
-              >
-                {`EXTRACTED_ARCHIVE // 0${index + 1}`}
-              </Text>
-          </group>
-
-          {/* Project Identity Tag */}
+          {/* Narrative ID Tag */}
           <Text
-            position={[-2.1, -1.6, 0.4]}
-            fontSize={0.25}
+            position={[-2.1, -1.6, 0.3]}
+            fontSize={0.2}
             color="white"
-            fillOpacity={0.1}
+            fillOpacity={0.05}
             anchorX="left"
-            textAlign="left"
           >
             {project.title.split(' ')[0].toUpperCase()}
           </Text>
 
-          {/* Environmental Glow Proxy */}
-          <mesh position={[0, 0, -1.5]} scale={2}>
+          {/* Environmental Glow */}
+          <mesh position={[0, 0, -1]} scale={1.5}>
              <sphereGeometry args={[4, 16, 16]} />
-             <meshBasicMaterial color={themeColor} transparent opacity={0.003} side={THREE.BackSide} />
+             <meshBasicMaterial color={themeColor} transparent opacity={0.002} side={THREE.BackSide} />
           </mesh>
         </Float>
       </group>
 
-      {/* Atmospheric World Light */}
       <spotLight
         ref={lightRef}
-        position={[0, 12, 6]}
+        position={[0, 10, 5]}
         angle={0.4}
         penumbra={1}
         intensity={0}
         color={themeColor}
-        distance={30}
+        distance={25}
         castShadow
       />
     </group>

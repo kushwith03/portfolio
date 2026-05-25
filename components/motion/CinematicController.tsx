@@ -9,7 +9,8 @@ gsap.registerPlugin(ScrollTrigger);
 
 /**
  * Global Cinematic Controller
- * Refined for Step 4 with minimal visual footprint.
+ * Compressed pacing for Pass 2 to reduce excessive dead space.
+ * Maps narrative milestones to a tighter scroll timeline.
  */
 export default function CinematicController() {
   const activeScene = useStore((state) => state.activeScene);
@@ -17,14 +18,14 @@ export default function CinematicController() {
   const setScrollProgress = useStore((state) => state.setScrollProgress);
 
   useEffect(() => {
+    // Compressed Scene Thresholds
     const scenes = [
-      { id: 0, start: 0, end: 0.3 },
-      { id: 1, start: 0.35, end: 0.7 },
-      { id: 2, start: 0.75, end: 1.0 },
+      { id: 0, start: 0, end: 0.25 },   // Arrival (Compressed from 0.3)
+      { id: 1, start: 0.3, end: 0.75 },  // Archive (Dense technical focus)
+      { id: 2, start: 0.8, end: 1.0 },   // Core & Epilogue
     ];
 
     const ctx = gsap.context(() => {
-      // Sync global store scroll progress
       ScrollTrigger.create({
         trigger: document.body,
         start: "top top",
