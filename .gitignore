@@ -15,6 +15,7 @@ out/
 # OS
 .DS_Store
 Thumbs.db
+.idea/
 
 # Logs
 logs/
