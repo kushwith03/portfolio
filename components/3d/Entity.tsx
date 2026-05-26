@@ -264,13 +264,14 @@ export default function Entity() {
               <Sphere args={[1, 32, 32, 0, Math.PI * 2, 0, Math.PI / 2]}>
                  <meshPhysicalMaterial
                     color="#000000"
-                    roughness={0.08}
-                    metalness={0.75}
+                    roughness={0.15}
+                    metalness={0.4}
                     clearcoat={1}
                     transparent
-                    opacity={0.58}
-                    transmission={0.1}
-                    thickness={0.1}
+                    opacity={0.4}
+                    transmission={0.5}
+                    thickness={0.2}
+                    envMapIntensity={1.5}
                  />
               </Sphere>
            </group>
