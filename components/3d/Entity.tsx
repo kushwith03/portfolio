@@ -7,10 +7,12 @@ import * as THREE from "three";
 import { useStore } from "@/lib/store";
 
 /**
- * Character System: The Architect Companion (ALIVE Interaction Pass)
+ * Character System: The Architect Companion (Embedded Intelligence Pass)
  * - Aesthetic: Black Chrome / Deep Reflective Void.
- * - Interaction: High-inertia observation with intelligent eye-lead.
- * - Life: Organic breathing, micro-floating, and proximity awareness.
+ * - Interaction: 
+ *    - Shell: Slow, massive, heavy inertia.
+ *    - Internal Optics: Responsive, embedded, anticipatory.
+ * - Intelligence: Cognitive lead-follow with overshoot settle.
  */
 export default function Entity() {
   const groupRef = useRef<THREE.Group>(null);
@@ -23,9 +25,13 @@ export default function Entity() {
   
   const targetPos = useRef(new THREE.Vector3(0, 0, 0));
   const currentPos = useRef(new THREE.Vector3(0, 0, 0));
+  
   const mouseSmooth = useRef(new THREE.Vector2(0, 0));
   const eyeSmooth = useRef(new THREE.Vector2(0, 0));
   const headSmooth = useRef(new THREE.Vector2(0, 0));
+  
+  // Velocity tracking for overshoot
+  const eyeVelocity = useRef(new THREE.Vector2(0, 0));
   
   // Interaction State
   const [isHovered, setIsHovered] = useState(false);
@@ -41,78 +47,92 @@ export default function Entity() {
 
     const isHero = activeScene === 0;
 
-    // 1. DYNAMIC PROXIMITY & IDLE DETECTION
+    // 1. PROXIMITY & IDLE DETECTION
     const mouseMoved = Math.abs(mouse.x - mouseSmooth.current.x) > 0.001 || Math.abs(mouse.y - mouseSmooth.current.y) > 0.001;
     if (mouseMoved) lastMouseMove.current = t;
-    const idleTime = t - lastMouseMove.current;
-    const isIdle = idleTime > 4;
-
-    // Calculate proximity (0 to 1)
+    
+    // Calculate proximity (0 to 1) - used for focus/glow
     const distToCenter = Math.sqrt(mouse.x * mouse.x + mouse.y * mouse.y);
-    proximity.current = THREE.MathUtils.lerp(proximity.current, isHovered ? 1 : Math.max(0, 1 - distToCenter * 1.5), 0.1);
+    proximity.current = THREE.MathUtils.lerp(proximity.current, isHovered ? 1 : Math.max(0, 1 - distToCenter * 1.5), 0.08);
 
-    // 2. INTELLIGENT MOVEMENT (LEAD & FOLLOW)
-    // Eyes lead movement (fast damping)
-    eyeSmooth.current.lerp(mouse, 0.12);
-    // Head follows with heavy inertia (slow damping)
-    headSmooth.current.lerp(mouse, 0.025);
+    // 2. INTELLIGENT MOTION DYNAMICS
+    
+    // SHELL: Heavy, Slow, Damped
+    headSmooth.current.lerp(mouse, 0.02); // Slower for 'massive' feel
+    
+    // OPTICS: Responsive, Anticipatory with Overshoot
+    const prevEyePos = eyeSmooth.current.clone();
+    
+    // Target with lead focus
+    const eyeTarget = new THREE.Vector2(mouse.x, mouse.y);
+    eyeSmooth.current.lerp(eyeTarget, 0.15); // Fast lead
+    
+    // Calculate eye velocity for overshoot settle
+    eyeVelocity.current.subVectors(eyeSmooth.current, prevEyePos);
+    
     mouseSmooth.current.copy(mouse);
 
-    // 3. SPATIAL POSITIONING (SCROLL & PROXIMITY)
+    // 3. SPATIAL POSITIONING
     const xBase = isHero ? 2.8 : -2.5;
     const yBase = isHero ? 0.6 : 0.8;
     const zBase = isHero ? -1 : -3 + scrollProgress * 5;
 
-    // Subtle drift and proximity reaction
-    const driftX = Math.sin(t * 0.5) * 0.05;
-    const driftY = Math.cos(t * 0.4) * 0.05;
-    const proximityTilt = proximity.current * 0.2;
+    // Organic micro-floating
+    const driftX = Math.sin(t * 0.4) * 0.04;
+    const driftY = Math.cos(t * 0.3) * 0.04;
 
     targetPos.current.set(
-      xBase + mouse.x * (0.4 + proximity.current * 0.2) + driftX,
-      yBase + mouse.y * (0.3 + proximity.current * 0.2) + driftY,
-      zBase + proximity.current * 0.5
+      xBase + mouse.x * (0.35 + proximity.current * 0.1) + driftX,
+      yBase + mouse.y * (0.25 + proximity.current * 0.1) + driftY,
+      zBase + proximity.current * 0.4
     );
     currentPos.current.lerp(targetPos.current, 0.03);
     
     if (groupRef.current) {
       groupRef.current.position.copy(currentPos.current);
       
-      // Observational Rotation (Heavy Inertia)
-      const rotX = -headSmooth.current.y * 0.3;
-      const rotY = (headSmooth.current.x - (isHero ? 0.5 : 0)) * 0.4;
-      groupRef.current.rotation.x = THREE.MathUtils.lerp(groupRef.current.rotation.x, rotX, 0.04);
-      groupRef.current.rotation.y = THREE.MathUtils.lerp(groupRef.current.rotation.y, rotY, 0.04);
+      // Shell Rotation (Heavy, Slow)
+      const rotX = -headSmooth.current.y * 0.25;
+      const rotY = (headSmooth.current.x - (isHero ? 0.5 : 0)) * 0.35;
+      groupRef.current.rotation.x = THREE.MathUtils.lerp(groupRef.current.rotation.x, rotX, 0.03);
+      groupRef.current.rotation.y = THREE.MathUtils.lerp(groupRef.current.rotation.y, rotY, 0.03);
     }
 
-    // 4. EYE SYSTEM (CALM INTELLIGENCE)
+    // 4. EMBEDDED OPTICAL SYSTEM (INTERNAL TRACKING)
     if (pupilLeft.current && pupilRight.current) {
-      const pupilX = eyeSmooth.current.x * 0.15; 
-      const pupilY = eyeSmooth.current.y * 0.12;
+      // Tiny range (5-8% of radius) for internal mechanics feel
+      // Velocity influence for the 'overshoot then settle' feel
+      const trackingX = eyeSmooth.current.x * 0.08 + eyeVelocity.current.x * 0.2;
+      const trackingY = eyeSmooth.current.y * 0.06 + eyeVelocity.current.y * 0.2;
 
-      pupilLeft.current.position.x = THREE.MathUtils.lerp(pupilLeft.current.position.x, pupilX, 0.15);
-      pupilLeft.current.position.y = THREE.MathUtils.lerp(pupilLeft.current.position.y, pupilY, 0.15);
-      pupilRight.current.position.x = THREE.MathUtils.lerp(pupilRight.current.position.x, pupilX, 0.15);
-      pupilRight.current.position.y = THREE.MathUtils.lerp(pupilRight.current.position.y, pupilY, 0.15);
+      pupilLeft.current.position.x = THREE.MathUtils.lerp(pupilLeft.current.position.x, trackingX, 0.1);
+      pupilLeft.current.position.y = THREE.MathUtils.lerp(pupilLeft.current.position.y, trackingY, 0.1);
+      pupilRight.current.position.x = THREE.MathUtils.lerp(pupilRight.current.position.x, trackingX, 0.1);
+      pupilRight.current.position.y = THREE.MathUtils.lerp(pupilRight.current.position.y, trackingY, 0.1);
 
-      // Organic Blinking
-      const blink = Math.sin(t * 0.2 + Math.cos(t * 0.5)) > 0.99;
-      const blinkScale = blink ? 0.05 : 1;
+      // Focus effect: pupil contraction on proximity
+      const pupilSize = 0.035 - proximity.current * 0.01;
+      pupilLeft.current.scale.setScalar(pupilSize / 0.035);
+      pupilRight.current.scale.setScalar(pupilSize / 0.035);
+
+      // Organic Blink
+      const blink = Math.sin(t * 0.15 + Math.cos(t * 0.4)) > 0.992;
+      const blinkScale = blink ? 0.02 : 1;
       if (eyeLeft.current && eyeRight.current) {
-        eyeLeft.current.scale.y = THREE.MathUtils.lerp(eyeLeft.current.scale.y, blinkScale, 0.3);
-        eyeRight.current.scale.y = THREE.MathUtils.lerp(eyeRight.current.scale.y, blinkScale, 0.3);
+        eyeLeft.current.scale.y = THREE.MathUtils.lerp(eyeLeft.current.scale.y, blinkScale, 0.25);
+        eyeRight.current.scale.y = THREE.MathUtils.lerp(eyeRight.current.scale.y, blinkScale, 0.25);
       }
     }
 
-    // 5. CORE LIFE (BREATHING & GLOW)
+    // 5. CORE LIFE & RESPONSE
     if (coreRef.current) {
-      const breathe = Math.sin(t * 0.4) * 0.008;
-      const hoverPulse = Math.sin(t * 2) * 0.01 * proximity.current;
-      coreRef.current.scale.setScalar(1 + breathe + hoverPulse + proximity.current * 0.05);
+      const breathe = Math.sin(t * 0.4) * 0.006;
+      coreRef.current.scale.setScalar(1 + breathe + proximity.current * 0.02);
     }
 
     if (innerGlowRef.current) {
-      innerGlowRef.current.intensity = THREE.MathUtils.lerp(innerGlowRef.current.intensity, 1 + proximity.current * 2, 0.05);
+      // Intelligence glow intensity response
+      innerGlowRef.current.intensity = 0.5 + proximity.current * 2.5;
     }
   });
 
@@ -122,104 +142,107 @@ export default function Entity() {
       onPointerEnter={() => setIsHovered(true)}
       onPointerLeave={() => setIsHovered(false)}
     >
-      <Float speed={1.2} rotationIntensity={0.05} floatIntensity={0.1}>
+      <Float speed={1} rotationIntensity={0.04} floatIntensity={0.08}>
         <group>
-          {/* 1. Main Orb - BLACK CHROME REFLECTIVE VOID */}
+          {/* 1. Shell - BLACK CHROME (Massive, Reflective) */}
           <Sphere ref={coreRef} args={[1, 64, 64]}>
             <meshPhysicalMaterial
               color="#000000"
               metalness={1}
-              roughness={0.05}
+              roughness={0.04}
               clearcoat={1}
-              clearcoatRoughness={0.02}
-              envMapIntensity={1.5}
+              clearcoatRoughness={0.01}
+              envMapIntensity={1.2}
               reflectivity={1}
             />
           </Sphere>
 
-          {/* 2. Inner Intelligence Glow */}
-          <pointLight 
-            ref={innerGlowRef} 
-            position={[0, 0, 0.5]} 
-            color="#00ffff" 
-            intensity={1} 
-            distance={5} 
-          />
+          {/* 2. Embedded Optical Intelligence (Embedded Depth) */}
+          <group position={[0, 0, 0.6]}> {/* Deep internal placement */}
+             <pointLight 
+               ref={innerGlowRef} 
+               color="#00ffff" 
+               intensity={1} 
+               distance={4} 
+             />
+             
+             {/* Optical System Container */}
+             <group position={[0, 0.08, 0.2]}>
+                {/* Internal Glow Points */}
+                <group position={[-0.32, 0.04, 0]}>
+                   <group ref={eyeLeft}>
+                      <Sphere args={[0.07, 32, 32]}>
+                         <meshStandardMaterial 
+                            color="#00ffff" 
+                            emissive="#00ffff" 
+                            emissiveIntensity={3 + proximity.current * 2} 
+                            toneMapped={false}
+                            transparent
+                            opacity={0.9}
+                         />
+                      </Sphere>
+                      <mesh ref={pupilLeft} position={[0, 0, 0.04]}>
+                         <sphereGeometry args={[0.035, 16, 16]} />
+                         <meshStandardMaterial color="#000000" roughness={1} />
+                      </mesh>
+                   </group>
+                </group>
 
-          {/* 3. Subtle Facial Interface (Recessed) */}
-          <group position={[0, 0, 0.85]} scale={[0.8, 0.5, 0.2]}>
+                <group position={[0.32, 0.04, 0]}>
+                   <group ref={eyeRight}>
+                      <Sphere args={[0.07, 32, 32]}>
+                         <meshStandardMaterial 
+                            color="#00ffff" 
+                            emissive="#00ffff" 
+                            emissiveIntensity={3 + proximity.current * 2} 
+                            toneMapped={false}
+                            transparent
+                            opacity={0.9}
+                         />
+                      </Sphere>
+                      <mesh ref={pupilRight} position={[0, 0, 0.04]}>
+                         <sphereGeometry args={[0.035, 16, 16]} />
+                         <meshStandardMaterial color="#000000" roughness={1} />
+                      </mesh>
+                   </group>
+                </group>
+             </group>
+          </group>
+
+          {/* 3. Smoked Glass Interface (Facial Shield) */}
+          <group position={[0, 0, 0.82]} scale={[0.85, 0.55, 0.15]}>
              <Sphere args={[1, 32, 32, 0, Math.PI * 2, 0, Math.PI / 2]}>
                 <meshPhysicalMaterial 
-                   color="#050505" 
-                   roughness={0.1} 
+                   color="#000000" 
+                   roughness={0.05} 
                    metalness={0.9}
                    clearcoat={1}
                    transparent
-                   opacity={0.8}
+                   opacity={0.65} 
                 />
              </Sphere>
           </group>
 
-          {/* 4. Intelligent Eyes System */}
-          <group position={[0, 0.08, 0.92]}>
-             {/* Eye Left */}
-             <group position={[-0.3, 0.05, 0]}>
-                <group ref={eyeLeft}>
-                   <Sphere args={[0.08, 32, 32]}>
-                      <meshStandardMaterial 
-                         color="#00ffff" 
-                         emissive="#00ffff" 
-                         emissiveIntensity={4} 
-                         toneMapped={false}
-                      />
-                   </Sphere>
-                   <mesh ref={pupilLeft} position={[0, 0, 0.05]}>
-                      <sphereGeometry args={[0.03, 16, 16]} />
-                      <meshStandardMaterial color="#000000" roughness={1} />
-                   </mesh>
-                </group>
-             </group>
-
-             {/* Eye Right */}
-             <group position={[0.3, 0.05, 0]}>
-                <group ref={eyeRight}>
-                   <Sphere args={[0.08, 32, 32]}>
-                      <meshStandardMaterial 
-                         color="#00ffff" 
-                         emissive="#00ffff" 
-                         emissiveIntensity={4} 
-                         toneMapped={false}
-                      />
-                   </Sphere>
-                   <mesh ref={pupilRight} position={[0, 0, 0.05]}>
-                      <sphereGeometry args={[0.03, 16, 16]} />
-                      <meshStandardMaterial color="#000000" roughness={1} />
-                   </mesh>
-                </group>
-             </group>
-          </group>
-
-          {/* 5. Minimal Technical Detail (Glass Ring) */}
-          <mesh rotation={[0, 0, 0]} position={[0, 0, 0]}>
-             <torusGeometry args={[1.02, 0.001, 16, 120]} />
-             <meshStandardMaterial color="#ffffff" transparent opacity={0.1} />
+          {/* 4. Glass Detail Ring */}
+          <mesh rotation={[0, 0, 0]}>
+             <torusGeometry args={[1.01, 0.001, 16, 120]} />
+             <meshStandardMaterial color="#ffffff" transparent opacity={0.05} />
           </mesh>
         </group>
       </Float>
 
-      {/* 6. Interaction Lighting */}
+      {/* 5. Interaction Focus Light */}
       <spotLight
-        position={[5, 5, 5]}
-        angle={0.15}
+        position={[4, 4, 6]}
+        angle={0.2}
         penumbra={1}
-        intensity={2 * (1 + proximity.current)}
+        intensity={1.5 + proximity.current}
         color="#ffffff"
-        castShadow
       />
-      <pointLight position={[0, 0, -3]} intensity={5} color="#44ccff" distance={10} />
     </group>
   );
 }
+
 
 
 
