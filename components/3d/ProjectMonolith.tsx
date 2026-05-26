@@ -2,7 +2,7 @@
 
 import { useRef, useState } from "react";
 import { useFrame } from "@react-three/fiber";
-import { Text, Image, Float } from "@react-three/drei";
+import { Text, Image, Float, RoundedBox } from "@react-three/drei";
 import * as THREE from "three";
 import { useStore } from "@/lib/store";
 
@@ -14,7 +14,7 @@ interface MonolithProps {
 
 /**
  * Project Monolith: Immersive Spatial Artifact
- * Compressed pacing pass: Tighter Z-axis positioning and more efficient reveal windows.
+ * Premium Refinement: Technical framing and viscous reveal pacing.
  */
 export default function ProjectMonolith({ project, index, position }: MonolithProps) {
   const meshRef = useRef<THREE.Group>(null);
@@ -26,9 +26,9 @@ export default function ProjectMonolith({ project, index, position }: MonolithPr
   const colors = ["#ffffff", "#ffaa00", "#44ccff"];
   const themeColor = colors[index % colors.length];
 
-  // Compressed project thresholds
+  // Refined project thresholds
   const sceneStart = 0.3;
-  const sceneEnd = 0.75;
+  const sceneEnd = 0.8;
   const projectStep = (sceneEnd - sceneStart) / 3;
   const projectFocus = sceneStart + index * projectStep + projectStep / 2;
 
@@ -36,78 +36,112 @@ export default function ProjectMonolith({ project, index, position }: MonolithPr
     if (!meshRef.current || !contentRef.current) return;
 
     const dist = Math.abs(scrollProgress - projectFocus);
-    // Artifact reveal: tighter window (0.15) for denser pacing
-    const opacity = THREE.MathUtils.smoothstep(dist, 0.15, 0.02);
+    // Artifact reveal: smooth, viscous window
+    const opacity = THREE.MathUtils.smoothstep(dist, 0.18, 0.05);
+    const revealFactor = 1 - opacity; // 1 when focused, 0 when far
     
-    const t = state.clock.getElapsedTime();
-
     // 1. Viscous Reveal Animation
-    contentRef.current.scale.setScalar(THREE.MathUtils.lerp(0.2, 1, opacity));
-    contentRef.current.position.z = THREE.MathUtils.lerp(-3, 0, opacity);
+    contentRef.current.scale.setScalar(THREE.MathUtils.lerp(0.8, 1, revealFactor));
+    contentRef.current.position.z = THREE.MathUtils.lerp(-4, 0, revealFactor);
+    contentRef.current.rotation.x = THREE.MathUtils.lerp(0.15, 0, revealFactor);
     
-    // 2. Artifact Stability
-    meshRef.current.rotation.y = THREE.MathUtils.lerp(
-      meshRef.current.rotation.y, 
-      (hovered ? 0.2 : 0) + (state.mouse.x * 0.05), 
-      0.04
-    );
+    // 2. Artifact Stability & Hover Reactivity
+    const targetRotY = (hovered ? 0.15 : 0) + (state.mouse.x * 0.05);
+    meshRef.current.rotation.y = THREE.MathUtils.lerp(meshRef.current.rotation.y, targetRotY, 0.04);
 
     // 3. Environmental Light Sync
     if (lightRef.current) {
-      lightRef.current.intensity = THREE.MathUtils.lerp(lightRef.current.intensity, opacity * 8, 0.1);
+      lightRef.current.intensity = THREE.MathUtils.lerp(lightRef.current.intensity, revealFactor * 6, 0.1);
     }
   });
 
   return (
     <group ref={meshRef} position={position} onPointerEnter={() => setHovered(true)} onPointerLeave={() => setHovered(false)}>
       <group ref={contentRef}>
-        <Float speed={0.4} rotationIntensity={0.05} floatIntensity={0.1}>
+        <Float speed={0.6} rotationIntensity={0.1} floatIntensity={0.2}>
           
-          {/* Main Visual Archetype */}
+          {/* Main Artifact Frame - Engineering Identity */}
           <group>
-            <mesh position={[0, 0, -0.05]}>
-              <planeGeometry args={[4.4, 2.6]} />
-              <meshStandardMaterial color="#000000" metalness={0.8} roughness={0.1} transparent opacity={0.4} />
+            {/* Backplate */}
+            <RoundedBox args={[4.6, 2.8, 0.1]} radius={0.05} smoothness={4} position={[0, 0, -0.1]}>
+               <meshPhysicalMaterial 
+                  color="#0a0a0a" 
+                  metalness={0.8} 
+                  roughness={0.2} 
+                  clearcoat={1}
+               />
+            </RoundedBox>
+
+            {/* Inner Technical Border */}
+            <mesh position={[0, 0, 0]}>
+               <planeGeometry args={[4.45, 2.65]} />
+               <meshBasicMaterial color={themeColor} transparent opacity={0.1} />
             </mesh>
             
             <Image
               url={project.imageUrl}
               scale={[4.2, 2.4]}
               transparent
-              opacity={0.9}
+              opacity={0.8}
               toneMapped={false}
             />
+
+            {/* Glass Overlay for Depth */}
+            <mesh position={[0, 0, 0.05]}>
+               <planeGeometry args={[4.2, 2.4]} />
+               <meshPhysicalMaterial 
+                  color="#ffffff" 
+                  transparent 
+                  opacity={0.02} 
+                  roughness={0} 
+                  metalness={0.1}
+                  transmission={0.5}
+               />
+            </mesh>
           </group>
 
-          {/* Narrative ID Tag */}
-          <Text
-            position={[-2.1, -1.6, 0.3]}
-            fontSize={0.2}
-            color="white"
-            fillOpacity={0.05}
-            anchorX="left"
-          >
-            {project.title.split(' ')[0].toUpperCase()}
-          </Text>
+          {/* Narrative ID & Technical Metadata */}
+          <group position={[-2.1, -1.8, 0.2]}>
+            <Text
+              fontSize={0.15}
+              color="white"
+              fillOpacity={0.2}
+              anchorX="left"
+              font="/fonts/Inter-Black.woff" // Assuming Inter is available or fallback
+            >
+              {project.title.toUpperCase()}
+            </Text>
+            <Text
+              position={[0, -0.2, 0]}
+              fontSize={0.08}
+              color={themeColor}
+              fillOpacity={0.4}
+              anchorX="left"
+              letterSpacing={0.5}
+            >
+              PROJECT_AUTH_0{index + 1}
+            </Text>
+          </group>
 
           {/* Environmental Glow */}
-          <mesh position={[0, 0, -1]} scale={1.5}>
+          <mesh position={[0, 0, -1]} scale={1.2}>
              <sphereGeometry args={[4, 16, 16]} />
-             <meshBasicMaterial color={themeColor} transparent opacity={0.002} side={THREE.BackSide} />
+             <meshBasicMaterial color={themeColor} transparent opacity={0.001} side={THREE.BackSide} />
           </mesh>
         </Float>
       </group>
 
       <spotLight
         ref={lightRef}
-        position={[0, 10, 5]}
-        angle={0.4}
+        position={[0, 5, 2]}
+        angle={0.6}
         penumbra={1}
         intensity={0}
         color={themeColor}
-        distance={25}
+        distance={20}
         castShadow
       />
     </group>
   );
 }
+
