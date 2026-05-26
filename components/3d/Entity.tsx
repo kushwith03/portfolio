@@ -7,12 +7,12 @@ import * as THREE from "three";
 import { useStore } from "@/lib/store";
 
 /**
- * Character System: The Architect Companion (Embedded Intelligence Pass)
+ * Character System: The Architect Companion (Observed Intelligence Pass)
  * - Aesthetic: Black Chrome / Deep Reflective Void.
  * - Interaction: 
  *    - Shell: Slow, massive, heavy inertia.
  *    - Internal Optics: Responsive, embedded, anticipatory.
- * - Intelligence: Cognitive lead-follow with overshoot settle.
+ * - Intelligence: Asymmetrical lead-follow with overshoot settle.
  */
 export default function Entity() {
   const groupRef = useRef<THREE.Group>(null);
@@ -32,8 +32,9 @@ export default function Entity() {
   const eyeSmooth = useRef(new THREE.Vector2(0, 0));
   const headSmooth = useRef(new THREE.Vector2(0, 0));
   
-  // Velocity tracking for overshoot
+  // Velocity tracking for observational overshoot
   const eyeVelocity = useRef(new THREE.Vector2(0, 0));
+  const eyeOvershoot = useRef(new THREE.Vector2(0, 0));
   
   // Interaction State
   const [isHovered, setIsHovered] = useState(false);
@@ -60,17 +61,21 @@ export default function Entity() {
     // 2. INTELLIGENT MOTION DYNAMICS
     
     // SHELL: Heavy, Slow, Damped
-    headSmooth.current.lerp(mouse, 0.02); // Slower for 'massive' feel
+    headSmooth.current.lerp(mouse, 0.015); // Increased inertia for 'massive' feel
     
     // OPTICS: Responsive, Anticipatory with Overshoot
     const prevEyePos = eyeSmooth.current.clone();
     
-    // Target with lead focus
-    const eyeTarget = new THREE.Vector2(mouse.x, mouse.y);
-    eyeSmooth.current.lerp(eyeTarget, 0.15); // Fast lead
+    // Observational Lead: slower response to fast movement, sharper to hover
+    const mouseVelocity = Math.abs(mouse.x - mouseSmooth.current.x) + Math.abs(mouse.y - mouseSmooth.current.y);
+    const eyeSpeed = mouseVelocity > 0.05 ? 0.08 : 0.15; // Slower to fast, faster to slow/hover
+
+    eyeSmooth.current.lerp(mouse, eyeSpeed);
     
-    // Calculate eye velocity for overshoot settle
+    // Calculate overshoot settle
     eyeVelocity.current.subVectors(eyeSmooth.current, prevEyePos);
+    eyeOvershoot.current.add(eyeVelocity.current.multiplyScalar(0.4));
+    eyeOvershoot.current.lerp(new THREE.Vector2(0, 0), 0.1); // Settle
     
     mouseSmooth.current.copy(mouse);
 
@@ -103,52 +108,58 @@ export default function Entity() {
     // 4. EMBEDDED OPTICAL SYSTEM (INTERNAL TRACKING)
     if (pupilLeft.current && pupilRight.current) {
       // Tiny range (5-8% of radius) for internal mechanics feel
-      // Velocity influence for the 'overshoot then settle' feel
-      const trackingX = eyeSmooth.current.x * 0.095 + eyeVelocity.current.x * 0.2;
-      const trackingY = eyeSmooth.current.y * 0.07 + eyeVelocity.current.y * 0.2;
+      // Asymmetrical offset (subtle timing/pos variation)
+      const trackingX = eyeSmooth.current.x * 0.095 + eyeOvershoot.current.x;
+      const trackingY = eyeSmooth.current.y * 0.07 + eyeOvershoot.current.y;
 
+      // Subtle Asymmetry: left eye slightly leads right
       pupilLeft.current.position.x = THREE.MathUtils.lerp(pupilLeft.current.position.x, trackingX, 0.1);
       pupilLeft.current.position.y = THREE.MathUtils.lerp(pupilLeft.current.position.y, trackingY, 0.1);
-      pupilRight.current.position.x = THREE.MathUtils.lerp(pupilRight.current.position.x, trackingX, 0.1);
-      pupilRight.current.position.y = THREE.MathUtils.lerp(pupilRight.current.position.y, trackingY, 0.1);
+      
+      pupilRight.current.position.x = THREE.MathUtils.lerp(pupilRight.current.position.x, trackingX, 0.08); // Slower
+      pupilRight.current.position.y = THREE.MathUtils.lerp(pupilRight.current.position.y, trackingY, 0.08);
 
       // Focus effect: pupil contraction on proximity
-      const pupilSize = 0.035 - proximity.current * 0.01;
+      const pupilSize = 0.035 - proximity.current * 0.012;
       pupilLeft.current.scale.setScalar(pupilSize / 0.035);
       pupilRight.current.scale.setScalar(pupilSize / 0.035);
 
       // Organic Blink
-      const blink = Math.sin(t * 0.15 + Math.cos(t * 0.4)) > 0.992;
-      const blinkScale = blink ? 0.02 : 1;
+      const blink = Math.sin(t * 0.12 + Math.cos(t * 0.3)) > 0.993;
+      const blinkScale = blink ? 0.01 : 1;
       if (eyeLeft.current && eyeRight.current) {
-        eyeLeft.current.scale.y = THREE.MathUtils.lerp(eyeLeft.current.scale.y, blinkScale, 0.25);
-        eyeRight.current.scale.y = THREE.MathUtils.lerp(eyeRight.current.scale.y, blinkScale, 0.25);
+        eyeLeft.current.scale.y = THREE.MathUtils.lerp(eyeLeft.current.scale.y, blinkScale, 0.2);
+        eyeRight.current.scale.y = THREE.MathUtils.lerp(eyeRight.current.scale.y, blinkScale, 0.2);
       }
     }
 
     // 5. CORE LIFE & RESPONSE
     if (coreRef.current) {
-      const breathe = Math.sin(t * 0.4) * 0.006;
+      const breathe = Math.sin(t * 0.4) * 0.005;
       coreRef.current.scale.setScalar(1 + breathe + proximity.current * 0.02);
     }
 
     if (innerGlowRef.current) {
        // Intelligence glow intensity response
-       innerGlowRef.current.intensity = 0.5 + proximity.current * 2.5;
+       innerGlowRef.current.intensity = 0.6 + proximity.current * 2.8;
     }
 
     // Animate emissive materials per frame
     if (leftMat.current && rightMat.current) {
-      const targetIntensity = 0.55 + proximity.current * 1.6;
+      // Subtle asymmetry in intensity pulse
+      const pulseL = 0.015 * Math.sin(t * 0.8);
+      const pulseR = 0.015 * Math.sin(t * 0.85 + 0.5);
+      
+      const targetIntensity = 0.6 + proximity.current * 1.8;
       const currentL = (leftMat.current.emissiveIntensity as number) || 0;
       const currentR = (rightMat.current.emissiveIntensity as number) || 0;
 
-      leftMat.current.emissiveIntensity = THREE.MathUtils.lerp(currentL, targetIntensity, 0.12);
-      rightMat.current.emissiveIntensity = THREE.MathUtils.lerp(currentR, targetIntensity, 0.12);
+      leftMat.current.emissiveIntensity = THREE.MathUtils.lerp(currentL, targetIntensity + pulseL, 0.1);
+      rightMat.current.emissiveIntensity = THREE.MathUtils.lerp(currentR, targetIntensity + pulseR, 0.1);
 
-      const pulse = 0.02 * Math.sin(t * 0.9 + eyeSmooth.current.x * 4);
-      leftMat.current.opacity = THREE.MathUtils.clamp(0.18 + proximity.current * 0.10 + pulse, 0.12, 0.32);
-      rightMat.current.opacity = THREE.MathUtils.clamp(0.18 + proximity.current * 0.10 - pulse, 0.12, 0.32);
+      const opacityBase = 0.2 + proximity.current * 0.12;
+      leftMat.current.opacity = THREE.MathUtils.clamp(opacityBase + pulseL, 0.1, 0.35);
+      rightMat.current.opacity = THREE.MathUtils.clamp(opacityBase + pulseR, 0.1, 0.35);
     }
   });
 
@@ -158,23 +169,23 @@ export default function Entity() {
       onPointerEnter={() => setIsHovered(true)}
       onPointerLeave={() => setIsHovered(false)}
     >
-      <Float speed={1} rotationIntensity={0.04} floatIntensity={0.08}>
+      <Float speed={1} rotationIntensity={0.03} floatIntensity={0.06}>
         <group>
           {/* 1. Shell - BLACK CHROME (Massive, Reflective) */}
           <Sphere ref={coreRef} args={[1, 64, 64]}>
             <meshPhysicalMaterial
               color="#000000"
               metalness={1}
-              roughness={0.04}
+              roughness={0.03}
               clearcoat={1}
               clearcoatRoughness={0.01}
-              envMapIntensity={1.2}
+              envMapIntensity={1.1}
               reflectivity={1}
             />
           </Sphere>
 
           {/* 2. Embedded Optical Intelligence (Surface Alignment) */}
-          <group position={[0, 0, 0.95]}> {/* Positioned near the shell surface (R=1) */}
+          <group position={[0, 0, 0.95]}>
              <pointLight 
                ref={innerGlowRef} 
                color="#0066ff" 
@@ -183,11 +194,11 @@ export default function Entity() {
              />
              
              {/* Optical System Container */}
-             <group position={[0, 0.08, 0.06]}> {/* Total Z ~ 1.01 */}
+             <group position={[0, 0.08, 0.06]}>
                  {/* Internal Glow Points */}
                   <group position={[-0.32, 0.04, 0]}>
                      <group ref={eyeLeft} renderOrder={30}>
-                        <Sphere args={[0.07, 32, 32]}>
+                        <Sphere args={[0.065, 32, 32]}>
                            <meshStandardMaterial
                               ref={leftMat}
                               color="#0044ff"
@@ -200,22 +211,21 @@ export default function Entity() {
                               depthTest={true}
                            />
                         </Sphere>
-                        {/* Inner core glow - brighter center */}
-                        <Sphere args={[0.038, 16, 16]}>
+                        {/* Brighter center point (Sharper Core) */}
+                        <Sphere args={[0.02, 16, 16]}>
                            <meshStandardMaterial
-                              color="#0088ff"
-                              emissive="#0088ff"
-                              emissiveIntensity={0.8}
+                              color="#00ffff"
+                              emissive="#00ffff"
+                              emissiveIntensity={10}
                               toneMapped={false}
                               transparent
-                              opacity={0.24}
+                              opacity={0.8}
                               blending={THREE.AdditiveBlending}
                               depthWrite={false}
-                              depthTest={true}
                            />
                         </Sphere>
                         <mesh ref={pupilLeft} position={[0, 0, 0.04]}>
-                           <sphereGeometry args={[0.035, 16, 16]} />
+                           <sphereGeometry args={[0.032, 16, 16]} />
                            <meshStandardMaterial color="#000000" roughness={1} />
                         </mesh>
                      </group>
@@ -223,7 +233,7 @@ export default function Entity() {
 
                   <group position={[0.32, 0.04, 0]}>
                      <group ref={eyeRight} renderOrder={30}>
-                        <Sphere args={[0.07, 32, 32]}>
+                        <Sphere args={[0.065, 32, 32]}>
                            <meshStandardMaterial
                               ref={rightMat}
                               color="#0044ff"
@@ -236,22 +246,21 @@ export default function Entity() {
                               depthTest={true}
                            />
                         </Sphere>
-                        {/* Inner core glow - brighter center */}
-                        <Sphere args={[0.038, 16, 16]}>
+                        {/* Brighter center point (Sharper Core) */}
+                        <Sphere args={[0.02, 16, 16]}>
                            <meshStandardMaterial
-                              color="#0088ff"
-                              emissive="#0088ff"
-                              emissiveIntensity={0.8}
+                              color="#00ffff"
+                              emissive="#00ffff"
+                              emissiveIntensity={10}
                               toneMapped={false}
                               transparent
-                              opacity={0.24}
+                              opacity={0.8}
                               blending={THREE.AdditiveBlending}
                               depthWrite={false}
-                              depthTest={true}
                            />
                         </Sphere>
                         <mesh ref={pupilRight} position={[0, 0, 0.04]}>
-                           <sphereGeometry args={[0.035, 16, 16]} />
+                           <sphereGeometry args={[0.032, 16, 16]} />
                            <meshStandardMaterial color="#000000" roughness={1} />
                         </mesh>
                      </group>
@@ -259,12 +268,10 @@ export default function Entity() {
              </group>
           </group>
 
-
-
           {/* 4. Glass Detail Ring */}
           <mesh rotation={[0, 0, 0]}>
-             <torusGeometry args={[1.01, 0.001, 16, 120]} />
-             <meshStandardMaterial color="#ffffff" transparent opacity={0.05} />
+             <torusGeometry args={[1.01, 0.0005, 16, 120]} />
+             <meshStandardMaterial color="#ffffff" transparent opacity={0.03} />
           </mesh>
         </group>
       </Float>
@@ -280,6 +287,7 @@ export default function Entity() {
     </group>
   );
 }
+
 
 
 
