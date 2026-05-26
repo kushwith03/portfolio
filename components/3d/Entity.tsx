@@ -177,7 +177,7 @@ export default function Entity() {
           <group position={[0, 0, 0.6]}> {/* Deep internal placement */}
              <pointLight 
                ref={innerGlowRef} 
-               color="#00ffff" 
+               color="#0066ff" 
                intensity={1} 
                distance={4} 
              />
@@ -190,8 +190,8 @@ export default function Entity() {
                         <Sphere args={[0.07, 32, 32]}>
                            <meshStandardMaterial
                               ref={leftMat}
-                              color="#00deff"
-                              emissive="#00deff"
+                              color="#0044ff"
+                              emissive="#0044ff"
                               toneMapped={false}
                               transparent
                               opacity={0.18}
@@ -203,8 +203,8 @@ export default function Entity() {
                         {/* Inner core glow - brighter center */}
                         <Sphere args={[0.038, 16, 16]}>
                            <meshStandardMaterial
-                              color="#00f0ff"
-                              emissive="#00f0ff"
+                              color="#0088ff"
+                              emissive="#0088ff"
                               emissiveIntensity={0.8}
                               toneMapped={false}
                               transparent
@@ -226,8 +226,8 @@ export default function Entity() {
                         <Sphere args={[0.07, 32, 32]}>
                            <meshStandardMaterial
                               ref={rightMat}
-                              color="#00deff"
-                              emissive="#00deff"
+                              color="#0044ff"
+                              emissive="#0044ff"
                               toneMapped={false}
                               transparent
                               opacity={0.18}
@@ -239,8 +239,8 @@ export default function Entity() {
                         {/* Inner core glow - brighter center */}
                         <Sphere args={[0.038, 16, 16]}>
                            <meshStandardMaterial
-                              color="#00f0ff"
-                              emissive="#00f0ff"
+                              color="#0088ff"
+                              emissive="#0088ff"
                               emissiveIntensity={0.8}
                               toneMapped={false}
                               transparent
