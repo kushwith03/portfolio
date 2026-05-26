@@ -26,9 +26,9 @@ export default function ProjectMonolith({ project, index, position }: MonolithPr
   const colors = ["#ffffff", "#ffaa00", "#44ccff"];
   const themeColor = colors[index % colors.length];
 
-  // Refined project thresholds
-  const sceneStart = 0.3;
-  const sceneEnd = 0.8;
+  // Refined project thresholds mapping to Scene 4 (0.61 to 0.88)
+  const sceneStart = 0.61;
+  const sceneEnd = 0.88;
   const projectStep = (sceneEnd - sceneStart) / 3;
   const projectFocus = sceneStart + index * projectStep + projectStep / 2;
 
@@ -37,16 +37,26 @@ export default function ProjectMonolith({ project, index, position }: MonolithPr
 
     const dist = Math.abs(scrollProgress - projectFocus);
     // Artifact reveal: smooth, viscous window
-    const opacity = THREE.MathUtils.smoothstep(dist, 0.18, 0.05);
+    const opacity = THREE.MathUtils.smoothstep(dist, 0.12, 0.02);
     const revealFactor = 1 - opacity; // 1 when focused, 0 when far
     
     // 1. Viscous Reveal Animation
     contentRef.current.scale.setScalar(THREE.MathUtils.lerp(0.8, 1, revealFactor));
     contentRef.current.position.z = THREE.MathUtils.lerp(-4, 0, revealFactor);
+    
+    // Asymmetrical alternating layout
+    // If index is even (HTML on left), model settles on right (dir = 1).
+    // If index is odd (HTML on right), model settles on left (dir = -1).
+    const dir = index % 2 === 0 ? 1 : -1;
+    
+    // Starts far off-screen (dir * 4) and settles off-center (dir * 1.5)
+    contentRef.current.position.x = THREE.MathUtils.lerp(dir * 4, dir * 1.5, revealFactor);
+    
     contentRef.current.rotation.x = THREE.MathUtils.lerp(0.15, 0, revealFactor);
+    contentRef.current.rotation.y = THREE.MathUtils.lerp(dir * 0.4, dir * 0.1, revealFactor);
     
     // 2. Artifact Stability & Hover Reactivity
-    const targetRotY = (hovered ? 0.15 : 0) + (state.mouse.x * 0.05);
+    const targetRotY = (hovered ? 0.15 * dir : 0) + (state.mouse.x * 0.05);
     meshRef.current.rotation.y = THREE.MathUtils.lerp(meshRef.current.rotation.y, targetRotY, 0.04);
 
     // 3. Environmental Light Sync
