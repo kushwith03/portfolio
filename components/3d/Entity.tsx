@@ -259,19 +259,21 @@ export default function Entity() {
              </group>
           </group>
 
-          {/* 3. Smoked Glass Interface (Facial Shield) */}
-          <group position={[0, 0, 0.82]} scale={[0.85, 0.55, 0.15]}>
-             <Sphere args={[1, 32, 32, 0, Math.PI * 2, 0, Math.PI / 2]}>
-                <meshPhysicalMaterial 
-                   color="#000000" 
-                   roughness={0.05} 
-                   metalness={0.9}
-                   clearcoat={1}
-                   transparent
-                   opacity={0.65} 
-                />
-             </Sphere>
-          </group>
+           {/* 3. Smoked Glass Interface (Facial Shield) */}
+           <group position={[0, 0, 0.82]} scale={[0.85, 0.55, 0.15]}>
+              <Sphere args={[1, 32, 32, 0, Math.PI * 2, 0, Math.PI / 2]}>
+                 <meshPhysicalMaterial
+                    color="#000000"
+                    roughness={0.08}
+                    metalness={0.75}
+                    clearcoat={1}
+                    transparent
+                    opacity={0.58}
+                    transmission={0.1}
+                    thickness={0.1}
+                 />
+              </Sphere>
+           </group>
 
           {/* 4. Glass Detail Ring */}
           <mesh rotation={[0, 0, 0]}>
