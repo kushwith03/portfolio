@@ -1,14 +1,24 @@
 {
   "technical": {
     "languages": ["Java", "JavaScript (ES6+)", "Python", "SQL", "C++"],
-    "frontend": ["React.js", "HTML5", "CSS3", "Tailwind CSS", "Framer Motion"],
-    "backend": ["Node.js", "Express.js", "REST APIs", "JWT Authentication", "MVC Architecture"],
-    "db_cloud": ["PostgreSQL", "MongoDB", "MySQL", "AWS S3", "CloudFront", "Cloudflare CDN", "GitHub Actions (CI/CD)", "Vercel", "Render"],
-    "tools": ["Git", "Postman", "Linux CLI", "VS Code", "CARLA Simulator"]
+    "frontend": ["React.js", "Next.js", "Tailwind CSS", "Framer Motion", "Three.js"],
+    "backend": ["Node.js", "Express.js", "REST APIs", "JWT", "MVC"],
+    "infrastructure": ["AWS S3", "CloudFront", "Cloudflare", "GitHub Actions", "Vercel", "Render"],
+    "databases": ["PostgreSQL", "MongoDB", "MySQL"],
+    "tools": ["Git", "Postman", "Linux CLI", "CARLA Simulator"]
   },
   "achievements": [
-    { "title": "200+ DSA Problems Solved", "desc": "Arrays, Linked Lists, Strings, and Recursion using Java" },
-    { "title": "Microsoft Certified", "desc": "Azure AI Fundamentals (AI-900) & Data Fundamentals (DP-900)" },
-    { "title": "State-Level Athlete", "desc": "College representative in Powerlifting and Kabaddi" }
+    { "title": "200+ DSA Solutions", "desc": "Proficient in Java-based algorithms and data structures." },
+    { "title": "Microsoft Certified", "desc": "Azure AI (AI-900) & Data (DP-900) Fundamentals." },
+    { "title": "State-Level Athlete", "desc": "Powerlifting and Kabaddi competitor representing RNSIT." }
+  ],
+  "experience": [
+    {
+      "role": "Full-Stack SWE Intern",
+      "company": "ATSPL",
+      "period": "Jan 2026 -- Apr 2026",
+      "location": "Bengaluru",
+      "details": "Shipped production features using React, Node, and PostgreSQL with zero-downtime workflows."
+    }
   ]
 }

@@ -14,7 +14,7 @@ export default function NeuralCore() {
   const activeScene = useStore((state) => state.activeScene);
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState([
-    { role: "bot", text: "Systems stabilized. I am Khushwith's synthetic architectural double. How can I assist your technical inquiry regarding these builds?" },
+    { role: "bot", text: "Systems stabilized. I am Khushwith's synthetic architectural double. I have full access to his builds in Autonomous Systems and Full-Stack architecture. How can I assist your technical inquiry?" },
   ]);
   const [input, setInput] = useState("");
   const terminalRef = useRef<HTMLDivElement>(null);
@@ -31,7 +31,7 @@ export default function NeuralCore() {
 
   const handleSend = async () => {
     if (!input.trim()) return;
-    
+
     const newMessages = [...messages, { role: "user", text: input }];
     setMessages(newMessages);
     setInput("");
@@ -39,7 +39,11 @@ export default function NeuralCore() {
     try {
       const res = await fetch("/api/chat", {
         method: "POST",
-        body: JSON.stringify({ message: input, history: messages, persona: "developer" }),
+        body: JSON.stringify({ 
+          message: input, 
+          history: messages, 
+          persona: "High-performance software engineer, specialized in Data Science, Autonomous Vehicles (CARLA), and Full-Stack systems. Professional, concise, and technically rigorous." 
+        }),
       });
       const data = await res.json();
       setMessages([...newMessages, { role: "bot", text: data.reply }]);

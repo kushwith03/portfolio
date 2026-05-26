@@ -1,44 +1,44 @@
 [
   {
     "id": "1",
-    "title": "Autonomous Vehicle Simulation",
+    "title": "Autonomous Driving Simulation",
     "timeline": "Aug 2025 -- Feb 2026",
-    "description": "Built an end-to-end autonomous driving pipeline trained on 8,000+ Cityscapes and CARLA simulation images using PyTorch-based deep learning workflows. Implemented behavioral cloning with CNN-based steering prediction systems, reducing navigation error rates and improving simulated driving stability.",
+    "description": "End-to-end autonomous driving pipeline trained on 8,000+ Cityscapes and CARLA simulation images. Implemented behavioral cloning with CNN-based steering prediction, achieving sub-50ms prediction latency.",
     "tags": ["Python", "PyTorch", "CARLA", "Computer Vision"],
     "link": "https://github.com/kushwith03/Autonomous-Vehicle",
-    "imageUrl": "https://placehold.co/800x500/2563eb/ffffff?text=Autonomous+Vehicle",
+    "imageUrl": "https://placehold.co/800x500/000000/00deff?text=AUTONOMOUS_VEHICLE_SIM",
     "highlights": [
-      "8,000+ Cityscapes & CARLA images",
-      "Behavioral Cloning & CNNs",
-      "Sub-50ms Prediction Latency"
+      "8,000+ Training Samples",
+      "CNN Behavioral Cloning",
+      "Real-time CARLA Integration"
     ]
   },
   {
     "id": "2",
-    "title": "InstaResume — AI Resume Platform",
+    "title": "InstaResume AI",
     "timeline": "Mar 2025 -- Jul 2025",
-    "description": "Engineered a real-time AI-powered resume builder using React Hook Form with optimized state synchronization and live-preview rendering systems. Integrated Google Gemini AI to generate ATS-optimized resume content and implemented client-side PDF export workflows using @react-pdf/renderer.",
-    "tags": ["React.js", "Node.js", "Gemini AI", "@react-pdf/renderer"],
+    "description": "Real-time AI-powered resume builder integrated with Google Gemini AI for ATS optimization. Features optimized state synchronization and client-side PDF export workflows.",
+    "tags": ["React.js", "Node.js", "Gemini AI", "Tailwind"],
     "link": "https://github.com/kushwith03/ai-resume-builder",
-    "imageUrl": "https://placehold.co/800x500/2563eb/ffffff?text=InstaResume",
+    "imageUrl": "https://placehold.co/800x500/000000/00deff?text=INSTARESUME_AI",
     "highlights": [
       "Gemini AI Integration",
-      "ATS-Optimized Content",
-      "Optimized State Sync"
+      "ATS Optimization Engine",
+      "React Hook Form Ops"
     ]
   },
   {
     "id": "3",
-    "title": "BlogSpace Publishing Platform",
+    "title": "BlogSpace Platform",
     "timeline": "Nov 2024 -- Jan 2025",
-    "description": "Architected modular REST APIs using MVC patterns with scalable routing, middleware orchestration, and PostgreSQL-backed relational data modeling. Implemented JWT-based authentication and authorization systems securing protected CRUD workflows and session-aware user operations.",
+    "description": "Modular full-stack publishing platform with PostgreSQL relational modeling and JWT-based security. Architected using MVC patterns for scalable routing and middleware orchestration.",
     "tags": ["Node.js", "Express.js", "PostgreSQL", "JWT"],
     "link": "https://github.com/kushwith03/blogspace",
-    "imageUrl": "https://placehold.co/800x500/2563eb/ffffff?text=BlogSpace",
+    "imageUrl": "https://placehold.co/800x500/000000/00deff?text=BLOGSPACE_FS",
     "highlights": [
       "MVC Architecture",
-      "JWT Authentication",
-      "Secure API Design"
+      "PostgreSQL Integration",
+      "Secure Auth Flow"
     ]
   }
 ]

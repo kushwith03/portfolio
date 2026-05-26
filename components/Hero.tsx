@@ -90,19 +90,19 @@ export default function Hero() {
           <div className="mb-8">
             <h1
               ref={titleRef}
-              className="text-[10vw] md:text-[5.5vw] font-black uppercase leading-[0.82] tracking-tighter opacity-0"
+              className="text-[10vw] md:text-[6.5vw] font-black uppercase leading-[0.82] tracking-tighter opacity-0"
             >
-              <span className="text-white/20 block mb-2">Architecting</span>
-              <span className="text-white block italic">Autonomous</span>
-              <span className="text-white block tracking-widest">Systems.</span>
+              <span className="text-white/20 block mb-2 text-[0.4em] tracking-[0.4em]">Personal_Builds_v3</span>
+              <span className="text-white block italic">R_Khushwith</span>
+              <span className="text-white block tracking-widest">Kumar.</span>
             </h1>
           </div>
 
           <Parallax speed={0.04}>
             <div ref={subtitleRef} className="max-w-2xl mb-12 opacity-0">
               <p className="text-lg md:text-xl text-white/40 font-light leading-relaxed tracking-tight">
-                 Full-Stack Engineer specialized in <span className="text-white/80 font-medium italic">Production Systems</span>, <br />
-                 <span className="text-white/80 font-medium underline underline-offset-8 decoration-white/10">Autonomous Vehicle Simulation</span>, and <br />
+                 Full-Stack Engineer & Data Science Specialist <br />
+                 Architecting <span className="text-white/80 font-medium italic">Autonomous Systems</span> and <br />
                  Intelligent Digital Products.
               </p>
             </div>
