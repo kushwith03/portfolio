@@ -173,8 +173,8 @@ export default function Entity() {
             />
           </Sphere>
 
-          {/* 2. Embedded Optical Intelligence (Embedded Depth) */}
-          <group position={[0, 0, 0.6]}> {/* Deep internal placement */}
+          {/* 2. Embedded Optical Intelligence (Surface Alignment) */}
+          <group position={[0, 0, 0.95]}> {/* Positioned near the shell surface (R=1) */}
              <pointLight 
                ref={innerGlowRef} 
                color="#0066ff" 
@@ -183,7 +183,7 @@ export default function Entity() {
              />
              
              {/* Optical System Container */}
-             <group position={[0, 0.08, 0.2]}>
+             <group position={[0, 0.08, 0.06]}> {/* Total Z ~ 1.01 */}
                  {/* Internal Glow Points */}
                   <group position={[-0.32, 0.04, 0]}>
                      <group ref={eyeLeft} renderOrder={30}>
