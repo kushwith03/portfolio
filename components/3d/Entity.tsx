@@ -104,8 +104,8 @@ export default function Entity() {
     if (pupilLeft.current && pupilRight.current) {
       // Tiny range (5-8% of radius) for internal mechanics feel
       // Velocity influence for the 'overshoot then settle' feel
-      const trackingX = eyeSmooth.current.x * 0.08 + eyeVelocity.current.x * 0.2;
-      const trackingY = eyeSmooth.current.y * 0.06 + eyeVelocity.current.y * 0.2;
+      const trackingX = eyeSmooth.current.x * 0.095 + eyeVelocity.current.x * 0.2;
+      const trackingY = eyeSmooth.current.y * 0.07 + eyeVelocity.current.y * 0.2;
 
       pupilLeft.current.position.x = THREE.MathUtils.lerp(pupilLeft.current.position.x, trackingX, 0.1);
       pupilLeft.current.position.y = THREE.MathUtils.lerp(pupilLeft.current.position.y, trackingY, 0.1);
@@ -139,7 +139,7 @@ export default function Entity() {
 
     // Animate emissive materials per frame
     if (leftMat.current && rightMat.current) {
-      const targetIntensity = 0.25 + proximity.current * 0.9;
+      const targetIntensity = 0.35 + proximity.current * 1.2;
       const currentL = (leftMat.current.emissiveIntensity as number) || 0;
       const currentR = (rightMat.current.emissiveIntensity as number) || 0;
 
@@ -147,8 +147,8 @@ export default function Entity() {
       rightMat.current.emissiveIntensity = THREE.MathUtils.lerp(currentR, targetIntensity, 0.12);
 
       const pulse = 0.02 * Math.sin(t * 0.9 + eyeSmooth.current.x * 4);
-      leftMat.current.opacity = THREE.MathUtils.clamp(0.12 + proximity.current * 0.05 + pulse, 0.06, 0.22);
-      rightMat.current.opacity = THREE.MathUtils.clamp(0.12 + proximity.current * 0.05 - pulse, 0.06, 0.22);
+      leftMat.current.opacity = THREE.MathUtils.clamp(0.16 + proximity.current * 0.08 + pulse, 0.10, 0.28);
+      rightMat.current.opacity = THREE.MathUtils.clamp(0.16 + proximity.current * 0.08 - pulse, 0.10, 0.28);
     }
   });
 
@@ -187,19 +187,19 @@ export default function Entity() {
                  {/* Internal Glow Points */}
                  <group position={[-0.32, 0.04, 0]}>
                     <group ref={eyeLeft} renderOrder={30}>
-                       <Sphere args={[0.07, 32, 32]}>
-                          <meshStandardMaterial
-                             ref={leftMat}
-                             color="#00ffff"
-                             emissive="#00ffff"
-                             toneMapped={false}
-                             transparent
-                             opacity={0.12}
-                             blending={THREE.AdditiveBlending}
-                             depthWrite={false}
-                             depthTest={true}
-                          />
-                       </Sphere>
+                        <Sphere args={[0.07, 32, 32]}>
+                           <meshStandardMaterial
+                              ref={leftMat}
+                              color="#00ffff"
+                              emissive="#00ffff"
+                              toneMapped={false}
+                              transparent
+                              opacity={0.16}
+                              blending={THREE.AdditiveBlending}
+                              depthWrite={false}
+                              depthTest={true}
+                           />
+                        </Sphere>
                        <mesh ref={pupilLeft} position={[0, 0, 0.04]}>
                           <sphereGeometry args={[0.035, 16, 16]} />
                           <meshStandardMaterial color="#000000" roughness={1} />
@@ -209,19 +209,19 @@ export default function Entity() {
 
                  <group position={[0.32, 0.04, 0]}>
                     <group ref={eyeRight} renderOrder={30}>
-                       <Sphere args={[0.07, 32, 32]}>
-                          <meshStandardMaterial
-                             ref={rightMat}
-                             color="#00ffff"
-                             emissive="#00ffff"
-                             toneMapped={false}
-                             transparent
-                             opacity={0.12}
-                             blending={THREE.AdditiveBlending}
-                             depthWrite={false}
-                             depthTest={true}
-                          />
-                       </Sphere>
+                        <Sphere args={[0.07, 32, 32]}>
+                           <meshStandardMaterial
+                              ref={rightMat}
+                              color="#00ffff"
+                              emissive="#00ffff"
+                              toneMapped={false}
+                              transparent
+                              opacity={0.16}
+                              blending={THREE.AdditiveBlending}
+                              depthWrite={false}
+                              depthTest={true}
+                           />
+                        </Sphere>
                        <mesh ref={pupilRight} position={[0, 0, 0.04]}>
                           <sphereGeometry args={[0.035, 16, 16]} />
                           <meshStandardMaterial color="#000000" roughness={1} />
