@@ -22,7 +22,9 @@ export default function Entity() {
   const pupilLeft = useRef<THREE.Mesh>(null);
   const pupilRight = useRef<THREE.Mesh>(null);
   const innerGlowRef = useRef<THREE.PointLight>(null);
-  
+  const leftMat = useRef<THREE.MeshStandardMaterial>(null);
+  const rightMat = useRef<THREE.MeshStandardMaterial>(null);
+
   const targetPos = useRef(new THREE.Vector3(0, 0, 0));
   const currentPos = useRef(new THREE.Vector3(0, 0, 0));
   
@@ -131,8 +133,22 @@ export default function Entity() {
     }
 
     if (innerGlowRef.current) {
-      // Intelligence glow intensity response
-      innerGlowRef.current.intensity = 0.5 + proximity.current * 2.5;
+       // Intelligence glow intensity response
+       innerGlowRef.current.intensity = 0.5 + proximity.current * 2.5;
+    }
+
+    // Animate emissive materials per frame
+    if (leftMat.current && rightMat.current) {
+      const targetIntensity = 0.25 + proximity.current * 0.9;
+      const currentL = (leftMat.current.emissiveIntensity as number) || 0;
+      const currentR = (rightMat.current.emissiveIntensity as number) || 0;
+
+      leftMat.current.emissiveIntensity = THREE.MathUtils.lerp(currentL, targetIntensity, 0.12);
+      rightMat.current.emissiveIntensity = THREE.MathUtils.lerp(currentR, targetIntensity, 0.12);
+
+      const pulse = 0.02 * Math.sin(t * 0.9 + eyeSmooth.current.x * 4);
+      leftMat.current.opacity = THREE.MathUtils.clamp(0.12 + proximity.current * 0.05 + pulse, 0.06, 0.22);
+      rightMat.current.opacity = THREE.MathUtils.clamp(0.12 + proximity.current * 0.05 - pulse, 0.06, 0.22);
     }
   });
 
@@ -168,44 +184,50 @@ export default function Entity() {
              
              {/* Optical System Container */}
              <group position={[0, 0.08, 0.2]}>
-                {/* Internal Glow Points */}
-                <group position={[-0.32, 0.04, 0]}>
-                   <group ref={eyeLeft}>
-                      <Sphere args={[0.07, 32, 32]}>
-                         <meshStandardMaterial 
-                            color="#00ffff" 
-                            emissive="#00ffff" 
-                            emissiveIntensity={3 + proximity.current * 2} 
-                            toneMapped={false}
-                            transparent
-                            opacity={0.9}
-                         />
-                      </Sphere>
-                      <mesh ref={pupilLeft} position={[0, 0, 0.04]}>
-                         <sphereGeometry args={[0.035, 16, 16]} />
-                         <meshStandardMaterial color="#000000" roughness={1} />
-                      </mesh>
-                   </group>
-                </group>
+                 {/* Internal Glow Points */}
+                 <group position={[-0.32, 0.04, 0]}>
+                    <group ref={eyeLeft} renderOrder={30}>
+                       <Sphere args={[0.07, 32, 32]}>
+                          <meshStandardMaterial
+                             ref={leftMat}
+                             color="#00ffff"
+                             emissive="#00ffff"
+                             toneMapped={false}
+                             transparent
+                             opacity={0.12}
+                             blending={THREE.AdditiveBlending}
+                             depthWrite={false}
+                             depthTest={true}
+                          />
+                       </Sphere>
+                       <mesh ref={pupilLeft} position={[0, 0, 0.04]}>
+                          <sphereGeometry args={[0.035, 16, 16]} />
+                          <meshStandardMaterial color="#000000" roughness={1} />
+                       </mesh>
+                    </group>
+                 </group>
 
-                <group position={[0.32, 0.04, 0]}>
-                   <group ref={eyeRight}>
-                      <Sphere args={[0.07, 32, 32]}>
-                         <meshStandardMaterial 
-                            color="#00ffff" 
-                            emissive="#00ffff" 
-                            emissiveIntensity={3 + proximity.current * 2} 
-                            toneMapped={false}
-                            transparent
-                            opacity={0.9}
-                         />
-                      </Sphere>
-                      <mesh ref={pupilRight} position={[0, 0, 0.04]}>
-                         <sphereGeometry args={[0.035, 16, 16]} />
-                         <meshStandardMaterial color="#000000" roughness={1} />
-                      </mesh>
-                   </group>
-                </group>
+                 <group position={[0.32, 0.04, 0]}>
+                    <group ref={eyeRight} renderOrder={30}>
+                       <Sphere args={[0.07, 32, 32]}>
+                          <meshStandardMaterial
+                             ref={rightMat}
+                             color="#00ffff"
+                             emissive="#00ffff"
+                             toneMapped={false}
+                             transparent
+                             opacity={0.12}
+                             blending={THREE.AdditiveBlending}
+                             depthWrite={false}
+                             depthTest={true}
+                          />
+                       </Sphere>
+                       <mesh ref={pupilRight} position={[0, 0, 0.04]}>
+                          <sphereGeometry args={[0.035, 16, 16]} />
+                          <meshStandardMaterial color="#000000" roughness={1} />
+                       </mesh>
+                    </group>
+                 </group>
              </group>
           </group>
 
