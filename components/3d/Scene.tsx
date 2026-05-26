@@ -18,19 +18,43 @@ function CameraRig() {
   
   const currentLookAt = useRef(new THREE.Vector3(0, 0, 0));
   const targetLookAt = useRef(new THREE.Vector3(0, 0, 0));
+  const targetCamPos = useRef(new THREE.Vector3(0, 0, 8));
 
   useFrame(() => {
-    // Smoother camera transitions based on scroll
-    const zPos = THREE.MathUtils.lerp(8, -10, scrollProgress);
-    const xPos = mouse.x * 0.8;
-    const yPos = mouse.y * 0.4;
+    // 1. Dynamic Camera Positioning based on Narrative Phase
+    let zPos = 8;
+    let xOffset = 0;
+    let yOffset = 0;
 
-    camera.position.lerp(new THREE.Vector3(xPos, yPos, zPos), 0.03);
+    if (activeScene === 0) { // Hero
+      zPos = THREE.MathUtils.lerp(8, 7, scrollProgress * 8);
+      targetLookAt.current.set(0, 0, 0);
+    } else if (activeScene === 1) { // Principles
+      zPos = 6;
+      xOffset = -2; // Move camera to balance text on right
+      targetLookAt.current.set(1, 0, 0);
+    } else if (activeScene === 2) { // Experience
+      zPos = 7;
+      xOffset = 2; // Move camera to balance text on left
+      targetLookAt.current.set(-1, 0, 0);
+    } else if (activeScene === 3) { // Architecture
+      zPos = 5; // Macro view
+      yOffset = 1;
+      targetLookAt.current.set(0, -0.5, 0);
+    } else if (activeScene === 4) { // Artifacts
+      zPos = THREE.MathUtils.lerp(8, -10, (scrollProgress - 0.61) / 0.27);
+      xOffset = mouse.x * 0.8;
+      yOffset = mouse.y * 0.4;
+      targetLookAt.current.set(mouse.x * 0.3, -0.2, zPos - 5);
+    } else { // Epilogue
+      zPos = -12;
+      targetLookAt.current.set(0, 0, zPos - 2);
+    }
 
-    if (activeScene === 0) targetLookAt.current.set(0, 0, 0);
-    if (activeScene === 1) targetLookAt.current.set(mouse.x * 0.3, -0.2, zPos - 5);
+    targetCamPos.current.set(xOffset + mouse.x * 0.5, yOffset + mouse.y * 0.2, zPos);
+    camera.position.lerp(targetCamPos.current, 0.04);
 
-    currentLookAt.current.lerp(targetLookAt.current, 0.02);
+    currentLookAt.current.lerp(targetLookAt.current, 0.03);
     camera.lookAt(currentLookAt.current);
   });
   
@@ -39,12 +63,28 @@ function CameraRig() {
 
 export default function Scene() {
   const [mounted, setMounted] = useState(false);
+  const activeScene = useStore((state) => state.activeScene);
+  const scrollProgress = useStore((state) => state.scrollProgress);
 
   useEffect(() => {
     setMounted(true);
   }, []);
 
   if (!mounted) return <div className="fixed inset-0 bg-[#010101]" />;
+
+  // Atmospheric Progression Mapping
+  const getAtmosphere = () => {
+    switch(activeScene) {
+      case 0: return { color: "#010101", fogNear: 5, fogFar: 25, ambient: 0.02 };
+      case 1: return { color: "#020408", fogNear: 2, fogFar: 15, ambient: 0.04 }; // Deeper blue/gray
+      case 2: return { color: "#050301", fogNear: 3, fogFar: 18, ambient: 0.03 }; // Warmer industrial
+      case 3: return { color: "#020202", fogNear: 1, fogFar: 12, ambient: 0.05 }; // High contrast
+      case 4: return { color: "#000000", fogNear: 5, fogFar: 30, ambient: 0.02 }; // Void
+      default: return { color: "#010101", fogNear: 5, fogFar: 25, ambient: 0.02 };
+    }
+  };
+
+  const atmos = getAtmosphere();
 
   return (
     <div className="fixed inset-0 -z-10 bg-[#010101]">
@@ -59,15 +99,14 @@ export default function Scene() {
           depth: true
         }}
       >
-        <color attach="background" args={["#010101"]} />
+        <color attach="background" args={[atmos.color]} />
         
         {/* Layered Fog for Spatial Depth */}
-        <fog attach="fog" args={["#010101", 5, 25]} />
+        <fog attach="fog" args={[atmos.color, atmos.fogNear, atmos.fogFar]} />
 
         <Suspense fallback={null}>
-          <ambientLight intensity={0.02} />
+          <ambientLight intensity={atmos.ambient} />
           
-          {/* Natural reflections for the engineered character */}
           <Environment preset="city" />
           
           <CameraRig />
@@ -76,10 +115,9 @@ export default function Scene() {
           {/* Refined Background Gradient Plane for Separation */}
           <mesh position={[0, 0, -10]} scale={[40, 40, 1]}>
              <planeGeometry />
-             <meshBasicMaterial color="#0a0a0a" transparent opacity={0.3} />
+             <meshBasicMaterial color={atmos.color} transparent opacity={0.5} />
           </mesh>
 
-          {/* Sublte ground shadow for presence */}
           <ContactShadows 
             position={[0, -4, 0]} 
             opacity={0.4} 
@@ -96,4 +134,5 @@ export default function Scene() {
     </div>
   );
 }
+
 
