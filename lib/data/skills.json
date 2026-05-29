@@ -8,7 +8,7 @@
     "tools": ["Git", "Postman", "Linux", "VS Code", "CARLA Simulator"]
   },
   "achievements": [
-    { "title": "200+ DSA Solutions", "desc": "Proficient in Java-based algorithms and data structures." },
+    { "title": "250+ DSA Solutions", "desc": "Proficient in Java-based algorithms and data structures." },
     { "title": "Microsoft Certified", "desc": "Azure AI (AI-900) & Data (DP-900) Fundamentals." },
     { "title": "State-Level Athlete", "desc": "Powerlifting and Kabaddi competitor representing RNSIT." }
   ],
