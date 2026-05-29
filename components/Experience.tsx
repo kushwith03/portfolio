@@ -9,19 +9,19 @@ const EXPERIENCES = [
     role: "Full-Stack SWE Intern",
     company: "ATSPL",
     time: "Jan 2026 — Apr 2026",
-    desc: "Shipped production React, Node, and PostgreSQL features. Designed optimized relational schemas, REST APIs, and automated CI/CD workflows using GitHub Actions. Managed AWS S3 deployment with CloudFront and Cloudflare CDN integration."
+    desc: "Shipped production React, Node, and PostgreSQL features. Designed optimized relational schemas, REST APIs, and automated CI/CD workflows."
   },
   {
     role: "Autonomous Systems Builder",
-    company: "CARLA / PyTorch",
+    company: "Research & Simulation",
     time: "Aug 2025 — Feb 2026",
-    desc: "Built an end-to-end driving pipeline using 8,000+ images. Implemented behavioral cloning and CNN-based steering prediction, achieving sub-50ms inference latency."
+    desc: "Engineering end-to-end autonomous driving pipelines and steering prediction systems within high-fidelity simulation environments."
   },
   {
     role: "CSE (Data Science)",
     company: "RNSIT",
     time: "Expected May 2026",
-    desc: "8.41 CGPA. Focus on Data Structures, OOP, DBMS, and Systems Architecture. Building intelligent systems and production-ready digital products."
+    desc: "Focus on Systems Architecture, DBMS, and Machine Learning. Building a foundation in production-ready digital products."
   }
 ];
 
@@ -31,43 +31,39 @@ export default function Experience() {
 
   useEffect(() => {
     if (activeScene === 2) {
-      gsap.to(containerRef.current, { opacity: 1, filter: "blur(0px)", x: 0, duration: 1.2, ease: "power4.out" });
+      gsap.to(containerRef.current, { opacity: 1, filter: "blur(0px)", y: 0, duration: 1, ease: "power3.out" });
     } else {
-      gsap.to(containerRef.current, { opacity: 0, filter: "blur(15px)", x: -30, duration: 0.6 });
+      gsap.to(containerRef.current, { opacity: 0, filter: "blur(10px)", y: 20, duration: 0.5 });
     }
   }, [activeScene]);
 
   return (
-    <section className="fixed inset-0 pointer-events-none z-10 flex items-center justify-start px-6 md:px-32">
+    <section className="fixed inset-0 pointer-events-none z-10 flex items-center justify-center px-6 md:px-24">
       <div 
         ref={containerRef} 
-        className="max-w-2xl w-full flex flex-col gap-16 opacity-0 -translate-x-10 filter blur-xl"
+        className="max-w-5xl w-full flex flex-col gap-12 opacity-0 translate-y-5 filter blur-md"
       >
-        <div className="flex flex-col gap-6">
+        <div className="flex flex-col gap-4">
           <div className="flex items-center gap-4">
-            <span className="text-[9px] uppercase tracking-[0.6em] text-cyan-400 font-black italic">Operational_Timeline</span>
+            <span className="text-[10px] uppercase tracking-[0.6em] text-cyan-400 font-black">Timeline // Heritage</span>
             <div className="h-px w-12 bg-cyan-400/20" />
           </div>
-          <h2 className="text-5xl md:text-7xl font-black uppercase leading-[0.85] tracking-tighter text-white">
-            Engineering<br /><span className="text-white/20 italic font-light">Heritage.</span>
+          <h2 className="text-5xl md:text-8xl font-black uppercase leading-none tracking-tighter text-white">
+            Experience.
           </h2>
         </div>
         
-        <div className="flex flex-col gap-10 relative before:absolute before:left-[3px] before:top-2 before:bottom-2 before:w-px before:bg-white/5">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
           {EXPERIENCES.map((exp, i) => (
-            <div key={i} className="relative pl-10 group pointer-events-auto cursor-default">
-              <div className="absolute left-0 top-1.5 w-2 h-2 rounded-full bg-black border border-white/20 group-hover:border-cyan-400 group-hover:bg-cyan-400/20 group-hover:scale-125 transition-all duration-700" />
-              <div className="flex flex-col gap-2">
-                <div className="flex justify-between items-baseline gap-10">
-                  <h4 className="text-white font-black tracking-widest uppercase text-xs">{exp.role}</h4>
-                  <div className="h-px flex-1 bg-white/5" />
-                  <span className="text-[9px] uppercase tracking-[0.2em] text-white/20 font-bold whitespace-nowrap">{exp.time}</span>
-                </div>
-                <span className="text-[11px] uppercase tracking-[0.4em] text-cyan-400/60 font-black italic mb-2">{exp.company}</span>
-                <p className="text-white/40 text-sm md:text-base leading-relaxed font-light group-hover:text-white/60 transition-colors duration-700">
-                  {exp.desc}
-                </p>
+            <div key={i} className="flex flex-col gap-6 group pointer-events-auto cursor-default">
+              <div className="flex flex-col gap-1">
+                <span className="text-[8px] uppercase tracking-[0.4em] text-white/20 font-bold">{exp.time}</span>
+                <h4 className="text-white font-black tracking-widest uppercase text-sm group-hover:text-cyan-400 transition-colors">{exp.role}</h4>
+                <span className="text-[10px] uppercase tracking-[0.4em] text-white/40 font-black italic">{exp.company}</span>
               </div>
+              <p className="text-white/30 text-xs md:text-sm leading-relaxed font-light group-hover:text-white/60 transition-colors border-l border-white/10 pl-4">
+                {exp.desc}
+              </p>
             </div>
           ))}
         </div>

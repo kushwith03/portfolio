@@ -11,7 +11,7 @@ import SystemIndex from '../components/SystemIndex';
 
 /**
  * Root Page: Unified Narrative Stream
- * Pacing Pass 6: Minimal engineering journey with premium navigation.
+ * Pacing Pass 7: Total spatial isolation for high readability.
  */
 export default function Home() {
   return (
@@ -21,12 +21,12 @@ export default function Home() {
 
       <div className="relative">
         {/* Scene 0: Home */}
-        <div className="h-[100vh]">
+        <div className="h-[120vh]">
           <Hero />
         </div>
 
-        {/* Scene 1: Projects */}
-        <div className="relative h-[200vh]">
+        {/* Scene 1: Projects (High focus duration) */}
+        <div className="relative h-[250vh]">
            <Projects />
         </div>
 
@@ -41,7 +41,7 @@ export default function Home() {
         </div>
 
         {/* Scene 4: Contact */}
-        <div className="relative bg-gradient-to-b from-transparent via-[#020202] to-[#010101]">
+        <div className="relative h-[120vh] bg-gradient-to-b from-transparent via-[#020202] to-[#010101]">
            <NeuralCore />
            <Epilogue />
         </div>

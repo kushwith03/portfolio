@@ -21,11 +21,11 @@ export default function CinematicController() {
     // 1. Narrative Milestone Thresholds
     // Calibrated for a fast, continuous flow (0.0 to 1.0)
     const scenes = [
-      { id: 0, start: 0, end: 0.15 },       // Home
-      { id: 1, start: 0.16, end: 0.45 },    // Projects
-      { id: 2, start: 0.46, end: 0.65 },    // Experience
-      { id: 3, start: 0.66, end: 0.85 },    // Stack
-      { id: 4, start: 0.86, end: 1.0 },     // Contact
+      { id: 0, start: 0, end: 0.12 },       // Home
+      { id: 1, start: 0.18, end: 0.42 },    // Projects (Wide window for scroll artifacts)
+      { id: 2, start: 0.48, end: 0.62 },    // Experience
+      { id: 3, start: 0.68, end: 0.82 },    // Stack
+      { id: 4, start: 0.88, end: 1.0 },     // Contact
     ];
 
     const ctx = gsap.context(() => {
