@@ -50,24 +50,29 @@ export default function Hero() {
   return (
     <section
       ref={containerRef}
-      className="relative min-h-screen flex flex-col justify-center px-6 md:pl-64 md:pr-24 py-20 z-10 overflow-hidden"
+      style={{ paddingLeft: 'var(--content-start)' }}
+      className="relative min-h-screen flex flex-col justify-center pr-6 md:pr-24 py-20 z-10 overflow-hidden"
     >
       {/* System Interface HUD - Authored Context */}
-      <div ref={infoRef} className="absolute inset-0 pointer-events-none p-10 md:p-16 md:pl-64 flex flex-col justify-between opacity-0">
+      <div 
+        ref={infoRef} 
+        style={{ paddingLeft: 'var(--content-start)' }}
+        className="absolute inset-0 pointer-events-none p-10 md:p-16 flex flex-col justify-between opacity-0"
+      >
         <div className="flex justify-between items-start">
           <div className="flex flex-col gap-2">
-            <span className="text-[9px] uppercase tracking-[0.6em] font-black text-white/30">Engineering_Auth</span>
+            <span className="text-[clamp(7px,0.6vw,9px)] uppercase tracking-[0.6em] font-black text-white/30">Engineering_Auth</span>
             <div className="w-10 h-px bg-white/5" />
-            <span className="text-[7px] uppercase tracking-[0.4em] text-white/10 font-bold">V.2026.CSE.DS</span>
+            <span className="text-[clamp(6px,0.5vw,7px)] uppercase tracking-[0.4em] text-white/10 font-bold">V.2026.CSE.DS</span>
           </div>
-          <div className="text-[7px] uppercase tracking-[0.4em] text-right text-white/10 font-bold leading-relaxed">
+          <div className="text-[clamp(6px,0.5vw,7px)] uppercase tracking-[0.4em] text-right text-white/10 font-bold leading-relaxed">
             Bengaluru_Node // <br />
             ATSPL_Hybrid_Ops
           </div>
         </div>
         
         <div className="flex justify-between items-end">
-          <div className="flex gap-12 text-[7px] uppercase tracking-[0.5em] text-white/5 font-black">
+          <div className="flex gap-12 text-[clamp(6px,0.5vw,7px)] uppercase tracking-[0.5em] text-white/5 font-black">
              <div className="flex items-center gap-3">
                 <Fingerprint className="w-3 h-3 text-white/20" />
                 <span>R_KHUSHWITH_KUMAR</span>
@@ -79,7 +84,7 @@ export default function Hero() {
           </div>
           <div className="flex flex-col items-end gap-3 opacity-20">
              <div className="w-10 h-px bg-white/20" />
-             <span className="text-[8px] uppercase tracking-[0.4em]">Scroll_Artifacts</span>
+             <span className="text-[clamp(7px,0.5vw,8px)] uppercase tracking-[0.4em]">Scroll_Artifacts</span>
           </div>
         </div>
       </div>
@@ -90,7 +95,7 @@ export default function Hero() {
           <div className="mb-8">
             <h1
               ref={titleRef}
-              className="text-[10vw] md:text-[6.5vw] font-black uppercase leading-[0.82] tracking-tighter opacity-0"
+              className="text-[clamp(3rem,8vw,6.5rem)] font-black uppercase leading-[0.82] tracking-tighter opacity-0"
             >
               <span className="text-white/20 block mb-2 text-[0.4em] tracking-[0.4em]">Personal_Builds_v3</span>
               <span className="text-white block italic">R_Khushwith</span>
@@ -100,7 +105,7 @@ export default function Hero() {
 
           <Parallax speed={0.04}>
             <div ref={subtitleRef} className="max-w-2xl mb-12 opacity-0">
-              <p className="text-lg md:text-xl text-white/40 font-light leading-relaxed tracking-tight">
+              <p className="text-[clamp(1rem,1.5vw,1.25rem)] text-white/40 font-light leading-relaxed tracking-tight">
                  Full Stack Software Engineer & AI Systems Builder <br />
                  Architecting <span className="text-white/80 font-medium italic">intelligent systems</span>, <span className="text-white/80 font-medium italic">scalable products</span>, and <br />
                  production-ready software.
@@ -110,14 +115,14 @@ export default function Hero() {
 
           <div ref={ctaRef} className="opacity-0">
             <div className="flex items-center gap-10">
-              <button className="group relative flex items-center gap-4 text-[9px] uppercase tracking-[0.6em] font-black text-white/40 hover:text-white transition-all">
+              <button className="group relative flex items-center gap-4 text-[clamp(8px,0.7vw,10px)] uppercase tracking-[0.6em] font-black text-white/40 hover:text-white transition-all">
                 <span className="w-12 h-px bg-white/10 group-hover:w-20 group-hover:bg-white/40 transition-all duration-700" />
                 Observe_Builds
               </button>
               <div className="h-4 w-px bg-white/5" />
               <div className="flex flex-col">
-                <span className="text-[8px] uppercase tracking-[0.4em] text-white/10 font-bold">CSE_Data_Science</span>
-                <span className="text-[7px] uppercase tracking-[0.4em] text-white/5 font-black">RNSIT_NODE</span>
+                <span className="text-[clamp(7px,0.6vw,8px)] uppercase tracking-[0.4em] text-white/10 font-bold">CSE_Data_Science</span>
+                <span className="text-[clamp(6px,0.5vw,7px)] uppercase tracking-[0.4em] text-white/5 font-black">RNSIT_NODE</span>
               </div>
             </div>
           </div>

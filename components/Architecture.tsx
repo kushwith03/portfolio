@@ -47,19 +47,19 @@ export default function Architecture() {
   }, [activeScene]);
 
   return (
-    <section className={`fixed inset-0 pointer-events-none z-10 flex items-center justify-center md:pl-64 px-6 md:px-24 transition-opacity duration-700 ${activeScene === 3 ? 'opacity-100' : 'opacity-0'}`}>
+    <section className={`fixed inset-0 pointer-events-none z-10 flex items-center justify-center px-6 md:px-24 transition-opacity duration-700 ${activeScene === 3 ? 'opacity-100' : 'opacity-0'}`}>
       <div 
         ref={containerRef} 
         className="max-w-6xl w-full flex flex-col gap-10 opacity-0 translate-y-10 filter blur-md"
       >
         <div className="flex flex-col gap-3 items-center text-center">
           <div className="flex items-center gap-4">
-            <span className="text-[10px] uppercase tracking-[0.8em] text-cyan-400 font-black">Ecosystem_Map</span>
+            <span className="text-[clamp(8px,0.7vw,10px)] uppercase tracking-[0.8em] text-cyan-400 font-black">Ecosystem_Map</span>
           </div>
-          <h2 className="text-4xl md:text-6xl font-black uppercase leading-none tracking-tighter text-white">
+          <h2 className="text-[clamp(2.5rem,6vw,4rem)] font-black uppercase leading-none tracking-tighter text-white">
             Architecture.
           </h2>
-          <p className="text-white/20 text-[9px] uppercase tracking-[0.4em] font-bold">
+          <p className="text-white/20 text-[clamp(7px,0.6vw,9px)] uppercase tracking-[0.4em] font-bold">
             // Production-ready stack optimized for scalability.
           </p>
         </div>

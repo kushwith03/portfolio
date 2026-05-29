@@ -19,7 +19,10 @@ export default function Home() {
       <CinematicController />
       <SystemIndex />
 
-      <div className="relative pl-12 md:pl-32 lg:pl-40">
+      <div 
+        style={{ paddingLeft: 'var(--content-start)' }}
+        className="relative"
+      >
         {/* Scene 0: Home */}
         <div className="h-[100vh]">
           <Hero />

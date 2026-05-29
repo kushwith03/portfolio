@@ -5,6 +5,7 @@ import { useFrame } from "@react-three/fiber";
 import { Float, Sphere } from "@react-three/drei";
 import * as THREE from "three";
 import { useStore } from "@/lib/store";
+import { SCENES } from "@/lib/constants";
 
 /**
  * Character System: The Architect Companion (Observed Intelligence Pass)
@@ -45,10 +46,11 @@ export default function Entity() {
   const activeScene = useStore((state) => state.activeScene);
 
   useFrame((state) => {
-    const { mouse, clock } = state;
+    const { mouse, clock, viewport } = state;
     const t = clock.getElapsedTime();
+    const aspect = viewport.width / viewport.height;
 
-    const isHero = activeScene === 0;
+    const isHero = activeScene === SCENES.HOME;
 
     // 1. PROXIMITY & IDLE DETECTION
     const mouseMoved = Math.abs(mouse.x - mouseSmooth.current.x) > 0.001 || Math.abs(mouse.y - mouseSmooth.current.y) > 0.001;
@@ -80,30 +82,30 @@ export default function Entity() {
     mouseSmooth.current.copy(mouse);
 
     // 3. SPATIAL POSITIONING
-    let xBase = isHero ? 2.8 : -3.5;
+    let xBase = isHero ? (aspect > 1.5 ? 2.8 : 2.2) : -3.5;
     let yBase = isHero ? 0.6 : 1.2;
     let zBase = isHero ? -1 : -3;
     let baseScale = 1;
 
     // Environmental adaptation based on Narrative Phase
-    if (activeScene === 1) { // Projects
-       xBase = 5; // Move far right
+    if (activeScene === SCENES.PROJECTS) {
+       xBase = aspect > 1.5 ? 5 : 4.2; 
        zBase = -8;
-       baseScale = 1.2;
-    } else if (activeScene === 2) { // Experience
-       xBase = 6; // Far periphery
+       baseScale = 1.1;
+    } else if (activeScene === SCENES.EXPERIENCE) {
+       xBase = aspect > 1.5 ? 6 : 5;
        yBase = -1;
        zBase = -12;
-       baseScale = 0.6; // Small background presence
-    } else if (activeScene === 3) { // Architecture
+       baseScale = 0.6;
+    } else if (activeScene === SCENES.STACK) {
        xBase = 0;
-       yBase = -10; // Pushed far below
+       yBase = -10;
        zBase = -15;
        baseScale = 1.5;
-    } else if (activeScene === 4) { // Contact
+    } else if (activeScene === SCENES.CONTACT) {
        xBase = 0;
        yBase = 0;
-       zBase = -25; // Minimal visibility
+       zBase = -25;
        baseScale = 0.4;
     }
 

@@ -32,17 +32,17 @@ export default function Experience() {
   }, [activeScene]);
 
   return (
-    <section className={`fixed inset-0 pointer-events-none z-10 flex items-center justify-start md:pl-64 pr-6 md:pr-24 transition-opacity duration-700 ${activeScene === 2 ? 'opacity-100' : 'opacity-0'}`}>
+    <section className={`fixed inset-0 pointer-events-none z-10 flex items-center justify-start pr-6 md:pr-24 transition-opacity duration-700 ${activeScene === 2 ? 'opacity-100' : 'opacity-0'}`}>
       <div 
         ref={containerRef} 
-        className="max-w-4xl w-full flex flex-col gap-12 opacity-0 translate-y-5 filter blur-md"
+        className="max-w-4xl w-full flex flex-col gap-10 md:gap-12 opacity-0 translate-y-5 filter blur-md"
       >
         <div className="flex flex-col gap-4">
           <div className="flex items-center gap-4">
-            <span className="text-[10px] uppercase tracking-[0.6em] text-cyan-400 font-black">Professional_Heritage</span>
+            <span className="text-[clamp(8px,0.7vw,10px)] uppercase tracking-[0.6em] text-cyan-400 font-black">Professional_Heritage</span>
             <div className="h-px w-12 bg-cyan-400/20" />
           </div>
-          <h2 className="text-4xl md:text-6xl font-black uppercase leading-none tracking-tighter text-white">
+          <h2 className="text-[clamp(2.5rem,6vw,4.5rem)] font-black uppercase leading-none tracking-tighter text-white">
             Experience.
           </h2>
         </div>

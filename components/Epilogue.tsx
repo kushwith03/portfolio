@@ -36,21 +36,21 @@ export default function Epilogue() {
   return (
     <section 
       ref={containerRef}
-      className={`fixed inset-0 flex flex-col justify-center px-6 md:pl-64 md:pr-24 py-20 z-[30] opacity-0 translate-y-10 filter blur-md transition-all pointer-events-none ${activeScene === SCENES.CONTACT ? 'pointer-events-auto' : ''}`}
+      className={`fixed inset-0 flex flex-col justify-center px-6 md:pr-24 py-20 z-[30] opacity-0 translate-y-10 filter blur-md transition-all pointer-events-none ${activeScene === SCENES.CONTACT ? 'pointer-events-auto' : ''}`}
     >
       <div className="max-w-7xl w-full mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-20 border-t border-white/5 pt-20">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-20 border-t border-white/5 pt-12 md:pt-20">
           
           {/* Left: Philosophy & Availability */}
-          <div className="space-y-12">
+          <div className="space-y-8 md:space-y-12">
             <div className="space-y-4">
-               <span className="text-[10px] uppercase tracking-[0.6em] text-white/20 font-black block">Status // Jan 2026 Cycle</span>
-               <h3 className="text-4xl md:text-6xl font-light tracking-tighter leading-none text-white">
+               <span className="text-[clamp(8px,0.7vw,10px)] uppercase tracking-[0.6em] text-white/20 font-black block">Status // Jan 2026 Cycle</span>
+               <h3 className="text-[clamp(2rem,5vw,3.5rem)] font-light tracking-tighter leading-none text-white">
                  Building for <span className="text-white/20 italic font-serif">Resilience</span> and <span className="text-white/20 italic font-serif">Scale</span>.
                </h3>
             </div>
             
-            <p className="text-xl text-white/40 font-light leading-relaxed max-w-md">
+            <p className="text-[clamp(1rem,1.2vw,1.25rem)] text-white/40 font-light leading-relaxed max-w-md">
               Currently focused on architecting intelligent full-stack systems and exploring the boundaries of high-performance digital products.
             </p>
 
