@@ -21,10 +21,10 @@ Thumbs.db
 logs/
 *.log
 
-# Local AI Orchestration Brain
-PLAN.md
-
 # Professional Identity Source
 *.tex
 identity.md
 identity.tex
+indentity.md
+PLAN.md
+DEBUG.md
