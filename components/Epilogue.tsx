@@ -14,7 +14,7 @@ export default function Epilogue() {
   return (
     <section 
       ref={containerRef}
-      className="relative min-h-[80vh] flex flex-col justify-center px-6 md:px-24 py-20 z-10"
+      className="relative min-h-[80vh] flex flex-col justify-center px-6 md:pl-56 md:pr-24 py-20 z-10"
     >
       <div className="max-w-7xl w-full mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-20 border-t border-white/5 pt-20">

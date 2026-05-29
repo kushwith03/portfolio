@@ -46,15 +46,15 @@ export default function Projects() {
   if (activeScene !== 1 && activeProject === null) return null;
 
   return (
-    <div className="fixed inset-0 pointer-events-none z-20 flex items-center px-6 md:pr-24 pr-6">
+    <div className="fixed inset-0 pointer-events-none z-20 flex items-center px-6 md:pl-56 md:pr-24">
       <div 
         ref={hudRef}
-        className="w-full opacity-0 pointer-events-auto"
+        className="w-full max-w-6xl opacity-0 pointer-events-auto"
       >
         {activeProject !== null && (
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-            {/* LEFT: Project Intel (40%) */}
-            <div className="lg:col-span-5 flex flex-col gap-10">
+          <div className="grid grid-cols-1 lg:grid-cols-10 gap-16 items-center">
+            {/* LEFT: Project Intel (45%) */}
+            <div className="lg:col-span-4 flex flex-col gap-10">
               <div className="flex flex-col gap-4">
                 <div className="flex items-center gap-4">
                    <div className="flex items-center gap-2">
@@ -70,13 +70,13 @@ export default function Projects() {
                      {projects[activeProject].timeline}
                    </span>
                 </div>
-                <h3 className="text-4xl md:text-6xl font-black tracking-tighter uppercase text-white leading-tight">
+                <h3 className="text-4xl md:text-5xl font-black tracking-tighter uppercase text-white leading-[0.95] max-w-md">
                   {projects[activeProject].title}
                 </h3>
               </div>
 
               <div className="space-y-10">
-                 <p className="text-lg text-white/60 font-light leading-relaxed max-w-lg">
+                 <p className="text-base text-white/60 font-light leading-relaxed max-w-sm">
                    {projects[activeProject].description}
                  </p>
 
@@ -100,13 +100,13 @@ export default function Projects() {
               </div>
             </div>
 
-            {/* RIGHT: Visual Artifact (60%) */}
-            <div className="lg:col-span-7 hidden lg:block h-[400px] bg-black/40 backdrop-blur-3xl border border-white/5 shadow-2xl relative group overflow-hidden">
+            {/* RIGHT: Visual Artifact (55%) */}
+            <div className="lg:col-span-6 hidden lg:block h-[420px] bg-black/40 backdrop-blur-3xl border border-white/5 shadow-2xl relative group overflow-hidden">
                <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-cyan-500/30 to-transparent" />
                
                <div className="absolute inset-0 flex items-center justify-center opacity-10 grayscale group-hover:grayscale-0 group-hover:opacity-40 transition-all duration-1000">
-                  <div className="text-[8rem] font-black tracking-tighter uppercase leading-none select-none italic">
+                  <div className="text-[7rem] font-black tracking-tighter uppercase leading-none select-none italic">
                     {projects[activeProject].title.split(' ')[0]}
                   </div>
                </div>

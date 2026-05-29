@@ -38,7 +38,7 @@ export default function Experience() {
   }, [activeScene]);
 
   return (
-    <section className="fixed inset-0 pointer-events-none z-10 flex items-center justify-start pr-6 md:pr-24">
+    <section className="fixed inset-0 pointer-events-none z-10 flex items-center justify-start md:pl-56 pr-6 md:pr-24">
       <div 
         ref={containerRef} 
         className="max-w-4xl w-full flex flex-col gap-12 opacity-0 translate-y-5 filter blur-md"
