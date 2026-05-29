@@ -27,30 +27,30 @@ export default function SystemIndex() {
 
   return (
     <>
-      {/* Desktop Navigation */}
-      <nav className="fixed left-8 md:left-12 top-1/2 -translate-y-1/2 z-50 pointer-events-none hidden md:flex flex-col gap-10">
-        <div className="flex flex-col gap-8">
+      {/* Desktop Navigation - Fixed Left Rail */}
+      <nav className="fixed left-6 md:left-8 top-1/2 -translate-y-1/2 z-50 pointer-events-none hidden md:flex flex-col gap-12 w-[160px]">
+        <div className="flex flex-col gap-10">
           {SECTIONS.map((section) => (
             <div 
               key={section.id} 
-              className="flex items-center gap-8 group cursor-pointer pointer-events-auto py-2"
+              className="flex items-center gap-6 group cursor-pointer pointer-events-auto py-3 px-2"
               onClick={() => scrollToSection(section.id)}
             >
               <div className="relative flex items-center justify-center w-6">
                 <div 
-                  className={`w-[3px] h-8 transition-all duration-500 ease-out ${
+                  className={`w-[3px] h-10 transition-all duration-500 ease-out ${
                     activeScene === section.id 
-                      ? 'bg-cyan-400 shadow-[0_0_15px_#22d3ee]' 
-                      : 'bg-white/20 group-hover:bg-white/40'
+                      ? 'bg-cyan-400 shadow-[0_0_20px_#22d3ee]' 
+                      : 'bg-white/30 group-hover:bg-white/60'
                   }`} 
                 />
               </div>
               
               <div className={`flex flex-col gap-0.5 transition-all duration-500 transform ${
-                activeScene === section.id ? 'opacity-100 translate-x-0' : 'opacity-40 group-hover:opacity-80 translate-x-[-10px] group-hover:translate-x-0'
+                activeScene === section.id ? 'opacity-100 translate-x-0' : 'opacity-60 group-hover:opacity-100 translate-x-[-8px] group-hover:translate-x-0'
               }`}>
-                <span className={`text-[10px] uppercase tracking-[0.6em] font-black ${
-                  activeScene === section.id ? 'text-white' : 'text-white/70'
+                <span className={`text-[11px] uppercase tracking-[0.7em] font-black ${
+                  activeScene === section.id ? 'text-white' : 'text-white/80'
                 }`}>
                   {section.label}
                 </span>
@@ -58,16 +58,16 @@ export default function SystemIndex() {
             </div>
           ))}
         </div>
-        <div className="absolute left-[11px] top-0 bottom-0 w-[1px] bg-white/5 -z-10" />
+        <div className="absolute left-[11px] top-0 bottom-0 w-[1px] bg-white/10 -z-10" />
       </nav>
 
       {/* Mobile Hamburger Button */}
       <button 
-        className="fixed top-8 right-8 z-[60] md:hidden p-4 bg-black/40 backdrop-blur-2xl border border-white/10 rounded-sm"
+        className="fixed top-8 right-8 z-[60] md:hidden p-4 bg-black/60 backdrop-blur-3xl border border-white/10 rounded-sm"
         onClick={() => setIsOpen(!isOpen)}
         aria-label="Toggle Menu"
       >
-        {isOpen ? <X className="w-6 h-6 text-white" /> : <Menu className="w-6 h-6 text-white/80" />}
+        {isOpen ? <X className="w-6 h-6 text-white" /> : <Menu className="w-6 h-6 text-white" />}
       </button>
 
       {/* Mobile Menu Overlay */}

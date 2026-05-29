@@ -38,32 +38,44 @@ export default function Experience() {
   }, [activeScene]);
 
   return (
-    <section className="fixed inset-0 pointer-events-none z-10 flex items-center justify-center px-6 md:px-24">
+    <section className="fixed inset-0 pointer-events-none z-10 flex items-center justify-start pr-6 md:pr-24">
       <div 
         ref={containerRef} 
-        className="max-w-5xl w-full flex flex-col gap-12 opacity-0 translate-y-5 filter blur-md"
+        className="max-w-4xl w-full flex flex-col gap-12 opacity-0 translate-y-5 filter blur-md"
       >
         <div className="flex flex-col gap-4">
           <div className="flex items-center gap-4">
-            <span className="text-[10px] uppercase tracking-[0.6em] text-cyan-400 font-black">Timeline // Heritage</span>
+            <span className="text-[10px] uppercase tracking-[0.6em] text-cyan-400 font-black">Professional_Heritage</span>
             <div className="h-px w-12 bg-cyan-400/20" />
           </div>
-          <h2 className="text-5xl md:text-8xl font-black uppercase leading-none tracking-tighter text-white">
+          <h2 className="text-4xl md:text-6xl font-black uppercase leading-none tracking-tighter text-white">
             Experience.
           </h2>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+        <div className="flex flex-col gap-10 relative pl-8 border-l border-white/5">
           {EXPERIENCES.map((exp, i) => (
-            <div key={i} className="flex flex-col gap-6 group pointer-events-auto cursor-default">
-              <div className="flex flex-col gap-1">
-                <span className="text-[8px] uppercase tracking-[0.4em] text-white/20 font-bold">{exp.time}</span>
-                <h4 className="text-white font-black tracking-widest uppercase text-sm group-hover:text-cyan-400 transition-colors">{exp.role}</h4>
-                <span className="text-[10px] uppercase tracking-[0.4em] text-white/40 font-black italic">{exp.company}</span>
+            <div key={i} className="flex flex-col gap-3 group pointer-events-auto cursor-default relative">
+              {/* Timeline Node */}
+              <div className="absolute -left-[37px] top-1.5 w-4 h-4 bg-black border-2 border-white/10 group-hover:border-cyan-400/50 transition-colors rounded-full" />
+              
+              <div className="flex items-baseline justify-between gap-10">
+                <h4 className="text-white font-black tracking-widest uppercase text-base group-hover:text-cyan-400 transition-colors">
+                  {exp.role}
+                </h4>
+                <span className="text-[10px] uppercase tracking-[0.4em] text-white/20 font-bold whitespace-nowrap">
+                  {exp.time}
+                </span>
               </div>
-              <p className="text-white/30 text-xs md:text-sm leading-relaxed font-light group-hover:text-white/60 transition-colors border-l border-white/10 pl-4">
-                {exp.desc}
-              </p>
+              
+              <div className="flex flex-col gap-4">
+                <span className="text-[11px] uppercase tracking-[0.5em] text-white/40 font-black italic">
+                  {exp.company}
+                </span>
+                <p className="text-white/30 text-sm leading-relaxed font-light group-hover:text-white/60 transition-colors max-w-2xl">
+                  {exp.desc}
+                </p>
+              </div>
             </div>
           ))}
         </div>
