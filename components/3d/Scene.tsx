@@ -27,27 +27,31 @@ function CameraRig() {
     let yOffset = 0;
 
     if (activeScene === 0) { // Hero
-      zPos = THREE.MathUtils.lerp(8, 7, scrollProgress * 8);
+      zPos = THREE.MathUtils.lerp(8, 7, scrollProgress * 10);
       targetLookAt.current.set(0, 0, 0);
     } else if (activeScene === 1) { // Principles
       zPos = 6;
-      xOffset = -2; // Move camera to balance text on right
-      targetLookAt.current.set(1, 0, 0);
+      xOffset = -2.5; 
+      targetLookAt.current.set(1.5, 0, 0);
     } else if (activeScene === 2) { // Experience
       zPos = 7;
-      xOffset = 2; // Move camera to balance text on left
-      targetLookAt.current.set(-1, 0, 0);
+      xOffset = 2.5; 
+      targetLookAt.current.set(-1.5, 0, 0);
     } else if (activeScene === 3) { // Architecture
-      zPos = 5; // Macro view
-      yOffset = 1;
-      targetLookAt.current.set(0, -0.5, 0);
+      zPos = 5; 
+      yOffset = 1.5;
+      targetLookAt.current.set(0, -0.8, 0);
     } else if (activeScene === 4) { // Artifacts
-      zPos = THREE.MathUtils.lerp(8, -10, (scrollProgress - 0.61) / 0.27);
+      zPos = THREE.MathUtils.lerp(8, -12, (scrollProgress - 0.47) / 0.25);
       xOffset = mouse.x * 0.8;
       yOffset = mouse.y * 0.4;
-      targetLookAt.current.set(mouse.x * 0.3, -0.2, zPos - 5);
+      targetLookAt.current.set(mouse.x * 0.3, -0.2, zPos - 6);
+    } else if (activeScene === 5) { // Current Focus
+      zPos = 6;
+      yOffset = 0.5;
+      targetLookAt.current.set(0, 0, 0);
     } else { // Epilogue
-      zPos = -12;
+      zPos = -14;
       targetLookAt.current.set(0, 0, zPos - 2);
     }
 

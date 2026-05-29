@@ -16,16 +16,15 @@ export default function Projects() {
   const hudRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    // Calibrated project windows (0.25 to 0.85)
-    const sceneStart = 0.25;
-    const sceneEnd = 0.85;
+    // Calibrated project windows mapping to Scene 4 (0.47 to 0.72)
+    const sceneStart = 0.47;
+    const sceneEnd = 0.72;
     const projectStep = (sceneEnd - sceneStart) / projects.length;
     
     let found = null;
     projects.forEach((_, i) => {
       const pFocus = sceneStart + i * projectStep + projectStep / 2;
-      // Closer check window for tighter flow
-      if (Math.abs(scrollProgress - pFocus) < 0.1) {
+      if (Math.abs(scrollProgress - pFocus) < (projectStep / 2.2)) {
         found = i;
       }
     });
@@ -43,61 +42,129 @@ export default function Projects() {
     }
   }, [scrollProgress, activeProject]);
 
-  if (activeScene !== 1 && activeProject === null) return null;
+  if (activeScene !== 4 && activeProject === null) return null;
+
+  const isEven = activeProject !== null && activeProject % 2 === 0;
 
   return (
-    <div className="fixed inset-0 pointer-events-none z-20 flex items-center justify-end px-6 md:px-24">
+    <div className="fixed inset-0 pointer-events-none z-20 flex items-center justify-center px-6 md:px-12">
       <div 
         ref={hudRef}
-        className="max-w-xl w-full opacity-0 pointer-events-auto"
+        className="max-w-7xl w-full opacity-0 pointer-events-auto"
       >
         {activeProject !== null && (
-          <div className="flex flex-col gap-10 bg-black/60 backdrop-blur-2xl p-8 md:p-10 border border-white/5 shadow-2xl">
-            <div className="flex flex-col gap-3">
-              <div className="flex items-center gap-4">
-                 <div className="flex items-center gap-2">
-                    {activeProject === 0 && <Cpu className="w-3.5 h-3.5 text-cyan-400" />}
-                    {activeProject === 1 && <Network className="w-3.5 h-3.5 text-yellow-400" />}
-                    {activeProject === 2 && <Database className="w-3.5 h-3.5 text-pink-400" />}
-                    <span className="text-[10px] uppercase tracking-[0.4em] text-white/40 font-black">
-                      Project_{activeProject + 1}
-                    </span>
-                 </div>
-                 <div className="h-px w-8 bg-white/10" />
-                 <span className="text-[8px] uppercase tracking-[0.2em] text-white/20 font-bold">
-                   {projects[activeProject].timeline}
-                 </span>
-              </div>
-              <h3 className="text-3xl md:text-5xl font-black tracking-tighter uppercase text-white leading-none">
-                {projects[activeProject].title}
-              </h3>
+          <div className="relative group bg-black/40 backdrop-blur-3xl border border-white/10 overflow-hidden shadow-[0_0_50px_rgba(0,0,0,0.5)]">
+            {/* Engineering Header Decor */}
+            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-cyan-500/50 via-blue-500/50 to-transparent" />
+            <div className="absolute top-0 right-0 p-2 flex gap-1">
+               <div className="w-1 h-1 bg-white/20" />
+               <div className="w-1 h-1 bg-white/10" />
+               <div className="w-1 h-1 bg-white/5" />
             </div>
 
-            <div className="space-y-8">
-               <p className="text-base md:text-lg text-white/60 font-light leading-relaxed">
-                 {projects[activeProject].description}
-               </p>
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-0">
+              {/* Left Column: Technical Metadata */}
+              <div className="lg:col-span-4 border-r border-white/5 p-8 md:p-12 flex flex-col justify-between bg-white/[0.02]">
+                <div className="space-y-12">
+                  <div className="flex flex-col gap-4">
+                    <div className="flex items-center gap-3">
+                      <div className="w-2 h-2 bg-cyan-500 shadow-[0_0_10px_#06b6d4]" />
+                      <span className="text-[10px] uppercase tracking-[0.5em] text-cyan-400/80 font-black">
+                        Artifact_0{activeProject + 1}
+                      </span>
+                    </div>
+                    <h3 className="text-4xl md:text-6xl font-black tracking-tighter uppercase text-white leading-none">
+                      {projects[activeProject].title.split(' ').map((word, i) => (
+                        <span key={i} className={i % 2 === 1 ? "text-white/30" : "text-white"}>
+                          {word}{' '}
+                        </span>
+                      ))}
+                    </h3>
+                    <span className="text-[10px] uppercase tracking-[0.3em] text-white/40 font-bold border-l border-white/20 pl-4">
+                       {projects[activeProject].timeline}
+                    </span>
+                  </div>
 
-               <div className="grid grid-cols-2 gap-8 border-t border-white/5 pt-6">
-                  <div className="space-y-3">
-                     <span className="text-[7px] uppercase tracking-[0.4em] text-white/10 font-bold block">Extraction_Point</span>
-                     <a 
-                       href={projects[activeProject].link} 
-                       target="_blank"
-                       className="group flex items-center gap-3 text-[9px] uppercase tracking-[0.3em] font-black text-white/70 hover:text-white transition-all underline underline-offset-4 decoration-white/10"
-                     >
-                       <Github className="w-4 h-4 text-white/20 group-hover:text-white transition-colors" />
-                       GitHub
-                     </a>
-                  </div>
-                  <div className="flex flex-wrap gap-2 content-start">
-                     {projects[activeProject].tags.map((tag: string) => (
-                       <span key={tag} className="text-[7px] uppercase tracking-[0.1em] px-1.5 py-0.5 bg-white/5 text-white/30 border border-white/5">
-                         {tag}
+                  <div className="space-y-6">
+                    <div className="flex flex-col gap-2">
+                       <span className="text-[8px] uppercase tracking-[0.4em] text-white/20 font-bold flex items-center gap-2">
+                         <Code className="w-3 h-3" /> Tech_Stack
                        </span>
-                     ))}
+                       <div className="flex flex-wrap gap-2">
+                         {projects[activeProject].tags.map((tag: string) => (
+                           <span key={tag} className="text-[9px] uppercase tracking-wider px-2 py-1 bg-white/5 text-white/60 border border-white/10">
+                             {tag}
+                           </span>
+                         ))}
+                       </div>
+                    </div>
+
+                    <div className="flex flex-col gap-2">
+                       <span className="text-[8px] uppercase tracking-[0.4em] text-white/20 font-bold flex items-center gap-2">
+                         <Cpu className="w-3 h-3" /> System_Highlights
+                       </span>
+                       <ul className="space-y-2">
+                          {(projects[activeProject] as any).highlights?.map((h: string, i: number) => (
+                            <li key={i} className="text-[10px] uppercase tracking-widest text-white/50 flex items-center gap-3">
+                               <div className="w-1 h-px bg-cyan-500/40" />
+                               {h}
+                            </li>
+                          ))}
+                       </ul>
+                    </div>
                   </div>
-               </div>
+                </div>
+
+                <div className="pt-12">
+                   <a 
+                     href={projects[activeProject].link} 
+                     target="_blank"
+                     className="group inline-flex items-center gap-4 text-[10px] uppercase tracking-[0.5em] font-black text-white/40 hover:text-white transition-all"
+                   >
+                     <Github className="w-5 h-5 text-white/20 group-hover:text-cyan-400 transition-colors" />
+                     Source_Commit_Access
+                   </a>
+                </div>
+              </div>
+
+              {/* Right Column: Visual & Description */}
+              <div className="lg:col-span-8 p-8 md:p-12 flex flex-col justify-center relative overflow-hidden">
+                {/* Background Decor */}
+                <div className="absolute top-0 right-0 -mr-20 -mt-20 opacity-[0.03] pointer-events-none rotate-12">
+                   <div className="text-[12rem] font-black tracking-tighter uppercase leading-none">
+                     {activeProject + 1}
+                   </div>
+                </div>
+
+                <div className="max-w-3xl relative z-10">
+                   <div className="flex items-center gap-4 mb-8">
+                      <div className="h-px w-12 bg-white/10" />
+                      <span className="text-[9px] uppercase tracking-[0.4em] text-white/20 font-bold">Functional_Specs</span>
+                   </div>
+                   <p className="text-xl md:text-3xl text-white/70 font-light leading-relaxed tracking-tight mb-12">
+                     {projects[activeProject].description}
+                   </p>
+
+                   <div className="grid grid-cols-2 md:grid-cols-4 gap-8 opacity-40 group-hover:opacity-100 transition-opacity duration-1000">
+                      <div className="flex flex-col gap-1">
+                        <span className="text-[7px] uppercase tracking-[0.3em] text-white/30 font-bold">Type</span>
+                        <span className="text-[9px] uppercase tracking-widest text-white/60">System_Module</span>
+                      </div>
+                      <div className="flex flex-col gap-1">
+                        <span className="text-[7px] uppercase tracking-[0.3em] text-white/30 font-bold">Environment</span>
+                        <span className="text-[9px] uppercase tracking-widest text-white/60">Production_Ready</span>
+                      </div>
+                      <div className="flex flex-col gap-1">
+                        <span className="text-[7px] uppercase tracking-[0.3em] text-white/30 font-bold">Latency</span>
+                        <span className="text-[9px] uppercase tracking-widest text-white/60">Optimized</span>
+                      </div>
+                      <div className="flex flex-col gap-1">
+                        <span className="text-[7px] uppercase tracking-[0.3em] text-white/30 font-bold">Status</span>
+                        <span className="text-[9px] uppercase tracking-widest text-cyan-400 font-black">Deployed</span>
+                      </div>
+                   </div>
+                </div>
+              </div>
             </div>
           </div>
         )}

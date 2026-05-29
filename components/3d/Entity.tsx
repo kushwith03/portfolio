@@ -80,9 +80,31 @@ export default function Entity() {
     mouseSmooth.current.copy(mouse);
 
     // 3. SPATIAL POSITIONING
-    const xBase = isHero ? 2.8 : -2.5;
-    const yBase = isHero ? 0.6 : 0.8;
-    const zBase = isHero ? -1 : -3 + scrollProgress * 5;
+    let xBase = isHero ? 2.8 : -3.5;
+    let yBase = isHero ? 0.6 : 1.2;
+    let zBase = isHero ? -1 : -4 + scrollProgress * 2;
+    let baseScale = 1;
+
+    // Environmental adaptation based on Narrative Phase
+    if (activeScene === 1 || activeScene === 2) { // Principles / Experience
+       xBase = 4.5; // Move far right
+       zBase = -6; // Move back
+       baseScale = 0.8;
+    } else if (activeScene === 3) { // Architecture
+       yBase = -4; // Move below
+       zBase = -8;
+       baseScale = 1.2;
+    } else if (activeScene === 4) { // Projects
+       xBase = 0;
+       yBase = 5; // Move above
+       zBase = -12;
+       baseScale = 2; // Large environmental presence
+    } else if (activeScene === 5) { // Epilogue
+       xBase = 0;
+       yBase = 0;
+       zBase = -2;
+       baseScale = 1.2;
+    }
 
     // Organic micro-floating
     const driftX = Math.sin(t * 0.4) * 0.04;
@@ -97,6 +119,7 @@ export default function Entity() {
     
     if (groupRef.current) {
       groupRef.current.position.copy(currentPos.current);
+      groupRef.current.scale.lerp(new THREE.Vector3(baseScale, baseScale, baseScale), 0.02);
       
       // Shell Rotation (Heavy, Slow)
       const rotX = -headSmooth.current.y * 0.25;
