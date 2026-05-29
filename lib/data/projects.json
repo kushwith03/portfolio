@@ -23,7 +23,7 @@
     "imageUrl": "https://placehold.co/800x500/000000/00deff?text=INSTARESUME_AI",
     "highlights": [
       "Gemini AI Integration",
-      "ATS Optimization Engine",
+      "Keyword Optimization",
       "React Hook Form Ops"
     ]
   },
@@ -31,13 +31,13 @@
     "id": "3",
     "title": "BlogSpace Platform",
     "timeline": "Nov 2024 -- Jan 2025",
-    "description": "Modular full-stack publishing platform with PostgreSQL relational modeling and JWT-based security. Architected using MVC patterns for scalable routing and middleware orchestration.",
+    "description": "Modular full-stack publishing platform with PostgreSQL relational modeling and JWT-based security. Developed using MVC patterns for scalable routing and middleware orchestration.",
     "tags": ["Node.js", "Express.js", "PostgreSQL", "JWT"],
     "link": "https://github.com/kushwith03/blogspace",
     "imageUrl": "https://placehold.co/800x500/000000/00deff?text=BLOGSPACE_FS",
     "highlights": [
       "MVC Architecture",
-      "PostgreSQL Integration",
+      "PostgreSQL Relational Logic",
       "Secure Auth Flow"
     ]
   }
