@@ -80,8 +80,8 @@ export default function Entity() {
     mouseSmooth.current.copy(mouse);
 
     // 3. SPATIAL POSITIONING
-    let xBase = isHero ? 2.8 : -2.5;
-    let yBase = isHero ? 0.6 : 0.8;
+    let xBase = isHero ? 2.8 : -3.5;
+    let yBase = isHero ? 0.6 : 1.2;
     let zBase = isHero ? -1 : -3;
     let baseScale = 1;
 

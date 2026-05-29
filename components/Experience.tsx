@@ -37,6 +37,8 @@ export default function Experience() {
     }
   }, [activeScene]);
 
+  if (activeScene !== 2) return null;
+
   return (
     <section className="fixed inset-0 pointer-events-none z-10 flex items-center justify-start md:pl-56 pr-6 md:pr-24">
       <div 

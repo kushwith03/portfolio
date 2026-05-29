@@ -35,6 +35,8 @@ export default function Architecture() {
     }
   }, [activeScene]);
 
+  if (activeScene !== 3) return null;
+
   return (
     <section className="fixed inset-0 pointer-events-none z-10 flex items-center justify-center md:pl-56 px-6 md:px-24">
       <div 

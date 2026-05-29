@@ -43,7 +43,7 @@ export default function Projects() {
     }
   }, [scrollProgress, activeProject]);
 
-  if (activeScene !== 1 && activeProject === null) return null;
+  if (activeScene !== 1) return null;
 
   return (
     <div className="fixed inset-0 pointer-events-none z-20 flex items-center px-6 md:pl-56 md:pr-24">
@@ -54,13 +54,11 @@ export default function Projects() {
         {activeProject !== null && (
           <div className="grid grid-cols-1 lg:grid-cols-10 gap-16 items-start">
             {/* LEFT: Project Intel (45%) */}
-            <div className="lg:col-span-4 flex flex-col gap-10">
+            <div className="lg:col-span-4 flex flex-col gap-10 pt-4">
               <div className="flex flex-col gap-4">
                 <div className="flex items-center gap-4">
                    <div className="flex items-center gap-2">
-                      {activeProject === 0 && <Cpu className="w-4 h-4 text-cyan-400" />}
-                      {activeProject === 1 && <Network className="w-4 h-4 text-yellow-400" />}
-                      {activeProject === 2 && <Database className="w-4 h-4 text-pink-400" />}
+                      <Cpu className="w-4 h-4 text-cyan-400" />
                       <span className="text-[10px] uppercase tracking-[0.5em] text-white/40 font-black">
                         Artifact_0{activeProject + 1}
                       </span>
@@ -94,67 +92,74 @@ export default function Projects() {
                        className="group inline-flex items-center gap-4 text-[10px] uppercase tracking-[0.5em] font-black text-white/70 hover:text-white transition-all underline underline-offset-8 decoration-white/10"
                     >
                        <Github className="w-5 h-5 text-white/20 group-hover:text-cyan-400 transition-colors" />
-                       View_Repository
+                       Source_Access
                     </a>
                  </div>
               </div>
             </div>
 
-            {/* RIGHT: Engineering Dashboard (55%) */}
-            <div className="lg:col-span-6 hidden lg:grid grid-cols-1 md:grid-cols-2 gap-px bg-white/5 border border-white/10 shadow-2xl relative group overflow-hidden">
-               {/* Dashboard Header */}
-               <div className="col-span-full bg-black/40 backdrop-blur-xl border-b border-white/5 p-6 flex justify-between items-center">
-                  <div className="flex items-center gap-4">
-                     <div className="w-2 h-2 bg-cyan-500 rounded-full animate-pulse" />
-                     <span className="text-[9px] uppercase tracking-[0.4em] text-white/40 font-bold italic">Active_System_Scan // V.2.0</span>
+            {/* RIGHT: Technical Specification Dashboard (55%) */}
+            <div className="lg:col-span-6 hidden lg:flex flex-col bg-black/40 backdrop-blur-3xl border border-white/10 shadow-2xl relative group overflow-hidden">
+               {/* Terminal Header */}
+               <div className="bg-white/[0.03] border-b border-white/5 px-6 py-4 flex justify-between items-center">
+                  <div className="flex items-center gap-3">
+                     <div className="flex gap-1.5">
+                        <div className="w-2 h-2 rounded-full bg-white/10" />
+                        <div className="w-2 h-2 rounded-full bg-white/10" />
+                        <div className="w-2 h-2 rounded-full bg-white/10" />
+                     </div>
+                     <span className="text-[9px] uppercase tracking-[0.4em] text-white/30 font-bold ml-4">System_Diagnostic // Artifact_Analysis</span>
                   </div>
-                  <div className="flex gap-2">
-                     <div className="w-8 h-1 bg-white/10" />
-                     <div className="w-8 h-1 bg-white/5" />
+                  <span className="text-[8px] uppercase tracking-[0.2em] text-cyan-400/60 font-black italic">Status: Verified</span>
+               </div>
+
+               {/* Specification Content */}
+               <div className="p-10 grid grid-cols-2 gap-x-12 gap-y-10">
+                  {(projects[activeProject] as any).highlights?.map((highlight: string, i: number) => {
+                     const [label, ...valParts] = highlight.includes(':') ? highlight.split(':') : [highlight, 'Active'];
+                     const value = valParts.join(':').trim();
+                     
+                     return (
+                       <div key={i} className="flex flex-col gap-3 group/spec">
+                          <div className="flex items-center gap-3">
+                             <div className="w-1 h-1 bg-cyan-500/40" />
+                             <span className="text-[8px] uppercase tracking-[0.4em] text-white/20 font-black">
+                               {label.replace(/ /g, '_').toUpperCase()}
+                             </span>
+                          </div>
+                          <div className="flex flex-col gap-2">
+                             <span className="text-2xl font-black uppercase text-white/80 tracking-tighter group-hover/spec:text-white transition-colors">
+                               {value}
+                             </span>
+                             <div className="w-full h-px bg-white/5 relative overflow-hidden">
+                                <div className="absolute inset-y-0 left-0 w-1/4 bg-cyan-500/30 group-hover/spec:translate-x-[400%] transition-transform duration-1000" />
+                             </div>
+                          </div>
+                       </div>
+                     );
+                  })}
+
+                  {/* Operational Environment */}
+                  <div className="col-span-full pt-8 mt-4 border-t border-white/5 flex flex-wrap gap-x-16 gap-y-6">
+                     <div className="flex flex-col gap-1">
+                        <span className="text-[7px] uppercase tracking-[0.4em] text-white/20 font-bold italic">Runtime_Environment</span>
+                        <span className="text-[10px] uppercase tracking-widest text-white/60 font-black">Production_Scale</span>
+                     </div>
+                     <div className="flex flex-col gap-1">
+                        <span className="text-[7px] uppercase tracking-[0.4em] text-white/20 font-bold italic">Architecture_Class</span>
+                        <span className="text-[10px] uppercase tracking-widest text-white/60 font-black">Modular_Systems</span>
+                     </div>
+                     <div className="flex flex-col gap-1">
+                        <span className="text-[7px] uppercase tracking-[0.4em] text-white/20 font-bold italic">Data_Integrity</span>
+                        <span className="text-[10px] uppercase tracking-widest text-cyan-400 font-black">Verified_100%</span>
+                     </div>
                   </div>
                </div>
 
-               {/* Metric Cards */}
-               {(projects[activeProject] as any).highlights?.map((highlight: string, i: number) => {
-                  const [label, ...valParts] = highlight.includes(':') ? highlight.split(':') : [highlight, 'Enabled'];
-                  const value = valParts.join(':').trim();
-                  
-                  return (
-                    <div key={i} className="bg-black/60 p-8 flex flex-col gap-6 group/item hover:bg-white/[0.02] transition-colors">
-                       <div className="flex justify-between items-start">
-                          <span className="text-[8px] uppercase tracking-[0.4em] text-white/20 font-black">
-                            {label.replace(/ /g, '_').toUpperCase()}
-                          </span>
-                          <div className="p-2 bg-white/5 border border-white/5 opacity-0 group-hover/item:opacity-100 transition-opacity">
-                             <Database className="w-3 h-3 text-cyan-500/40" />
-                          </div>
-                       </div>
-                       <div className="flex flex-col gap-1">
-                          <span className="text-xl font-black uppercase text-white tracking-tighter">
-                            {value}
-                          </span>
-                          <div className="w-full h-0.5 bg-white/5 relative overflow-hidden">
-                             <div className="absolute inset-y-0 left-0 w-1/3 bg-cyan-500/20 group-hover/item:translate-x-[200%] transition-transform duration-1000" />
-                          </div>
-                       </div>
-                    </div>
-                  );
-               })}
-
-               {/* Functional Specs Row */}
-               <div className="col-span-full bg-white/[0.02] p-6 border-t border-white/5 flex justify-between items-center opacity-40 group-hover:opacity-100 transition-opacity duration-700">
-                  <div className="flex gap-8">
-                     <div className="flex flex-col gap-1">
-                        <span className="text-[7px] uppercase tracking-[0.3em] text-white/30 font-bold">Status</span>
-                        <span className="text-[9px] uppercase tracking-widest text-cyan-400 font-black">Production_Ready</span>
-                     </div>
-                     <div className="flex flex-col gap-1 border-l border-white/5 pl-8">
-                        <span className="text-[7px] uppercase tracking-[0.3em] text-white/30 font-bold">Latency</span>
-                        <span className="text-[9px] uppercase tracking-widest text-white/60">Optimized</span>
-                     </div>
-                  </div>
-                  <div className="flex items-center gap-4">
-                     <span className="text-[8px] uppercase tracking-[0.4em] text-white/10 font-bold">Engineering_Spec_v2.0</span>
+               {/* Dashboard Footer Decor */}
+               <div className="absolute bottom-0 right-0 p-4 opacity-5 pointer-events-none">
+                  <div className="text-[6rem] font-black tracking-tighter uppercase leading-none italic">
+                    {activeProject + 1}
                   </div>
                </div>
             </div>

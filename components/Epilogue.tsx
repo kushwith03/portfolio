@@ -3,13 +3,17 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { Mail, Github, Linkedin, ArrowUpRight, MapPin, Calendar } from "lucide-react";
+import { useStore } from "@/lib/store";
 
 /**
  * Epilogue: Narrative Closure
  * A calm, intentional ending that provides professional context and contact.
  */
 export default function Epilogue() {
+  const activeScene = useStore((state) => state.activeScene);
   const containerRef = useRef<HTMLDivElement>(null);
+
+  if (activeScene !== 4) return null;
 
   return (
     <section 
