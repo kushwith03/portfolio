@@ -192,7 +192,7 @@ export default function Projects() {
                         </div>
                         <div className="bg-black/80 p-6 md:p-8 flex flex-col gap-4 group/metric">
                            <span className="text-[clamp(6px,0.5vw,8px)] uppercase tracking-[0.4em] text-white/15 font-black">Training</span>
-                           <span className="text-[clamp(1.2rem,2vw,2rem)] font-black text-white/60 tracking-tighter group-hover/metric:text-cyan-400 transition-colors">8,000+</span>
+                           <span className="text-[clamp(1.2rem,2vw,2rem)] font-black text-white/60 tracking-tighter group-hover/metric:text-cyan-400 transition-colors">~8K</span>
                         </div>
                      </>
                   )}

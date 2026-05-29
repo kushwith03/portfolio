@@ -3,12 +3,12 @@
     "id": "1",
     "title": "Autonomous Vehicle Simulation",
     "timeline": "Aug 2025 -- Feb 2026",
-    "description": "End-to-end autonomous driving pipeline trained on 8,000+ Cityscapes and CARLA simulation images. Implemented behavioral cloning with CNN-based steering prediction, achieving sub-50ms prediction latency.",
+    "description": "End-to-end autonomous driving pipeline trained on ~8K combined dataset images from Cityscapes and CARLA simulations. Implemented behavioral cloning with CNN-based steering prediction, achieving sub-50ms prediction latency.",
     "tags": ["Python", "PyTorch", "CARLA", "Computer Vision"],
     "link": "https://github.com/kushwith03/Autonomous-Vehicle",
     "imageUrl": "https://placehold.co/800x500/000000/00deff?text=AUTONOMOUS_VEHICLE_SIM",
     "highlights": [
-      "8,000+ Training Samples",
+      "~8K Combined Images",
       "CNN Behavioral Cloning",
       "Real-time CARLA Integration"
     ]
