@@ -4,42 +4,55 @@ import { useRef, useState, useEffect } from "react";
 import projects from "@/lib/data/projects.json";
 import { useStore } from "@/lib/store";
 import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Github, Code, Cpu, Database, Network } from "lucide-react";
 
 import { SCENES } from "@/lib/constants";
+
+gsap.registerPlugin(ScrollTrigger);
 
 /**
  * Projects HUD: Re-calibrated for immediate entry.
  */
 export default function Projects() {
-  const scrollProgress = useStore((state) => state.scrollProgress);
   const activeScene = useStore((state) => state.activeScene);
   const [activeProject, setActiveProject] = useState<number | null>(null);
+  const [targetProject, setTargetProject] = useState<number | null>(null);
   const hudRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    // Synchronized with CinematicController scene 1 (0.20 to 0.49)
-    const sceneStart = 0.20;
-    const sceneEnd = 0.49;
-    const totalProjects = projects.length;
-    const projectStep = (sceneEnd - sceneStart) / totalProjects;
-    
-    let found: number | null = null;
-
-    if (activeScene === SCENES.PROJECTS) {
-      projects.forEach((_, i) => {
-        const pStart = sceneStart + i * projectStep;
-        const pEnd = sceneStart + (i + 1) * projectStep;
-        if (scrollProgress >= pStart - 0.01 && scrollProgress <= pEnd + 0.01) {
-          found = i;
+    const ctx = gsap.context(() => {
+      ScrollTrigger.create({
+        trigger: "#projects",
+        start: "top center",
+        end: "bottom center",
+        onUpdate: (self) => {
+          const p = self.progress;
+          const index = Math.min(
+            Math.floor(p * projects.length),
+            projects.length - 1
+          );
+          setTargetProject(index);
+        },
+        onToggle: (self) => {
+          if (self.isActive) {
+            // Force initial check when entering
+            const p = self.progress;
+            const index = Math.min(
+              Math.floor(p * projects.length),
+              projects.length - 1
+            );
+            setTargetProject(index);
+          }
         }
       });
-      if (found === null && scrollProgress < sceneStart + 0.05) found = 0;
-      if (found === null && scrollProgress > sceneEnd - 0.05) found = projects.length - 1;
-    }
-    
-    if (found !== activeProject) {
-      const direction = (found ?? 0) > (activeProject ?? 0) ? 1 : -1;
+    });
+    return () => ctx.revert();
+  }, []);
+
+  useEffect(() => {
+    if (targetProject !== activeProject) {
+      const direction = (targetProject ?? 0) > (activeProject ?? 0) ? 1 : -1;
       
       // Exit Animation for current project
       if (hudRef.current && activeProject !== null) {
@@ -50,9 +63,9 @@ export default function Projects() {
           duration: 0.4,
           ease: "power2.in",
           onComplete: () => {
-             setActiveProject(found);
+             setActiveProject(targetProject);
              // Enter Animation for next project
-             if (found !== null) {
+             if (targetProject !== null) {
                 gsap.fromTo(hudRef.current, 
                    { y: 30 * direction, opacity: 0, filter: "blur(12px)" }, 
                    { y: 0, opacity: 1, filter: "blur(0px)", duration: 0.7, ease: "power3.out" }
@@ -61,8 +74,8 @@ export default function Projects() {
           }
         });
       } else {
-        setActiveProject(found);
-        if (found !== null) {
+        setActiveProject(targetProject);
+        if (targetProject !== null) {
           gsap.fromTo(hudRef.current, 
             { y: 30, opacity: 0, filter: "blur(12px)" }, 
             { y: 0, opacity: 1, filter: "blur(0px)", duration: 0.8, ease: "power4.out" }
@@ -70,7 +83,7 @@ export default function Projects() {
         }
       }
     }
-  }, [scrollProgress, activeProject, activeScene]);
+  }, [targetProject, activeProject]);
 
   // Use visibility instead of null return to prevent component destruction during scene boundaries
   return (
