@@ -9,19 +9,19 @@ const EXPERIENCES = [
     role: "Full-Stack SWE Intern",
     company: "ATSPL",
     time: "Jan 2026 — Apr 2026",
-    desc: "Shipped production features using React, Node.js, and PostgreSQL. Built zero-downtime CI/CD workflows and migrated web platforms to Electron desktop apps."
+    desc: "Shipped production React, Node, and PostgreSQL features. Designed optimized relational schemas, REST APIs, and automated CI/CD workflows using GitHub Actions. Managed AWS S3 deployment with CloudFront and Cloudflare CDN integration."
   },
   {
     role: "Autonomous Systems Builder",
     company: "CARLA / PyTorch",
     time: "Aug 2025 — Feb 2026",
-    desc: "Trained end-to-end driving pipelines on 8,000+ Cityscapes. Achieved sub-50ms latency using CNN-based steering predictions."
+    desc: "Built an end-to-end driving pipeline using 8,000+ images. Implemented behavioral cloning and CNN-based steering prediction, achieving sub-50ms inference latency."
   },
   {
     role: "CSE (Data Science)",
     company: "RNSIT",
     time: "Expected May 2026",
-    desc: "8.41 CGPA. Specializing in Systems Architecture, DBMS, and Machine Learning."
+    desc: "8.41 CGPA. Focus on Data Structures, OOP, DBMS, and Systems Architecture. Building intelligent systems and production-ready digital products."
   }
 ];
 

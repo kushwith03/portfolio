@@ -7,15 +7,15 @@ import gsap from "gsap";
 const PRINCIPLES = [
   {
     title: "Systems Over Features",
-    desc: "Building isolated features scales linearly. Architecting resilient systems scales exponentially. I design for integration, state consistency, and long-term maintainability."
+    desc: "I prioritize building resilient, scalable systems over isolated features. Architecture decisions focus on long-term maintainability, state consistency, and seamless integration."
   },
   {
     title: "Infrastructure Aware",
-    desc: "A frontend is only as fast as its CDN, and a backend is only as reliable as its CI/CD pipeline. I build with deployment, caching, and database constraints in mind from day one."
+    desc: "Production software requires a deep understanding of infrastructure. I architect with CI/CD, CDN global delivery, and database query performance in mind from commit zero."
   },
   {
     title: "Performance First",
-    desc: "Sub-50ms latency isn't a luxury; in autonomous simulation and production platforms, it's a requirement. I optimize render cycles, queries, and state management relentlessly."
+    desc: "Sub-50ms latency is my benchmark for high-performance systems. Whether it's autonomous steering or production APIs, I optimize relentlessly for speed and reliability."
   }
 ];
 

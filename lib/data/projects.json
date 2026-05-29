@@ -1,7 +1,7 @@
 [
   {
     "id": "1",
-    "title": "Autonomous Driving Simulation",
+    "title": "Autonomous Vehicle Simulation",
     "timeline": "Aug 2025 -- Feb 2026",
     "description": "End-to-end autonomous driving pipeline trained on 8,000+ Cityscapes and CARLA simulation images. Implemented behavioral cloning with CNN-based steering prediction, achieving sub-50ms prediction latency.",
     "tags": ["Python", "PyTorch", "CARLA", "Computer Vision"],

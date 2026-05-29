@@ -7,18 +7,18 @@ import gsap from "gsap";
 const DOMAINS = [
   {
     name: "Full-Stack Core",
-    tech: ["React.js", "Node.js", "Express", "PostgreSQL", "Next.js"]
+    tech: ["React.js", "Node.js", "Express", "PostgreSQL", "TailwindCSS"]
   },
   {
-    name: "Infrastructure & DevOps",
-    tech: ["AWS S3", "CloudFront", "GitHub Actions", "Docker", "Vercel"]
+    name: "Infrastructure & Ops",
+    tech: ["AWS S3", "CloudFront", "Cloudflare", "GitHub Actions", "Vercel"]
   },
   {
     name: "AI & Autonomous",
-    tech: ["Python", "PyTorch", "CARLA Simulator", "Gemini API", "OpenCV"]
+    tech: ["Python", "PyTorch", "CARLA Simulator", "Gemini AI", "Computer Vision"]
   },
   {
-    name: "Systems & Languages",
+    name: "Systems & Desktop",
     tech: ["Java", "C++", "SQL", "Linux CLI", "Electron.js"]
   }
 ];

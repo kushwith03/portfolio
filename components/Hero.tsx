@@ -101,9 +101,9 @@ export default function Hero() {
           <Parallax speed={0.04}>
             <div ref={subtitleRef} className="max-w-2xl mb-12 opacity-0">
               <p className="text-lg md:text-xl text-white/40 font-light leading-relaxed tracking-tight">
-                 Full-Stack Engineer & Data Science Specialist <br />
-                 Architecting <span className="text-white/80 font-medium italic">Autonomous Systems</span> and <br />
-                 Intelligent Digital Products.
+                 Full Stack Software Engineer & AI Systems Builder <br />
+                 Architecting <span className="text-white/80 font-medium italic">intelligent systems</span>, <span className="text-white/80 font-medium italic">scalable products</span>, and <br />
+                 production-ready software.
               </p>
             </div>
           </Parallax>
