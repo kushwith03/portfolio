@@ -26,22 +26,12 @@ export default function CinematicController() {
       { id: SCENES.HOME, start: 0, end: 0.19 },
       { id: SCENES.PROJECTS, start: 0.20, end: 0.49 },
       { id: SCENES.EXPERIENCE, start: 0.50, end: 0.69 },
-      { id: SCENES.STACK, start: 0.70, end: 0.90 },
-      { id: SCENES.CONTACT, start: 0.91, end: 1.0 },
+      { id: SCENES.STACK, start: 0.70, end: 0.84 },
+      { id: SCENES.CONTACT, start: 0.85, end: 1.0 },
     ];
 
     const ctx = gsap.context(() => {
-      // 2. Linear Scroll Synchronization
-      ScrollTrigger.create({
-        trigger: document.body,
-        start: "top top",
-        end: "bottom bottom",
-        onUpdate: (self) => {
-          setScrollProgress(self.progress);
-        }
-      });
-
-      // 3. Narrative Milestone Triggering
+      // 1. Narrative Milestone Triggering
       scenes.forEach((scene) => {
         ScrollTrigger.create({
           trigger: document.body,

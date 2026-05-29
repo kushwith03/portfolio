@@ -4,6 +4,7 @@ import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { Mail, Github, Linkedin, ArrowUpRight, MapPin, Calendar } from "lucide-react";
 import { useStore } from "@/lib/store";
+import { SCENES } from "@/lib/constants";
 
 /**
  * Epilogue: Narrative Closure
@@ -35,7 +36,7 @@ export default function Epilogue() {
   return (
     <section 
       ref={containerRef}
-      className={`relative min-h-[100vh] flex flex-col justify-center px-6 md:pl-64 md:pr-24 py-20 z-[30] opacity-0 translate-y-10 filter blur-md transition-all pointer-events-none ${activeScene === 4 ? 'pointer-events-auto' : ''}`}
+      className={`fixed inset-0 flex flex-col justify-center px-6 md:pl-64 md:pr-24 py-20 z-[30] opacity-0 translate-y-10 filter blur-md transition-all pointer-events-none ${activeScene === SCENES.CONTACT ? 'pointer-events-auto' : ''}`}
     >
       <div className="max-w-7xl w-full mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-20 border-t border-white/5 pt-20">

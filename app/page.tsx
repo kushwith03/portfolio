@@ -36,18 +36,18 @@ export default function Home() {
         </div>
 
         {/* Scene 3: Stack */}
-        <div className="h-[150vh]">
+        <div className="h-[120vh]">
            <Architecture />
         </div>
 
         {/* Scene 4: Contact */}
-        <div className="bg-gradient-to-b from-transparent via-[#020202] to-[#010101] min-h-[150vh] relative">
+        <div className="h-[120vh]">
            <NeuralCore />
            <Epilogue />
         </div>
         
         {/* Terminal Buffer */}
-        <div className="h-[60vh] bg-[#010101]" />
+        <div className="h-[80vh] bg-[#010101]" />
       </div>
     </main>
   );

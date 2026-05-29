@@ -11,7 +11,7 @@ const SECTIONS = [
   { id: SCENES.PROJECTS, label: "PROJECTS", start: 0.20 },
   { id: SCENES.EXPERIENCE, label: "EXPERIENCE", start: 0.50 },
   { id: SCENES.STACK, label: "STACK", start: 0.70 },
-  { id: SCENES.CONTACT, label: "CONTACT", start: 0.91 },
+  { id: SCENES.CONTACT, label: "CONTACT", start: 0.85 },
 ];
 
 export default function SystemIndex() {
