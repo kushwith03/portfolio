@@ -19,15 +19,11 @@ export default function CinematicController() {
 
   useEffect(() => {
     // 1. Narrative Milestone Thresholds
-    // Expanded for full Engineering Journey (0.0 to 1.0)
+    // Calibrated for a fast, continuous flow (0.0 to 1.0)
     const scenes = [
-      { id: 0, start: 0, end: 0.10 },       // Hero
-      { id: 1, start: 0.11, end: 0.22 },    // Principles
-      { id: 2, start: 0.23, end: 0.34 },    // Experience
-      { id: 3, start: 0.35, end: 0.46 },    // Architecture
-      { id: 4, start: 0.47, end: 0.72 },    // Projects/Artifacts
-      { id: 5, start: 0.73, end: 0.88 },    // Current Focus
-      { id: 6, start: 0.89, end: 1.0 },     // Epilogue
+      { id: 0, start: 0, end: 0.15 },    // Arrival (Immediate exit)
+      { id: 1, start: 0.16, end: 0.85 },   // Archive (Longer focus on systems)
+      { id: 2, start: 0.86, end: 1.0 },    // Closure
     ];
 
     const ctx = gsap.context(() => {

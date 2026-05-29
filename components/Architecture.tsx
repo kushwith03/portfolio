@@ -7,19 +7,19 @@ import gsap from "gsap";
 const DOMAINS = [
   {
     name: "Full-Stack Core",
-    tech: ["React.js", "Node.js", "Express", "PostgreSQL", "Next.js", "Electron.js"]
+    tech: ["React.js", "Node.js", "Express", "PostgreSQL", "Next.js"]
   },
   {
-    name: "Infrastructure & Ops",
-    tech: ["AWS S3", "CloudFront", "GitHub Actions", "Vercel", "Cloudflare CDN"]
+    name: "Infrastructure & DevOps",
+    tech: ["AWS S3", "CloudFront", "GitHub Actions", "Docker", "Vercel"]
   },
   {
     name: "AI & Autonomous",
-    tech: ["Python", "PyTorch", "CARLA Simulator", "Gemini AI", "Computer Vision"]
+    tech: ["Python", "PyTorch", "CARLA Simulator", "Gemini API", "OpenCV"]
   },
   {
-    name: "Development Env",
-    tech: ["Linux CLI", "Git", "Postman", "JWT", "REST API Design"]
+    name: "Systems & Languages",
+    tech: ["Java", "C++", "SQL", "Linux CLI", "Electron.js"]
   }
 ];
 
@@ -44,28 +44,28 @@ export default function Architecture() {
         <div className="flex flex-col gap-4 items-center text-center">
           <div className="flex items-center gap-6">
             <div className="h-px w-16 bg-gradient-to-r from-transparent to-cyan-400/20" />
-            <span className="text-[10px] uppercase tracking-[0.8em] text-cyan-400 font-black">Ecosystem_Map_v2</span>
+            <span className="text-[10px] uppercase tracking-[0.8em] text-cyan-400 font-black">Ecosystem_Map</span>
             <div className="h-px w-16 bg-gradient-to-l from-transparent to-cyan-400/20" />
           </div>
-          <h2 className="text-5xl md:text-9xl font-black uppercase leading-[0.8] tracking-tighter text-white">
-            Stack Architecture.
+          <h2 className="text-5xl md:text-8xl font-black uppercase leading-[0.8] tracking-tighter text-white">
+            System Architecture.
           </h2>
           <p className="text-white/30 text-xs md:text-sm mt-4 font-black uppercase tracking-[0.3em] max-w-2xl">
-            A production-ready stack optimized for <span className="text-white/60">resilience</span>, <span className="text-white/60">scalability</span>, <br />
-            and <span className="text-cyan-500/60 font-black">machine intelligence</span>.
+            A production-ready stack optimized for scalability, <br />
+            resilience, and machine intelligence.
           </p>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-px bg-white/5 border border-white/5 shadow-2xl">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-px bg-white/5 border border-white/5">
           {DOMAINS.map((domain, i) => (
-            <div key={i} className="bg-black/80 backdrop-blur-xl p-10 flex flex-col gap-8 group pointer-events-auto cursor-default hover:bg-white/[0.04] transition-colors duration-700">
+            <div key={i} className="bg-black p-10 flex flex-col gap-8 group pointer-events-auto cursor-default hover:bg-white/[0.02] transition-colors duration-700">
               <div className="flex flex-col gap-2">
-                 <span className="text-[8px] font-black text-white/20 uppercase tracking-[0.4em]">Subsystem_0{i+1}</span>
-                 <h4 className="text-[12px] uppercase tracking-[0.2em] font-black text-white group-hover:text-cyan-400 transition-colors">{domain.name}</h4>
+                 <span className="text-[8px] font-black text-white/20 uppercase tracking-[0.4em]">Node_0{i+1}</span>
+                 <h4 className="text-[11px] uppercase tracking-[0.2em] font-black text-cyan-400/80 group-hover:text-cyan-400 transition-colors">{domain.name}</h4>
               </div>
               <div className="flex flex-wrap gap-x-6 gap-y-3">
                 {domain.tech.map((t) => (
-                  <span key={t} className="text-[11px] font-bold text-white/20 group-hover:text-white/70 transition-colors duration-500 whitespace-nowrap">
+                  <span key={t} className="text-[10px] font-bold text-white/20 group-hover:text-white/60 transition-colors duration-500 whitespace-nowrap">
                     {t.toUpperCase()}
                   </span>
                 ))}
