@@ -13,12 +13,29 @@ export default function Epilogue() {
   const activeScene = useStore((state) => state.activeScene);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  if (activeScene !== 4) return null;
+  useEffect(() => {
+    if (activeScene === 4) {
+      gsap.to(containerRef.current, { 
+        opacity: 1, 
+        y: 0, 
+        filter: "blur(0px)", 
+        duration: 1.2, 
+        ease: "power4.out" 
+      });
+    } else {
+      gsap.to(containerRef.current, { 
+        opacity: 0, 
+        y: 20, 
+        filter: "blur(10px)", 
+        duration: 0.6 
+      });
+    }
+  }, [activeScene]);
 
   return (
     <section 
       ref={containerRef}
-      className="relative min-h-[80vh] flex flex-col justify-center px-6 md:pl-56 md:pr-24 py-20 z-10"
+      className={`relative min-h-[100vh] flex flex-col justify-center px-6 md:pl-56 md:pr-24 py-20 z-[30] opacity-0 translate-y-10 filter blur-md transition-all pointer-events-none ${activeScene === 4 ? 'pointer-events-auto' : ''}`}
     >
       <div className="max-w-7xl w-full mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-20 border-t border-white/5 pt-20">

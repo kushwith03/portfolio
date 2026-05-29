@@ -16,16 +16,14 @@ export default function Projects() {
   const hudRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    // Synchronized with CinematicController scene 1 (0.19 to 0.48)
     const sceneStart = 0.19;
     const sceneEnd = 0.48;
     const totalProjects = projects.length;
     const projectStep = (sceneEnd - sceneStart) / totalProjects;
     
-    let found = null;
+    let found: number | null = null;
 
     if (activeScene === 1) {
-      // Direct mapping with buffer
       projects.forEach((_, i) => {
         const pStart = sceneStart + i * projectStep;
         const pEnd = sceneStart + (i + 1) * projectStep;
@@ -33,27 +31,47 @@ export default function Projects() {
           found = i;
         }
       });
-      // Fallback for scene entry
       if (found === null && scrollProgress < sceneStart + 0.05) found = 0;
-      // Fallback for scene exit
       if (found === null && scrollProgress > sceneEnd - 0.05) found = projects.length - 1;
     }
     
     if (found !== activeProject) {
-      setActiveProject(found);
-      if (found !== null) {
-        gsap.fromTo(hudRef.current, 
-          { y: 30, opacity: 0, filter: "blur(12px)" }, 
-          { y: 0, opacity: 1, filter: "blur(0px)", duration: 0.8, ease: "power4.out" }
-        );
+      const direction = (found ?? 0) > (activeProject ?? 0) ? 1 : -1;
+      
+      // Exit Animation for current project
+      if (hudRef.current && activeProject !== null) {
+        gsap.to(hudRef.current, {
+          y: -20 * direction,
+          opacity: 0,
+          filter: "blur(10px)",
+          duration: 0.4,
+          ease: "power2.in",
+          onComplete: () => {
+             setActiveProject(found);
+             // Enter Animation for next project
+             if (found !== null) {
+                gsap.fromTo(hudRef.current, 
+                   { y: 30 * direction, opacity: 0, filter: "blur(12px)" }, 
+                   { y: 0, opacity: 1, filter: "blur(0px)", duration: 0.7, ease: "power3.out" }
+                );
+             }
+          }
+        });
+      } else {
+        setActiveProject(found);
+        if (found !== null) {
+          gsap.fromTo(hudRef.current, 
+            { y: 30, opacity: 0, filter: "blur(12px)" }, 
+            { y: 0, opacity: 1, filter: "blur(0px)", duration: 0.8, ease: "power4.out" }
+          );
+        }
       }
     }
   }, [scrollProgress, activeProject, activeScene]);
 
-  if (activeScene !== 1) return null;
-
+  // Use visibility instead of null return to prevent component destruction during scene boundaries
   return (
-    <div className="fixed inset-0 pointer-events-none z-20 flex items-center md:pl-64 pr-6 md:pr-24">
+    <div className={`fixed inset-0 pointer-events-none z-20 flex items-center md:pl-64 pr-6 md:pr-24 transition-opacity duration-1000 ${activeScene === 1 ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
       <div 
         ref={hudRef}
         className="w-full max-w-7xl opacity-0 pointer-events-auto"
