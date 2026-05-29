@@ -36,7 +36,8 @@ export default function Epilogue() {
   return (
     <section 
       ref={containerRef}
-      className={`fixed inset-0 flex flex-col justify-center px-6 md:pr-24 py-20 z-[30] opacity-0 translate-y-10 filter blur-md transition-all pointer-events-none ${activeScene === SCENES.CONTACT ? 'pointer-events-auto' : ''}`}
+      style={{ paddingLeft: 'var(--nav-safe-area)' }}
+      className={`fixed inset-0 flex flex-col justify-center pr-6 md:pr-24 py-20 z-[30] opacity-0 translate-y-10 filter blur-md transition-all pointer-events-none ${activeScene === SCENES.CONTACT ? 'pointer-events-auto' : ''}`}
     >
       <div className="max-w-7xl w-full mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-20 border-t border-white/5 pt-12 md:pt-20">

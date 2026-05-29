@@ -8,8 +8,8 @@ import CustomCursor from "@/components/motion/CustomCursor";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Neural Architect | R Khushwith Kumar",
-  description: "Cinematic Interactive Portfolio Experience",
+  title: "R Khushwith Kumar | Software Engineer & AI Builder",
+  description: "Architecting intelligent systems, scalable full-stack products, and production-ready software. Portfolio of R Khushwith Kumar, a CSE (Data Science) specialist.",
   icons: {
     icon: "/favicon.svg",
   },

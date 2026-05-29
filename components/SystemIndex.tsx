@@ -4,14 +4,14 @@ import { useStore } from "@/lib/store";
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
 
-import { SCENES } from "@/lib/constants";
+import { SCENES, SCENE_THRESHOLDS } from "@/lib/constants";
 
 const SECTIONS = [
-  { id: SCENES.HOME, label: "HOME", start: 0 },
-  { id: SCENES.PROJECTS, label: "PROJECTS", start: 0.20 },
-  { id: SCENES.EXPERIENCE, label: "EXPERIENCE", start: 0.50 },
-  { id: SCENES.STACK, label: "STACK", start: 0.70 },
-  { id: SCENES.CONTACT, label: "CONTACT", start: 0.85 },
+  { id: SCENES.HOME, label: "HOME", target: "home" },
+  { id: SCENES.PROJECTS, label: "PROJECTS", target: "projects" },
+  { id: SCENES.EXPERIENCE, label: "EXPERIENCE", target: "experience" },
+  { id: SCENES.STACK, label: "STACK", target: "stack" },
+  { id: SCENES.CONTACT, label: "CONTACT", target: "contact" },
 ];
 
 export default function SystemIndex() {
@@ -22,8 +22,10 @@ export default function SystemIndex() {
     const section = SECTIONS.find(s => s.id === id);
     if (!section) return;
 
-    const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
-    const targetScroll = section.start * totalHeight;
+    const element = document.getElementById(section.target);
+    if (!element) return;
+
+    const targetScroll = element.offsetTop;
 
     window.scrollTo({
       top: targetScroll,
@@ -36,8 +38,8 @@ export default function SystemIndex() {
     <>
       {/* Desktop Navigation - Fixed Left Rail */}
       <nav 
-        style={{ width: 'var(--nav-width)' }}
-        className="fixed left-6 md:left-8 top-1/2 -translate-y-1/2 z-50 pointer-events-none hidden md:flex flex-col gap-12"
+        style={{ left: 'var(--nav-offset)', width: 'var(--nav-width)' }}
+        className="fixed top-1/2 -translate-y-1/2 z-50 pointer-events-none hidden md:flex flex-col gap-12"
       >
         <div className="flex flex-col gap-10">
           {SECTIONS.map((section) => (

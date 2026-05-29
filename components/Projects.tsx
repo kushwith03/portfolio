@@ -75,7 +75,7 @@ export default function Projects() {
   // Use visibility instead of null return to prevent component destruction during scene boundaries
   return (
     <div 
-      style={{ paddingLeft: 'var(--content-start)' }}
+      style={{ paddingLeft: 'var(--nav-safe-area)' }}
       className={`fixed inset-0 pointer-events-none z-20 flex items-center pr-6 md:pr-24 transition-opacity duration-1000 ${activeScene === SCENES.PROJECTS ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
     >
       <div 

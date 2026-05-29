@@ -19,32 +19,29 @@ export default function Home() {
       <CinematicController />
       <SystemIndex />
 
-      <div 
-        style={{ paddingLeft: 'var(--content-start)' }}
-        className="relative"
-      >
+      <div className="relative">
         {/* Scene 0: Home */}
-        <div className="h-[100vh]">
+        <div id="home" className="h-[100vh]">
           <Hero />
         </div>
 
         {/* Scene 1: Projects */}
-        <div className="relative h-[180vh]">
+        <div id="projects" className="relative h-[180vh]">
            <Projects />
         </div>
 
         {/* Scene 2: Experience */}
-        <div className="relative h-[100vh]">
+        <div id="experience" className="relative h-[100vh]">
            <Experience />
         </div>
 
         {/* Scene 3: Stack */}
-        <div className="h-[120vh]">
+        <div id="stack" className="h-[120vh]">
            <Architecture />
         </div>
 
         {/* Scene 4: Contact */}
-        <div className="h-[120vh]">
+        <div id="contact" className="h-[120vh]">
            <NeuralCore />
            <Epilogue />
         </div>

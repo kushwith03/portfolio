@@ -50,13 +50,13 @@ export default function Hero() {
   return (
     <section
       ref={containerRef}
-      style={{ paddingLeft: 'var(--content-start)' }}
+      style={{ paddingLeft: 'var(--nav-safe-area)' }}
       className="relative min-h-screen flex flex-col justify-center pr-6 md:pr-24 py-20 z-10 overflow-hidden"
     >
       {/* System Interface HUD - Authored Context */}
       <div 
         ref={infoRef} 
-        style={{ paddingLeft: 'var(--content-start)' }}
+        style={{ paddingLeft: 'var(--nav-safe-area)' }}
         className="absolute inset-0 pointer-events-none p-10 md:p-16 flex flex-col justify-between opacity-0"
       >
         <div className="flex justify-between items-start">

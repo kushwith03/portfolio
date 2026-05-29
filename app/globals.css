@@ -8,9 +8,10 @@
   --background-end-rgb: 2, 2, 2;
   
   /* Responsive Architecture Constants */
+  --nav-offset: clamp(1.5rem, 3vw, 2rem);
   --nav-width: clamp(120px, 12vw, 180px);
   --safe-gap: clamp(2rem, 5vw, 4rem);
-  --content-start: calc(var(--nav-width) + var(--safe-gap));
+  --nav-safe-area: calc(var(--nav-offset) + var(--nav-width) + var(--safe-gap));
 }
 
 @layer base {
