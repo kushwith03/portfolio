@@ -4,7 +4,7 @@ import { useStore } from "@/lib/store";
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
 
-import { SCENES, SCENE_THRESHOLDS } from "@/lib/constants";
+import { SCENES } from "@/lib/constants";
 
 const SECTIONS = [
   { id: SCENES.HOME, label: "HOME", target: "home" },
@@ -25,7 +25,9 @@ export default function SystemIndex() {
     const element = document.getElementById(section.target);
     if (!element) return;
 
-    const targetScroll = element.offsetTop;
+    // Use getBoundingClientRect for accurate absolute position relative to document
+    const rect = element.getBoundingClientRect();
+    const targetScroll = rect.top + window.scrollY;
 
     window.scrollTo({
       top: targetScroll,

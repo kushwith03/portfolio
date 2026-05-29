@@ -7,36 +7,40 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
-import { SCENES, SCENE_THRESHOLDS } from "@/lib/constants";
+import { SCENES } from "@/lib/constants";
+
+const SCENE_MAP = [
+  { id: SCENES.HOME, target: "#home" },
+  { id: SCENES.PROJECTS, target: "#projects" },
+  { id: SCENES.EXPERIENCE, target: "#experience" },
+  { id: SCENES.STACK, target: "#stack" },
+  { id: SCENES.CONTACT, target: "#contact" },
+];
 
 /**
  * Global Cinematic Controller
- * Tighter narrative pacing Pass 5.
- * Calibrated for immediate Hero -> Archive engagement.
+ * Tighter narrative pacing Pass 6.
+ * Unified Physical Mapping: Sections now activate exactly when their DOM containers enter the viewport.
  */
 export default function CinematicController() {
-  const activeScene = useStore((state) => state.activeScene);
   const setActiveScene = useStore((state) => state.setActiveScene);
-  const setScrollProgress = useStore((state) => state.setScrollProgress);
 
   useEffect(() => {
-    // 1. Narrative Milestone Thresholds synchronized with SCENE_THRESHOLDS
     const ctx = gsap.context(() => {
-      // 1. Narrative Milestone Triggering
-      Object.entries(SCENE_THRESHOLDS).forEach(([id, threshold]) => {
+      SCENE_MAP.forEach((scene) => {
         ScrollTrigger.create({
-          trigger: document.body,
-          start: `${threshold.start * 100}% top`,
-          end: `${threshold.end * 100}% top`,
+          trigger: scene.target,
+          start: "top center",
+          end: "bottom center",
           onToggle: (self) => {
-            if (self.isActive) setActiveScene(Number(id) as any);
+            if (self.isActive) setActiveScene(scene.id);
           },
         });
       });
     });
 
     return () => ctx.revert();
-  }, [setActiveScene, setScrollProgress]);
+  }, [setActiveScene]);
 
   return null;
 }
