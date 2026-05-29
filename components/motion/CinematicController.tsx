@@ -22,10 +22,10 @@ export default function CinematicController() {
     // Calibrated for a fast, continuous flow (0.0 to 1.0)
     const scenes = [
       { id: 0, start: 0, end: 0.18 },       // Home
-      { id: 1, start: 0.19, end: 0.45 },    // Projects
-      { id: 2, start: 0.46, end: 0.65 },    // Experience
-      { id: 3, start: 0.66, end: 0.85 },    // Stack
-      { id: 4, start: 0.86, end: 1.0 },     // Contact
+      { id: 1, start: 0.19, end: 0.48 },    // Projects (Increased range for 3 items)
+      { id: 2, start: 0.49, end: 0.68 },    // Experience
+      { id: 3, start: 0.69, end: 0.88 },    // Stack
+      { id: 4, start: 0.89, end: 1.0 },     // Contact
     ];
 
     const ctx = gsap.context(() => {
