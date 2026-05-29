@@ -102,72 +102,141 @@ export default function Projects() {
               </div>
             </div>
 
-            {/* RIGHT: System Architecture & Context (50%) */}
-            <div className="hidden lg:flex flex-col gap-6">
-               <div className="flex items-center gap-4 mb-4">
-                  <div className="w-2 h-2 bg-cyan-500 rounded-full animate-pulse shadow-[0_0_10px_#06b6d4]" />
-                  <span className="text-[10px] uppercase tracking-[0.4em] text-white/30 font-bold">System_Architecture_V.2.0</span>
+            {/* RIGHT: Engineering Architecture & Pipeline (50%) */}
+            <div className="hidden lg:flex flex-col gap-12 w-full">
+               {/* 1. System Pipeline Visualization */}
+               <div className="bg-white/[0.02] border border-white/10 p-10 flex flex-col gap-10 relative overflow-hidden">
+                  <span className="text-[10px] uppercase tracking-[0.5em] text-white/30 font-black">System_Flow_Architecture</span>
+                  
+                  <div className="flex items-center justify-between relative">
+                     {/* Horizontal Flow Line */}
+                     <div className="absolute top-1/2 left-0 w-full h-px bg-white/5 -z-10" />
+                     
+                     {activeProject === 0 && ( // Autonomous Vehicle
+                        <>
+                           {[
+                              { label: 'Dataset', sub: '8k+ Images' },
+                              { label: 'CNN Model', sub: 'PyTorch' },
+                              { label: 'Inference', sub: '<50ms Latency' },
+                              { label: 'Simulator', sub: 'CARLA' },
+                              { label: 'Steering', sub: 'Output' }
+                           ].map((step, i) => (
+                              <div key={i} className="flex flex-col items-center gap-3">
+                                 <div className="w-3 h-3 rounded-full bg-cyan-500 shadow-[0_0_10px_#06b6d4]" />
+                                 <div className="text-center">
+                                    <div className="text-[10px] text-white font-black uppercase tracking-widest">{step.label}</div>
+                                    <div className="text-[8px] text-white/30 font-bold uppercase tracking-widest">{step.sub}</div>
+                                 </div>
+                              </div>
+                           ))}
+                        </>
+                     )}
+
+                     {activeProject === 1 && ( // InstaResume
+                        <>
+                           {[
+                              { label: 'User Input', sub: 'React Form' },
+                              { label: 'Gemini AI', sub: 'LLM Processing' },
+                              { label: 'Generation', sub: 'ATS Optimized' },
+                              { label: 'PDF Export', sub: 'Client Side' }
+                           ].map((step, i) => (
+                              <div key={i} className="flex flex-col items-center gap-3">
+                                 <div className="w-3 h-3 rounded-full bg-blue-500 shadow-[0_0_10px_#3b82f6]" />
+                                 <div className="text-center">
+                                    <div className="text-[10px] text-white font-black uppercase tracking-widest">{step.label}</div>
+                                    <div className="text-[8px] text-white/30 font-bold uppercase tracking-widest">{step.sub}</div>
+                                 </div>
+                              </div>
+                           ))}
+                        </>
+                     )}
+
+                     {activeProject === 2 && ( // BlogSpace
+                        <>
+                           {[
+                              { label: 'Frontend', sub: 'React.js' },
+                              { label: 'API Layer', sub: 'Node/Express' },
+                              { label: 'Auth', sub: 'JWT/Security' },
+                              { label: 'Database', sub: 'PostgreSQL' },
+                              { label: 'Deploy', sub: 'Render' }
+                           ].map((step, i) => (
+                              <div key={i} className="flex flex-col items-center gap-3">
+                                 <div className="w-3 h-3 rounded-full bg-purple-500 shadow-[0_0_10px_#a855f7]" />
+                                 <div className="text-center">
+                                    <div className="text-[10px] text-white font-black uppercase tracking-widest">{step.label}</div>
+                                    <div className="text-[8px] text-white/30 font-bold uppercase tracking-widest">{step.sub}</div>
+                                 </div>
+                              </div>
+                           ))}
+                        </>
+                     )}
+                  </div>
                </div>
-               
-               <div className="grid grid-cols-1 gap-px bg-white/5 border border-white/10 shadow-2xl">
-                  {/* High-Fidelity Technical Stats */}
-                  <div className="bg-black/60 p-10 flex flex-col gap-8">
-                     <div className="flex flex-col gap-6">
-                        <span className="text-[9px] uppercase tracking-[0.5em] text-white/20 font-black">Performance_Metrics</span>
-                        <div className="grid grid-cols-2 gap-10">
-                           {(projects[activeProject] as any).highlights?.map((h: string, i: number) => {
-                              const [label, value] = h.includes(':') ? h.split(':') : [h, 'ACTIVE'];
-                              return (
-                                <div key={i} className="flex flex-col gap-2 group/metric">
-                                   <span className="text-[8px] uppercase tracking-[0.3em] text-white/40 group-hover/metric:text-cyan-400 transition-colors">{label.trim()}</span>
-                                   <span className="text-2xl font-black uppercase text-white/80">{value.trim()}</span>
-                                   <div className="w-full h-px bg-white/5" />
-                                </div>
-                              );
-                           })}
-                        </div>
-                     </div>
 
-                     <div className="flex flex-col gap-4 pt-4 border-t border-white/5">
-                        <span className="text-[9px] uppercase tracking-[0.5em] text-white/20 font-black">Production_Workflow</span>
-                        <div className="flex flex-col gap-3">
-                           <div className="flex items-center gap-4 text-[10px] uppercase tracking-[0.2em] text-white/40 font-medium">
-                              <div className="w-1.5 h-1.5 rounded-full border border-cyan-500/50" />
-                              CI/CD Pipelines: <span className="text-white/70 ml-auto">Verified</span>
-                           </div>
-                           <div className="flex items-center gap-4 text-[10px] uppercase tracking-[0.2em] text-white/40 font-medium">
-                              <div className="w-1.5 h-1.5 rounded-full border border-cyan-500/50" />
-                              Scalability Class: <span className="text-white/70 ml-auto">Modular</span>
-                           </div>
-                           <div className="flex items-center gap-4 text-[10px] uppercase tracking-[0.2em] text-white/40 font-medium">
-                              <div className="w-1.5 h-1.5 rounded-full border border-cyan-500/50" />
-                              Data Integrity: <span className="text-white/70 ml-auto">100%</span>
-                           </div>
+               {/* 2. Technical Specification Blocks */}
+               <div className="grid grid-cols-2 gap-8">
+                  {activeProject === 0 && ( // Autonomous Vehicle Metrics
+                     <>
+                        <div className="bg-white/[0.02] border border-white/5 p-8 flex flex-col gap-4">
+                           <span className="text-[8px] uppercase tracking-[0.4em] text-white/20 font-black">Performance_Threshold</span>
+                           <span className="text-3xl font-black text-white tracking-tighter">&lt;50MS <span className="text-cyan-500/50 text-sm">INFERENCE</span></span>
                         </div>
-                     </div>
-                  </div>
+                        <div className="bg-white/[0.02] border border-white/5 p-8 flex flex-col gap-4">
+                           <span className="text-[8px] uppercase tracking-[0.4em] text-white/20 font-black">Training_Volume</span>
+                           <span className="text-3xl font-black text-white tracking-tighter">8,000+ <span className="text-cyan-500/50 text-sm">SAMPLES</span></span>
+                        </div>
+                        <div className="bg-white/[0.02] border border-white/5 p-8 flex flex-col gap-4">
+                           <span className="text-[8px] uppercase tracking-[0.4em] text-white/20 font-black">Environment</span>
+                           <span className="text-xl font-black text-white/80 uppercase tracking-widest">CARLA_SIMULATOR</span>
+                        </div>
+                        <div className="bg-white/[0.02] border border-white/5 p-8 flex flex-col gap-4">
+                           <span className="text-[8px] uppercase tracking-[0.4em] text-white/20 font-black">Methodology</span>
+                           <span className="text-xl font-black text-white/80 uppercase tracking-widest">BEHAVIORAL_CLONING</span>
+                        </div>
+                     </>
+                  )}
 
-                  {/* Architecture Diagram Placeholder / Mock-UI */}
-                  <div className="bg-white/[0.02] p-8 border-t border-white/5 flex items-center justify-center relative overflow-hidden h-[120px]">
-                     <div className="absolute inset-0 flex items-center justify-center opacity-[0.03] pointer-events-none">
-                        <div className="text-[10rem] font-black tracking-tighter uppercase leading-none italic">
-                          {projects[activeProject].title.split(' ')[0]}
+                  {activeProject === 1 && ( // InstaResume Features
+                     <>
+                        <div className="bg-white/[0.02] border border-white/5 p-8 flex flex-col gap-4">
+                           <span className="text-[8px] uppercase tracking-[0.4em] text-white/20 font-black">Intelligence_Core</span>
+                           <span className="text-xl font-black text-white/80 uppercase tracking-widest text-blue-400">GEMINI_PRO_API</span>
                         </div>
-                     </div>
-                     <div className="relative z-10 flex gap-12 items-center">
-                        <div className="flex flex-col items-center gap-2">
-                           <div className="w-12 h-px bg-cyan-500/20" />
-                           <span className="text-[7px] uppercase tracking-widest text-white/20 font-black">Input_Node</span>
+                        <div className="bg-white/[0.02] border border-white/5 p-8 flex flex-col gap-4">
+                           <span className="text-[8px] uppercase tracking-[0.4em] text-white/20 font-black">State_Management</span>
+                           <span className="text-xl font-black text-white/80 uppercase tracking-widest">REAL-TIME_SYNC</span>
                         </div>
-                        <div className="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center">
-                           <div className="w-2 h-2 bg-cyan-500/40 rounded-full" />
+                        <div className="bg-white/[0.02] border border-white/5 p-8 flex flex-col gap-4">
+                           <span className="text-[8px] uppercase tracking-[0.4em] text-white/20 font-black">Optimization</span>
+                           <span className="text-xl font-black text-white/80 uppercase tracking-widest">ATS_ENGINE_PASS</span>
                         </div>
-                        <div className="flex flex-col items-center gap-2">
-                           <div className="w-12 h-px bg-cyan-500/20" />
-                           <span className="text-[7px] uppercase tracking-widest text-white/20 font-black">Output_Node</span>
+                        <div className="bg-white/[0.02] border border-white/5 p-8 flex flex-col gap-4">
+                           <span className="text-[8px] uppercase tracking-[0.4em] text-white/20 font-black">Output_Format</span>
+                           <span className="text-xl font-black text-white/80 uppercase tracking-widest">CLIENT_SIDE_PDF</span>
                         </div>
-                     </div>
-                  </div>
+                     </>
+                  )}
+
+                  {activeProject === 2 && ( // BlogSpace Stack
+                     <>
+                        <div className="bg-white/[0.02] border border-white/5 p-8 flex flex-col gap-4">
+                           <span className="text-[8px] uppercase tracking-[0.4em] text-white/20 font-black">Persistence_Layer</span>
+                           <span className="text-xl font-black text-white/80 uppercase tracking-widest text-purple-400">POSTGRESQL_RELATIONAL</span>
+                        </div>
+                        <div className="bg-white/[0.02] border border-white/5 p-8 flex flex-col gap-4">
+                           <span className="text-[8px] uppercase tracking-[0.4em] text-white/20 font-black">Security_Protocol</span>
+                           <span className="text-xl font-black text-white/80 uppercase tracking-widest">JWT_AUTHENTICATION</span>
+                        </div>
+                        <div className="bg-white/[0.02] border border-white/5 p-8 flex flex-col gap-4">
+                           <span className="text-[8px] uppercase tracking-[0.4em] text-white/20 font-black">Architecture</span>
+                           <span className="text-xl font-black text-white/80 uppercase tracking-widest">MVC_PATTERN_REST</span>
+                        </div>
+                        <div className="bg-white/[0.02] border border-white/5 p-8 flex flex-col gap-4">
+                           <span className="text-[8px] uppercase tracking-[0.4em] text-white/20 font-black">Infrastructure</span>
+                           <span className="text-xl font-black text-white/80 uppercase tracking-widest">RENDER_MANAGED_OPS</span>
+                        </div>
+                     </>
+                  )}
                </div>
             </div>
           </div>
