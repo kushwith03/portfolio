@@ -6,6 +6,8 @@ import { useStore } from "@/lib/store";
 import gsap from "gsap";
 import { Github, Code, Cpu, Database, Network } from "lucide-react";
 
+import { SCENES } from "@/lib/constants";
+
 /**
  * Projects HUD: Re-calibrated for immediate entry.
  */
@@ -16,14 +18,15 @@ export default function Projects() {
   const hudRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const sceneStart = 0.19;
-    const sceneEnd = 0.48;
+    // Synchronized with CinematicController scene 1 (0.20 to 0.49)
+    const sceneStart = 0.20;
+    const sceneEnd = 0.49;
     const totalProjects = projects.length;
     const projectStep = (sceneEnd - sceneStart) / totalProjects;
     
     let found: number | null = null;
 
-    if (activeScene === 1) {
+    if (activeScene === SCENES.PROJECTS) {
       projects.forEach((_, i) => {
         const pStart = sceneStart + i * projectStep;
         const pEnd = sceneStart + (i + 1) * projectStep;
@@ -71,7 +74,7 @@ export default function Projects() {
 
   // Use visibility instead of null return to prevent component destruction during scene boundaries
   return (
-    <div className={`fixed inset-0 pointer-events-none z-20 flex items-center md:pl-64 pr-6 md:pr-24 transition-opacity duration-1000 ${activeScene === 1 ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
+    <div className={`fixed inset-0 pointer-events-none z-20 flex items-center md:pl-64 pr-6 md:pr-24 transition-opacity duration-1000 ${activeScene === SCENES.PROJECTS ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
       <div 
         ref={hudRef}
         className="w-full max-w-7xl opacity-0 pointer-events-auto"

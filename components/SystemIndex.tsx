@@ -4,12 +4,14 @@ import { useStore } from "@/lib/store";
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
 
+import { SCENES } from "@/lib/constants";
+
 const SECTIONS = [
-  { id: 0, label: "HOME", title: "IDENTITY" },
-  { id: 1, label: "PROJECTS", title: "ARTIFACTS" },
-  { id: 2, label: "EXPERIENCE", title: "PRODUCTION" },
-  { id: 3, label: "STACK", title: "ECOSYSTEM" },
-  { id: 4, label: "CONTACT", title: "CLOSURE" },
+  { id: SCENES.HOME, label: "HOME", start: 0 },
+  { id: SCENES.PROJECTS, label: "PROJECTS", start: 0.20 },
+  { id: SCENES.EXPERIENCE, label: "EXPERIENCE", start: 0.50 },
+  { id: SCENES.STACK, label: "STACK", start: 0.70 },
+  { id: SCENES.CONTACT, label: "CONTACT", start: 0.91 },
 ];
 
 export default function SystemIndex() {
@@ -17,9 +19,14 @@ export default function SystemIndex() {
   const [isOpen, setIsOpen] = useState(false);
 
   const scrollToSection = (id: number) => {
-    const sectionHeight = document.body.scrollHeight / SECTIONS.length;
+    const section = SECTIONS.find(s => s.id === id);
+    if (!section) return;
+
+    const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const targetScroll = section.start * totalHeight;
+
     window.scrollTo({
-      top: id * sectionHeight,
+      top: targetScroll,
       behavior: "smooth",
     });
     setIsOpen(false);

@@ -47,7 +47,7 @@ export default function Architecture() {
   }, [activeScene]);
 
   return (
-    <section className={`fixed inset-0 pointer-events-none z-10 flex items-center justify-center md:pl-56 px-6 md:px-24 transition-opacity duration-700 ${activeScene === 3 ? 'opacity-100' : 'opacity-0'}`}>
+    <section className={`fixed inset-0 pointer-events-none z-10 flex items-center justify-center md:pl-64 px-6 md:px-24 transition-opacity duration-700 ${activeScene === 3 ? 'opacity-100' : 'opacity-0'}`}>
       <div 
         ref={containerRef} 
         className="max-w-6xl w-full flex flex-col gap-10 opacity-0 translate-y-10 filter blur-md"

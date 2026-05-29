@@ -12,12 +12,6 @@ const EXPERIENCES = [
     desc: "Shipped production React, Node, and PostgreSQL features. Designed optimized relational schemas, REST APIs, and automated CI/CD workflows."
   },
   {
-    role: "Autonomous Systems Builder",
-    company: "Research & Simulation",
-    time: "Aug 2025 — Feb 2026",
-    desc: "Engineering end-to-end autonomous driving pipelines and steering prediction systems within high-fidelity simulation environments."
-  },
-  {
     role: "CSE (Data Science)",
     company: "RNSIT",
     time: "Expected May 2026",
@@ -37,10 +31,8 @@ export default function Experience() {
     }
   }, [activeScene]);
 
-  if (activeScene !== 2) return null;
-
   return (
-    <section className="fixed inset-0 pointer-events-none z-10 flex items-center justify-start md:pl-56 pr-6 md:pr-24">
+    <section className={`fixed inset-0 pointer-events-none z-10 flex items-center justify-start md:pl-64 pr-6 md:pr-24 transition-opacity duration-700 ${activeScene === 2 ? 'opacity-100' : 'opacity-0'}`}>
       <div 
         ref={containerRef} 
         className="max-w-4xl w-full flex flex-col gap-12 opacity-0 translate-y-5 filter blur-md"

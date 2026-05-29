@@ -50,10 +50,10 @@ export default function Hero() {
   return (
     <section
       ref={containerRef}
-      className="relative min-h-screen flex flex-col justify-center px-6 md:pl-48 md:pr-24 py-20 z-10 overflow-hidden"
+      className="relative min-h-screen flex flex-col justify-center px-6 md:pl-64 md:pr-24 py-20 z-10 overflow-hidden"
     >
       {/* System Interface HUD - Authored Context */}
-      <div ref={infoRef} className="absolute inset-0 pointer-events-none p-10 md:p-16 md:pl-48 flex flex-col justify-between opacity-0">
+      <div ref={infoRef} className="absolute inset-0 pointer-events-none p-10 md:p-16 md:pl-64 flex flex-col justify-between opacity-0">
         <div className="flex justify-between items-start">
           <div className="flex flex-col gap-2">
             <span className="text-[9px] uppercase tracking-[0.6em] font-black text-white/30">Engineering_Auth</span>

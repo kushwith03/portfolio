@@ -7,6 +7,8 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
+import { SCENES } from "@/lib/constants";
+
 /**
  * Global Cinematic Controller
  * Tighter narrative pacing Pass 5.
@@ -21,11 +23,11 @@ export default function CinematicController() {
     // 1. Narrative Milestone Thresholds
     // Calibrated for a fast, continuous flow (0.0 to 1.0)
     const scenes = [
-      { id: 0, start: 0, end: 0.18 },       // Home
-      { id: 1, start: 0.19, end: 0.48 },    // Projects
-      { id: 2, start: 0.49, end: 0.68 },    // Experience
-      { id: 3, start: 0.69, end: 0.88 },    // Stack
-      { id: 4, start: 0.90, end: 1.0 },     // Contact
+      { id: SCENES.HOME, start: 0, end: 0.19 },
+      { id: SCENES.PROJECTS, start: 0.20, end: 0.49 },
+      { id: SCENES.EXPERIENCE, start: 0.50, end: 0.69 },
+      { id: SCENES.STACK, start: 0.70, end: 0.90 },
+      { id: SCENES.CONTACT, start: 0.91, end: 1.0 },
     ];
 
     const ctx = gsap.context(() => {
