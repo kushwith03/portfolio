@@ -60,18 +60,18 @@ const Hero: React.FC = () => {
             >
               <span className="block">Hi, I'm Khushwith</span>
               <div className="mt-1 h-[1.2em] sm:h-[1.3em] md:h-[1.4em]">
-                <span className="inline-block min-w-[22ch] text-primary whitespace-nowrap">
+                <span className="inline-block min-w-[18ch] text-primary">
                   <TypeAnimation
                     sequence={[
                       "Full Stack Engineer",
                       1000,
                       "Backend Developer",
                       1000,
+                      "Software Engineer",
+                      1000,
                       "Problem Solver",
                       1000,
-                      "Product-Focused Developer",
-                      1000,
-                      "CSE (Data Science) Graduate",
+                      "CSE Graduate",
                       1000,
                     ]}
                     speed={50}
