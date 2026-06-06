@@ -7,7 +7,7 @@
     "tools": ["Git", "Postman", "Linux CLI", "VS Code"]
   },
   "achievements": [
-    { "title": "250+ LeetCode / DSA Problems", "desc": "Proficient in problem-solving and algorithmic logic." },
+    { "title": "250+ LeetCode / DSA Problems", "desc": "Advanced problem-solving across core algorithms and data structures." },
     { "title": "Microsoft Certified", "desc": "Azure AI Fundamentals (AI-900) & Azure Data Fundamentals (DP-900)." },
     { "title": "State-Level Athlete", "desc": "Powerlifting and Kabaddi competitor representing RNSIT." }
   ],
@@ -16,14 +16,14 @@
       "role": "Software Engineering Intern — Full Stack",
       "company": "ATSPL (Angadi Technological Solution Private Limited)",
       "period": "Jan 2026 -- May 2026",
-      "location": "Bengaluru, India (Hybrid)",
+      "location": "Bengaluru, India (Remote)",
       "details": [
-        "Developed and shipped full-stack features using React.js, Node.js/Express, and PostgreSQL.",
-        "Designed REST APIs and relational schemas ensuring data integrity and maintainability.",
-        "Automated application deployment workflows using GitHub Actions CI/CD pipelines.",
-        "Managed frontend deployments and caching utilizing AWS S3, CloudFront, and Cloudflare CDN.",
-        "Implemented transactional email workflows using Zoho ZeptoMail for automated notifications.",
-        "Ported web applications into cross-platform desktop applications using Electron.js."
+        "Architected and shipped production-ready features using React.js and Node.js/Express.",
+        "Engineered RESTful APIs and optimized PostgreSQL relational schemas for high performance.",
+        "Automated deployment pipelines using GitHub Actions, ensuring consistent CI/CD workflows.",
+        "Optimized frontend delivery and asset caching using AWS S3, CloudFront, and Cloudflare CDN.",
+        "Implemented high-reliability transactional email systems via Zoho ZeptoMail integration.",
+        "Successfully ported core web functionalities into cross-platform desktop applications using Electron.js."
       ]
     }
   ],

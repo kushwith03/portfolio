@@ -5,8 +5,8 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Portfolio - R Khushwith Kumar ",
-  description: "Interactive Portfolio",
+  title: "R Khushwith Kumar | Full Stack Software Engineer",
+  description: "Portfolio of R Khushwith Kumar, a Full Stack Software Engineer and CSE (Data Science) graduate specialized in building scalable web applications and production systems.",
   icons: {
     icon: "/favicon.svg",
   },

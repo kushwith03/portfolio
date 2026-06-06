@@ -51,7 +51,7 @@ const Hero: React.FC = () => {
               className="inline-flex items-center px-3 py-1 rounded-full bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-300 text-sm font-medium mb-6"
             >
               <span className="flex h-2 w-2 rounded-full bg-blue-600 dark:bg-blue-400 mr-2 animate-pulse"></span>
-              Available for Full-Time Roles
+              Open to Full-Stack & Software Roles
             </motion.div>
 
             <motion.h1
@@ -63,15 +63,15 @@ const Hero: React.FC = () => {
                 <span className="inline-block min-w-[22ch] text-primary whitespace-nowrap">
                   <TypeAnimation
                     sequence={[
-                      "Full Stack Developer",
+                      "Full Stack Engineer",
                       1000,
-                      "Java Problem Solver",
+                      "Backend Developer",
                       1000,
-                      "Learning by Building",
+                      "Problem Solver",
                       1000,
-                      "Data Structures & APIs",
+                      "Product-Focused Developer",
                       1000,
-                      "B.E. CSE Graduate",
+                      "CSE (Data Science) Graduate",
                       1000,
                     ]}
                     speed={50}
@@ -85,11 +85,9 @@ const Hero: React.FC = () => {
               variants={itemVariants}
               className="mt-6 text-lg text-gray-600 dark:text-gray-300 sm:max-w-xl sm:mx-auto md:text-xl lg:mx-0 leading-relaxed"
             >
-              Graduate in <strong>Computer Science & Engineering</strong> from RNSIT. Crafting scalable web applications with{" "}
-              <span className="font-semibold text-primary">
-                React, Node.js, & RESTful backends
-              </span>
-              .
+              <strong>Software Engineer</strong> specialized in building scalable full-stack applications. 
+              Passionate about architecting efficient backends, modular frontends, and 
+              delivering high-impact digital solutions.
             </motion.p>
 
             <motion.div

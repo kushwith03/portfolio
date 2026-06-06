@@ -86,27 +86,15 @@ const About: React.FC = () => {
 
           <motion.div className="space-y-6 text-lg text-gray-600 dark:text-gray-300 leading-relaxed">
             <motion.p variants={itemVariants}>
-              I am a <strong>Computer Science & Engineering (Data Science)</strong> graduate from <strong>RNS Institute of Technology</strong>,
-              maintaining a consistent academic record with a CGPA of{" "}
-              <span className="text-gray-900 dark:text-white font-semibold">
-                8.6
-              </span>
-              .
+              I am a <strong>Computer Science & Engineering (Data Science)</strong> graduate from <strong>RNS Institute of Technology</strong> with a strong foundation in full-stack development and scalable systems.
             </motion.p>
 
             <motion.p variants={itemVariants}>
-              My journey began with Java and Data Structures, which built my
-              foundation in problem-solving. Over time, I developed a strong
-              interest in building real-world applications using the{" "}
-              <strong>MERN stack</strong> and working with technologies like{" "}
-              <strong>PostgreSQL</strong>.
+              My expertise lies in building <strong>production-ready web applications</strong> using the <strong>MERN stack</strong> and <strong>PostgreSQL</strong>. I have hands-on experience designing RESTful APIs, implementing secure authentication flows, and managing cloud deployments.
             </motion.p>
 
             <motion.p variants={itemVariants}>
-              I enjoy writing clean, maintainable code and thinking through edge
-              cases. Solving over <strong>250+ DSA problems</strong> has helped
-              me improve my logical thinking and approach problems in a
-              structured way.
+              I am driven by a passion for solving complex technical challenges. Having solved over <strong>250+ LeetCode problems</strong>, I bring a disciplined, algorithmic approach to writing clean and maintainable code. My goal is to build digital products that are not only functional but also scalable and user-centric.
             </motion.p>
 
             <motion.div variants={itemVariants} className="pt-4">

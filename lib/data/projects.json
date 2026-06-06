@@ -3,26 +3,26 @@
     "id": "1",
     "title": "Autonomous Vehicle Simulation",
     "timeline": "Aug 2025 -- Feb 2026",
-    "description": "Built an end-to-end autonomous driving pipeline using ~8K combined images from Cityscapes and CARLA datasets. Trained a PyTorch autoencoder achieving sub-50 ms inference latency for real-time decision-making. Applied behavioral cloning via CNN-based models to predict steering and throttle control signals.",
-    "tags": ["Python", "PyTorch", "CARLA", "Computer Vision"],
+    "description": "Architected an end-to-end autonomous driving pipeline using PyTorch and the CARLA simulator. Trained a deep autoencoder on ~8,000 frames from Cityscapes/CARLA, achieving sub-50ms inference for real-time decision making. Implemented behavioral cloning using CNNs to predict steering and throttle control with high precision.",
+    "tags": ["Python", "PyTorch", "CARLA", "Computer Vision", "Deep Learning"],
     "link": "https://github.com/kushwith03/Autonomous-Vehicle",
     "imageUrl": "https://placehold.co/600x400/2563eb/ffffff?text=Autonomous+Vehicle"
   },
   {
     "id": "2",
-    "title": "InstaResume — AI Resume Generator",
+    "title": "InstaResume — AI Portfolio Engine",
     "timeline": "Mar 2025 -- Jul 2025",
-    "description": "Built a real-time resume builder with dynamic form handling using React Hook Form and debounced state updates for smooth live preview rendering. Integrated Google Gemini AI for keyword-optimized resume generation; implemented client-side PDF export via @react-pdf/renderer. Delivered responsive resume templates with live preview and real-time editing capabilities.",
+    "description": "Engineered a high-performance resume builder with dynamic form handling and real-time preview synchronization. Integrated Google Gemini AI for automated keyword optimization and implemented client-side PDF rendering via @react-pdf/renderer. Focused on responsive templates and smooth state management for a seamless user experience.",
     "tags": ["React.js", "Node.js", "Tailwind CSS", "Gemini AI", "@react-pdf/renderer"],
     "link": "https://github.com/kushwith03/ai-resume-builder",
     "imageUrl": "https://placehold.co/600x400/2563eb/ffffff?text=InstaResume"
   },
   {
     "id": "3",
-    "title": "BlogSpace — Full-Stack Blog Platform",
+    "title": "BlogSpace — Full-Stack Platform",
     "timeline": "Nov 2024 -- Jan 2025",
-    "description": "Implemented RESTful APIs using MVC architecture with modular routes, controllers, models, and middleware layers. Secured the application with JWT-based authentication and protected CRUD operations via authorization middleware and PostgreSQL-backed user management. Deployed on Render with PostgreSQL integration and a responsive Bootstrap-based frontend UI.",
-    "tags": ["Node.js", "Express.js", "PostgreSQL", "JWT", "Bootstrap"],
+    "description": "Developed a robust full-stack blog platform using MVC architecture and RESTful principles. Secured the application with JWT-based authentication and modular middleware for protected CRUD operations. Deployed on Render with a PostgreSQL backend, ensuring high availability and data integrity.",
+    "tags": ["Node.js", "Express.js", "PostgreSQL", "JWT", "MVC Architecture"],
     "link": "https://github.com/kushwith03/blogspace",
     "imageUrl": "https://placehold.co/600x400/2563eb/ffffff?text=BlogSpace"
   }
