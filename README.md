@@ -65,4 +65,4 @@ This project showcases an integrated engineering profile, project history, and a
 
 **R Khushwith Kumar**  
 Full Stack Software Engineer  
-[GitHub](https://github.com/kushwith03) • [LinkedIn](https://linkedin.com/in/kushwith03)
+[GitHub](https://github.com/kushwith03) • [LinkedIn](https://www.linkedin.com/in/kushwith03/)
