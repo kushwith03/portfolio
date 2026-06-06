@@ -51,7 +51,7 @@ const Hero: React.FC = () => {
               className="inline-flex items-center px-3 py-1 rounded-full bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-300 text-sm font-medium mb-6"
             >
               <span className="flex h-2 w-2 rounded-full bg-blue-600 dark:bg-blue-400 mr-2 animate-pulse"></span>
-              Available for Internships (Jan 2026)
+              Available for Full-Time Roles
             </motion.div>
 
             <motion.h1
@@ -71,7 +71,7 @@ const Hero: React.FC = () => {
                       1000,
                       "Data Structures & APIs",
                       1000,
-                      "Final Year CSE",
+                      "B.E. CSE Graduate",
                       1000,
                     ]}
                     speed={50}
@@ -85,11 +85,7 @@ const Hero: React.FC = () => {
               variants={itemVariants}
               className="mt-6 text-lg text-gray-600 dark:text-gray-300 sm:max-w-xl sm:mx-auto md:text-xl lg:mx-0 leading-relaxed"
             >
-              Final-year{" "}
-              <span className="font-semibold text-gray-900 dark:text-white">
-                Computer Science
-              </span>{" "}
-              student at RNSIT. Crafting scalable web applications with{" "}
+              Graduate in <strong>Computer Science & Engineering</strong> from RNSIT. Crafting scalable web applications with{" "}
               <span className="font-semibold text-primary">
                 React, Node.js, & RESTful backends
               </span>

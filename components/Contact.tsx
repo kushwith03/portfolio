@@ -65,8 +65,7 @@ const Contact: React.FC = () => {
               </h3>
               <p className="mt-4 text-lg text-gray-600 dark:text-gray-300">
                 Have a project in mind or want to discuss a potential
-                opportunity? I'm available for internships starting January
-                2026.
+                opportunity? I'm available for full-time roles and collaborations.
               </p>
             </div>
 

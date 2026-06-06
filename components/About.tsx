@@ -86,8 +86,7 @@ const About: React.FC = () => {
 
           <motion.div className="space-y-6 text-lg text-gray-600 dark:text-gray-300 leading-relaxed">
             <motion.p variants={itemVariants}>
-              I am a final-year <strong>Computer Science & Engineering</strong>{" "}
-              student at <strong>RNS Institute of Technology</strong>,
+              I am a <strong>Computer Science & Engineering (Data Science)</strong> graduate from <strong>RNS Institute of Technology</strong>,
               maintaining a consistent academic record with a CGPA of{" "}
               <span className="text-gray-900 dark:text-white font-semibold">
                 8.6
