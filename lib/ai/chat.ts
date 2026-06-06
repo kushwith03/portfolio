@@ -2,10 +2,10 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 import projects from "../data/projects.json";
 import skills from "../data/skills.json";
 
-const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY || "");
+const genAI = process.env.API_KEY ? new GoogleGenerativeAI(process.env.API_KEY) : null;
 
 export async function getChatReply(message: string, history: any[], persona: string = "default") {
-  if (!process.env.GOOGLE_API_KEY) {
+  if (!genAI) {
     return "I'm currently offline (API Key missing). Please contact Khushwith directly!";
   }
 
@@ -14,11 +14,9 @@ export async function getChatReply(message: string, history: any[], persona: str
   const contextData = `
     MY PROFILE:
     Name: R Khushwith Kumar
-    Role: Full Stack Software Engineer Intern
-    Education: RNS Institute of Technology, Bengaluru (B.E. CSE - Data Science, Expected May 2026)
+    Role: Full Stack Software Engineering Intern
+    Education: RNS Institute of Technology, Bengaluru (B.E. CSE - Data Science, Graduated May 2026)
     CGPA: 8.6/10.0
-    Recent Experience: Software Engineering Intern at ATSPL (Jan 2026 -- May 2026). 
-    Architected production features with React, Node.js, and PostgreSQL. Built CI/CD pipelines with GitHub Actions.
     
     MY SKILLS:
     ${JSON.stringify(skills)}
@@ -41,6 +39,12 @@ export async function getChatReply(message: string, history: any[], persona: str
   } else if (persona === "developer") {
     systemInstruction = `You are Khushwith (Developer Mode). Speak in tech-savvy language. Use jargon correctly (React hooks, PyTorch tensors, RESTful endpoints). Be geeky and enthusiastic.
     ${contextData}`;
+  } else if (persona === "resume-reviewer") {
+    systemInstruction = `You are an expert Technical Resume Reviewer and ATS specialist. 
+    The user will paste their resume text or bullet points. 
+    Critique it based on: Impact metrics (X% increase), Action verbs, and Keyword matching for a Full Stack or Data Science role.
+    Give 3 concrete improvements. Be constructive.
+    Do NOT talk about Khushwith's profile in this mode unless asked. Focus on the USER'S resume.`;
   }
 
   const chat = model.startChat({
@@ -53,6 +57,10 @@ export async function getChatReply(message: string, history: any[], persona: str
     },
   });
 
+  // Note: App Router might need systemInstruction passed differently depending on SDK version
+  // For simplicity and compatibility with existing logic, we can prepend it to the first message if history is empty, 
+  // or use the startChat options if supported.
+  
   const result = await chat.sendMessage(message);
   const response = await result.response;
   return response.text();

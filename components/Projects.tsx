@@ -1,230 +1,123 @@
 "use client";
 
-import { useRef, useState, useEffect } from "react";
-import projects from "@/lib/data/projects.json";
-import { useStore } from "@/lib/store";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { Github, Code, Cpu, Database, Network } from "lucide-react";
+import React, { useState } from "react";
+import { Project } from "../app/types";
+import { ExternalLink, Github } from "lucide-react";
+import { motion } from "framer-motion";
+import projectsData from "../lib/data/projects.json";
 
-import { SCENES } from "@/lib/constants";
+const Projects: React.FC = () => {
+  const [projects] = useState<Project[]>(projectsData as Project[]);
 
-gsap.registerPlugin(ScrollTrigger);
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: { opacity: 1, transition: { staggerChildren: 0.15 } },
+  };
 
-/**
- * Projects HUD: Re-calibrated for immediate entry.
- */
-export default function Projects() {
-  const activeScene = useStore((state) => state.activeScene);
-  const [activeProject, setActiveProject] = useState<number | null>(null);
-  const [targetProject, setTargetProject] = useState<number | null>(null);
-  const hudRef = useRef<HTMLDivElement>(null);
+  const cardVariants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.5, ease: "easeOut" },
+    },
+  };
 
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      ScrollTrigger.create({
-        trigger: "#projects",
-        start: "top center",
-        end: "bottom center",
-        onUpdate: (self) => {
-          const p = self.progress;
-          const index = Math.min(
-            Math.floor(p * projects.length),
-            projects.length - 1
-          );
-          setTargetProject(index);
-        },
-        onToggle: (self) => {
-          if (self.isActive) {
-            // Force initial check when entering
-            const p = self.progress;
-            const index = Math.min(
-              Math.floor(p * projects.length),
-              projects.length - 1
-            );
-            setTargetProject(index);
-          }
-        }
-      });
-    });
-    return () => ctx.revert();
-  }, []);
-
-  useEffect(() => {
-    if (targetProject !== activeProject) {
-      const direction = (targetProject ?? 0) > (activeProject ?? 0) ? 1 : -1;
-      
-      // Exit Animation for current project
-      if (hudRef.current && activeProject !== null) {
-        gsap.to(hudRef.current, {
-          y: -20 * direction,
-          opacity: 0,
-          filter: "blur(10px)",
-          duration: 0.4,
-          ease: "power2.in",
-          onComplete: () => {
-             setActiveProject(targetProject);
-             // Enter Animation for next project
-             if (targetProject !== null) {
-                gsap.fromTo(hudRef.current, 
-                   { y: 30 * direction, opacity: 0, filter: "blur(12px)" }, 
-                   { y: 0, opacity: 1, filter: "blur(0px)", duration: 0.7, ease: "power3.out" }
-                );
-             }
-          }
-        });
-      } else {
-        setActiveProject(targetProject);
-        if (targetProject !== null) {
-          gsap.fromTo(hudRef.current, 
-            { y: 30, opacity: 0, filter: "blur(12px)" }, 
-            { y: 0, opacity: 1, filter: "blur(0px)", duration: 0.8, ease: "power4.out" }
-          );
-        }
-      }
-    }
-  }, [targetProject, activeProject]);
-
-  // Use visibility instead of null return to prevent component destruction during scene boundaries
   return (
-    <div 
-      style={{ paddingLeft: 'var(--nav-safe-area)' }}
-      className={`fixed inset-0 pointer-events-none z-20 flex items-center pr-6 md:pr-24 transition-opacity duration-1000 ${activeScene === SCENES.PROJECTS ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
+    <section
+      id="projects"
+      className="py-24 bg-white dark:bg-gray-900 transition-colors duration-300"
     >
-      <div 
-        ref={hudRef}
-        className="w-full max-w-7xl opacity-0 pointer-events-auto"
-      >
-        {activeProject !== null && (
-          <div className="grid grid-cols-1 lg:grid-cols-10 gap-12 md:gap-20 items-center">
-            {/* LEFT: Project Blueprint (45%) */}
-            <div className="lg:col-span-4 flex flex-col gap-8 md:gap-10 justify-center">
-              <div className="flex flex-col gap-4 md:gap-6">
-                <div className="flex items-center gap-3">
-                   <div className="flex items-center gap-3">
-                      <div className="w-2 h-2 bg-cyan-500 shadow-[0_0_8px_#06b6d4]" />
-                      <span className="text-[clamp(8px,0.7vw,10px)] uppercase tracking-[0.6em] text-white/30 font-black">
-                        Blueprint_0{activeProject + 1}
-                      </span>
-                   </div>
-                   <div className="h-px w-10 bg-white/5" />
-                   <span className="text-[clamp(7px,0.6vw,9px)] uppercase tracking-[0.4em] text-white/20 font-bold whitespace-nowrap">
-                     {projects[activeProject].timeline}
-                   </span>
-                </div>
-                <h3 className="text-[clamp(2rem,5vw,4.5rem)] font-black tracking-tighter uppercase text-white leading-[0.9] max-w-[15ch]">
-                  {projects[activeProject].title}
-                </h3>
-              </div>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <motion.div
+          className="text-center mb-16"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+        >
+          <h2 className="text-base text-primary font-bold tracking-wide uppercase">
+            Portfolio
+          </h2>
+          <p className="mt-2 text-3xl md:text-4xl font-extrabold text-gray-900 dark:text-white">
+            Featured Projects
+          </p>
+        </motion.div>
 
-              <div className="space-y-6 md:space-y-8">
-                 <p className="text-[clamp(0.9rem,1.2vw,1.1rem)] text-white/40 font-light leading-relaxed max-w-[50ch]">
-                   {projects[activeProject].description}
-                 </p>
+        <motion.div
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-50px" }}
+        >
+          {projects.map((project) => (
+            <motion.div
+              key={project.id}
+              variants={cardVariants}
+              whileHover={{ y: -8, transition: { type: 'spring', stiffness: 300 } }}
+              className="group flex flex-col bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm hover:shadow-2xl transition-shadow duration-300 overflow-hidden"
+            >
+              <div className="relative h-48 w-full overflow-hidden bg-gray-200 dark:bg-gray-700">
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
-                 <div className="flex flex-col gap-6 md:gap-8 border-t border-white/5 pt-8 md:pt-10">
-                    <div className="flex flex-wrap gap-2.5">
-                       {projects[activeProject].tags.map((tag: string) => (
-                         <span key={tag} className="text-[clamp(7px,0.6vw,9px)] uppercase tracking-[0.15em] px-3 py-1 bg-white/[0.02] text-white/30 border border-white/5 font-bold">
-                           {tag}
-                         </span>
-                       ))}
-                    </div>
-                    
-                    <a 
-                       href={projects[activeProject].link} 
-                       target="_blank"
-                       className="group inline-flex items-center gap-4 text-[clamp(8px,0.7vw,10px)] uppercase tracking-[0.5em] font-black text-white/30 hover:text-cyan-400 transition-all underline underline-offset-[10px] decoration-white/10"
+                <img
+                  src={
+                    project.imageUrl ||
+                    `https://placehold.co/600x400/2563eb/ffffff?text=${encodeURIComponent(
+                      project.title
+                    )}`
+                  }
+                  alt={project.title}
+                  className="h-full w-full object-cover transform group-hover:scale-110 transition-transform duration-700"
+                />
+
+                <div className="absolute bottom-4 right-4 flex space-x-3 z-20 translate-y-10 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-300">
+                  {project.link && (
+                    <a
+                      href={project.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="p-2 bg-white text-gray-900 rounded-full hover:bg-primary hover:text-white transition-colors shadow-lg"
                     >
-                       <Github className="w-5 h-5 text-white/10 group-hover:text-cyan-400 transition-colors" />
-                       Source_Context
+                      {project.link.includes('github.com') ? <Github className="h-5 w-5" /> : <ExternalLink className="h-5 w-5" />}
                     </a>
-                 </div>
+                  )}
+                </div>
               </div>
-            </div>
 
-            {/* RIGHT: System Architecture (55%) */}
-            <div className="lg:col-span-6 hidden lg:flex flex-col gap-8 md:gap-10">
-               <div className="flex items-center gap-4 mb-2">
-                  <span className="text-[clamp(7px,0.6vw,9px)] uppercase tracking-[0.5em] text-white/15 font-black">Technical_Logic</span>
-                  <div className="h-px flex-1 bg-white/5" />
-               </div>
+              <div className="flex-1 p-6 flex flex-col">
+                <div className="flex justify-between items-start mb-2">
+                  <h3 className="text-xl font-bold text-gray-900 dark:text-white group-hover:text-primary transition-colors">
+                    {project.title}
+                  </h3>
+                  {project.timeline && (
+                    <span className="text-xs text-gray-400 font-medium">
+                      {project.timeline}
+                    </span>
+                  )}
+                </div>
 
-               {/* Pipeline Visualization Area */}
-               <div className="bg-white/[0.01] border border-white/5 p-8 md:p-12 flex flex-col gap-8 md:gap-10 relative overflow-hidden shadow-2xl">
-                  <div className="flex items-center justify-between relative">
-                     <div className="absolute top-1/2 left-0 w-full h-px bg-cyan-500/5 -z-10" />
-                     
-                     {(activeProject === 0 ? [
-                        { label: 'Dataset', sub: '8k Samples' },
-                        { label: 'CNN', sub: 'PyTorch' },
-                        { label: 'Latency', sub: '<50ms' },
-                        { label: 'CARLA', sub: 'Simulator' }
-                     ] : activeProject === 1 ? [
-                        { label: 'Input', sub: 'React Form' },
-                        { label: 'Gemini', sub: 'AI Logic' },
-                        { label: 'ATS', sub: 'Optimizer' },
-                        { label: 'PDF', sub: 'Generation' }
-                     ] : [
-                        { label: 'Frontend', sub: 'React.js' },
-                        { label: 'API Layer', sub: 'Node/Exp' },
-                        { label: 'Auth', sub: 'JWT/Sec' },
-                        { label: 'Database', sub: 'Postgres' }
-                     ]).map((step, i) => (
-                        <div key={i} className="flex flex-col items-center gap-4">
-                           <div className="w-2 md:w-2.5 h-2 md:h-2.5 rounded-full bg-cyan-500/40 shadow-[0_0_10px_#06b6d4]" />
-                           <div className="text-center">
-                              <div className="text-[clamp(7px,0.6vw,9px)] text-white/60 font-black uppercase tracking-widest">{step.label}</div>
-                              <div className="text-[clamp(6px,0.5vw,7px)] text-white/10 font-bold uppercase tracking-widest mt-1">{step.sub}</div>
-                           </div>
-                        </div>
-                     ))}
-                  </div>
-               </div>
+                <p className="flex-1 text-sm text-gray-600 dark:text-gray-300 leading-relaxed mb-6">
+                  {project.description}
+                </p>
 
-               {/* Metric Grid */}
-               <div className="grid grid-cols-2 gap-px bg-white/5 border border-white/5 shadow-2xl">
-                  {activeProject === 0 && (
-                     <>
-                        <div className="bg-black/80 p-6 md:p-8 flex flex-col gap-4 group/metric">
-                           <span className="text-[clamp(6px,0.5vw,8px)] uppercase tracking-[0.4em] text-white/15 font-black">Performance</span>
-                           <span className="text-[clamp(1.2rem,2vw,2rem)] font-black text-white/60 tracking-tighter group-hover/metric:text-cyan-400 transition-colors">&lt;50MS</span>
-                        </div>
-                        <div className="bg-black/80 p-6 md:p-8 flex flex-col gap-4 group/metric">
-                           <span className="text-[clamp(6px,0.5vw,8px)] uppercase tracking-[0.4em] text-white/15 font-black">Training</span>
-                           <span className="text-[clamp(1.2rem,2vw,2rem)] font-black text-white/60 tracking-tighter group-hover/metric:text-cyan-400 transition-colors">~8K</span>
-                        </div>
-                     </>
-                  )}
-                  {activeProject === 1 && (
-                     <>
-                        <div className="bg-black/80 p-6 md:p-8 flex flex-col gap-4 group/metric">
-                           <span className="text-[clamp(6px,0.5vw,8px)] uppercase tracking-[0.4em] text-white/15 font-black">Intelligence</span>
-                           <span className="text-[clamp(1.2rem,2vw,2rem)] font-black text-white/60 tracking-tighter group-hover/metric:text-blue-400 transition-colors">GEMINI_PRO</span>
-                        </div>
-                        <div className="bg-black/80 p-6 md:p-8 flex flex-col gap-4 group/metric">
-                           <span className="text-[clamp(6px,0.5vw,8px)] uppercase tracking-[0.4em] text-white/15 font-black">Optimization</span>
-                           <span className="text-[clamp(1.2rem,2vw,2rem)] font-black text-white/60 tracking-tighter group-hover/metric:text-blue-400 transition-colors">ATS_SYNC</span>
-                        </div>
-                     </>
-                  )}
-                  {activeProject === 2 && (
-                     <>
-                        <div className="bg-black/80 p-6 md:p-8 flex flex-col gap-4 group/metric">
-                           <span className="text-[clamp(6px,0.5vw,8px)] uppercase tracking-[0.4em] text-white/15 font-black">Persistence</span>
-                           <span className="text-[clamp(1.2rem,2vw,2rem)] font-black text-white/60 tracking-tighter group-hover/metric:text-purple-400 transition-colors">POSTGRES</span>
-                        </div>
-                        <div className="bg-black/80 p-6 md:p-8 flex flex-col gap-4 group/metric">
-                           <span className="text-[clamp(6px,0.5vw,8px)] uppercase tracking-[0.4em] text-white/15 font-black">Design</span>
-                           <span className="text-[clamp(1.2rem,2vw,2rem)] font-black text-white/60 tracking-tighter group-hover/metric:text-purple-400 transition-colors">MVC_REST</span>
-                        </div>
-                     </>
-                  )}
-               </div>
-            </div>
-          </div>
-        )}
+                <div className="flex flex-wrap gap-2 mt-auto">
+                  {project.tags.map((tag) => (
+                    <span
+                      key={tag}
+                      className="px-2.5 py-1 text-xs font-medium rounded-md bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-300 border border-blue-100 dark:border-blue-800"
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </motion.div>
+          ))}
+        </motion.div>
       </div>
-    </div>
+    </section>
   );
-}
+};
+
+export default Projects;

@@ -1,24 +1,37 @@
 {
   "technical": {
-    "languages": ["Java", "JavaScript", "Python", "SQL", "C++"],
-    "frontend": ["React.js", "TailwindCSS", "HTML", "CSS", "Framer Motion"],
-    "backend": ["Node.js", "Express.js", "REST APIs", "JWT", "MVC"],
-    "infrastructure": ["AWS S3", "CloudFront", "Cloudflare", "GitHub Actions", "Vercel", "Render"],
-    "databases": ["PostgreSQL", "MongoDB", "MySQL"],
-    "tools": ["Git", "Postman", "Linux", "VS Code", "CARLA Simulator"]
+    "languages": ["Java", "JavaScript (ES6+)", "Python", "SQL", "C++"],
+    "frontend": ["React.js", "HTML5", "CSS3", "Tailwind CSS", "Bootstrap"],
+    "backend": ["Node.js", "Express.js", "REST APIs", "JWT", "MVC Architecture"],
+    "db_cloud": ["PostgreSQL", "MongoDB", "MySQL", "AWS S3", "CloudFront", "Cloudflare CDN", "GitHub Actions", "Vercel", "Render"],
+    "tools": ["Git", "Postman", "Linux CLI", "VS Code"]
   },
   "achievements": [
-    { "title": "250+ DSA Solutions", "desc": "Proficient in Java-based algorithms and data structures." },
-    { "title": "Microsoft Certified", "desc": "Azure AI (AI-900) & Data (DP-900) Fundamentals." },
+    { "title": "250+ LeetCode / DSA Problems", "desc": "Proficient in problem-solving and algorithmic logic." },
+    { "title": "Microsoft Certified", "desc": "Azure AI Fundamentals (AI-900) & Azure Data Fundamentals (DP-900)." },
     { "title": "State-Level Athlete", "desc": "Powerlifting and Kabaddi competitor representing RNSIT." }
   ],
   "experience": [
     {
-      "role": "Full-Stack SWE Intern",
-      "company": "ATSPL",
+      "role": "Software Engineering Intern — Full Stack",
+      "company": "ATSPL (Angadi Technological Solution Private Limited)",
       "period": "Jan 2026 -- May 2026",
-      "location": "Bengaluru",
-      "details": "Shipped production features using React, Node, and PostgreSQL with zero-downtime workflows."
+      "location": "Bengaluru, India (Hybrid)",
+      "details": [
+        "Developed and shipped full-stack features using React.js, Node.js/Express, and PostgreSQL.",
+        "Designed REST APIs and relational schemas ensuring data integrity and maintainability.",
+        "Automated application deployment workflows using GitHub Actions CI/CD pipelines.",
+        "Managed frontend deployments and caching utilizing AWS S3, CloudFront, and Cloudflare CDN.",
+        "Implemented transactional email workflows using Zoho ZeptoMail for automated notifications.",
+        "Ported web applications into cross-platform desktop applications using Electron.js."
+      ]
     }
-  ]
+  ],
+  "education": {
+    "institution": "RNS Institute of Technology (RNSIT)",
+    "location": "Bengaluru, India",
+    "degree": "B.E. — Computer Science & Engineering (Data Science)",
+    "timeline": "Graduated May 2026",
+    "cgpa": "8.6 / 10.0"
+  }
 }
