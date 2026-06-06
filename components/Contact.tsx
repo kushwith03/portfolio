@@ -24,14 +24,11 @@ const Contact: React.FC = () => {
     e.preventDefault();
     setStatus("loading");
     try {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/contact`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(formData),
-        }
-      );
+      const response = await fetch('/api/contact', {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
       if (response.ok) {
         setStatus("success");
         setFormData({ name: "", email: "", message: "" });

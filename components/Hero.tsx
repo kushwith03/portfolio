@@ -182,9 +182,9 @@ const Hero: React.FC = () => {
 
                   <div className="mt-6 pt-6 border-t border-gray-100 dark:border-gray-800 flex justify-around">
                     {[
-                      { value: "8.41", label: "CGPA" },
+                      { value: "8.6", label: "CGPA" },
                       { value: "5+", label: "Projects" },
-                      { value: "200+", label: "DSA Solved" },
+                      { value: "250+", label: "DSA Solved" },
                     ].map((item) => (
                       <div key={item.label} className="text-center">
                         <p className="text-2xl font-bold text-gray-900 dark:text-white">

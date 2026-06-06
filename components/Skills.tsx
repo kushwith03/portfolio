@@ -1,9 +1,10 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { SkillsData } from "../app/types";
-import { Cpu, Layout, Server, Database, Wrench, Award } from "lucide-react";
+import { Cpu, Layout, Server, Database, Wrench, Award, Briefcase } from "lucide-react";
+import skillsDataLocal from "../lib/data/skills.json";
 
 // A more human-readable and maintainable config for skill categories
 const categoryConfig: Record<string, { title: string; icon: React.ElementType }> = {
@@ -15,49 +16,9 @@ const categoryConfig: Record<string, { title: string; icon: React.ElementType }>
 };
 
 const Skills: React.FC = () => {
-  const [skillsData, setSkillsData] = useState<SkillsData | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [skillsData] = useState<SkillsData>(skillsDataLocal as unknown as SkillsData);
 
-  useEffect(() => {
-    const fetchSkills = async () => {
-      try {
-        const response = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/api/skills`
-        );
-
-        if (!response.ok) throw new Error("Failed to fetch");
-        const result = await response.json();
-        setSkillsData(result.data);
-      } catch (err) {
-        console.error("Error fetching skills:", err);
-        setError("Failed to load skills.");
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchSkills();
-  }, []);
-
-  if (loading) {
-    return (
-      <div className="py-20 flex justify-center">
-        <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-primary"></div>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="py-20 text-center text-red-500">
-        <p>{error}</p>
-      </div>
-    );
-  }
-
-  if (!skillsData) return null;
-
-  const { technical, achievements } = skillsData;
+  const { technical, achievements, experience } = skillsData;
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -69,7 +30,7 @@ const Skills: React.FC = () => {
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.5, ease: "easeOut" },
+      transition: { duration: 0.5, ease: "easeOut" as any },
     },
   };
 
@@ -79,6 +40,61 @@ const Skills: React.FC = () => {
       className="py-24 bg-gray-50 dark:bg-gray-950 transition-colors duration-300"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        {/* Experience Section */}
+        {experience && experience.length > 0 && (
+          <div className="mb-24">
+            <motion.div
+              className="text-center mb-12"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+            >
+              <h2 className="text-base text-primary font-bold tracking-wide uppercase">
+                History
+              </h2>
+              <p className="mt-2 text-3xl md:text-4xl font-extrabold text-gray-900 dark:text-white">
+                Professional Journey
+              </p>
+            </motion.div>
+
+            <div className="max-w-4xl mx-auto space-y-8">
+              {experience.map((exp, idx) => (
+                <motion.div
+                  key={idx}
+                  initial={{ opacity: 0, x: -20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  className="relative pl-8 pb-8 border-l-2 border-primary/20 last:pb-0"
+                >
+                  <div className="absolute left-[-9px] top-0 w-4 h-4 bg-primary rounded-full shadow-[0_0_10px_rgba(37,99,235,0.5)]" />
+                  <div className="bg-white dark:bg-gray-900 p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800">
+                    <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-4 gap-2">
+                      <div>
+                        <h3 className="text-xl font-bold text-gray-900 dark:text-white">{exp.role}</h3>
+                        <p className="text-primary font-medium">{exp.company}</p>
+                      </div>
+                      <div className="text-right md:text-right text-sm">
+                        <p className="text-gray-500 dark:text-gray-400 font-medium">{exp.period}</p>
+                        <p className="text-gray-400 dark:text-gray-500">{exp.location}</p>
+                      </div>
+                    </div>
+                    <ul className="space-y-2">
+                      {exp.details.map((detail, dIdx) => (
+                        <li key={dIdx} className="text-sm text-gray-600 dark:text-gray-300 flex items-start gap-2">
+                          <span className="text-primary mt-1.5 w-1.5 h-1.5 rounded-full bg-primary flex-shrink-0" />
+                          {detail}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        )}
+
         <motion.div
           className="text-center mb-16"
           initial={{ opacity: 0, y: 20 }}

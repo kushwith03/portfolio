@@ -90,7 +90,7 @@ const About: React.FC = () => {
               student at <strong>RNS Institute of Technology</strong>,
               maintaining a consistent academic record with a CGPA of{" "}
               <span className="text-gray-900 dark:text-white font-semibold">
-                8.41
+                8.6
               </span>
               .
             </motion.p>
@@ -105,7 +105,7 @@ const About: React.FC = () => {
 
             <motion.p variants={itemVariants}>
               I enjoy writing clean, maintainable code and thinking through edge
-              cases. Solving over <strong>200+ DSA problems</strong> has helped
+              cases. Solving over <strong>250+ DSA problems</strong> has helped
               me improve my logical thinking and approach problems in a
               structured way.
             </motion.p>
