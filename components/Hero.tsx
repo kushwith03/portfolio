@@ -107,8 +107,9 @@ const Hero: React.FC = () => {
               </motion.a>
 
               <motion.a
-                href="/resume.pdf"
-                download="R_Khushwith_Kumar_Resume.pdf"
+                href="https://drive.google.com/file/d/1rwW-rMO64I4ZwNR4NbUCu5IDRmCElqGf/view?usp=sharing"
+                target="_blank"
+                rel="noopener noreferrer"
                 whileHover={{
                   y: -3,
                   transition: { type: "spring", stiffness: 300 },
