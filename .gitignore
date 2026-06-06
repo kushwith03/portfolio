@@ -15,16 +15,7 @@ out/
 # OS
 .DS_Store
 Thumbs.db
-.idea/
 
 # Logs
 logs/
 *.log
-
-# Professional Identity Source
-*.tex
-identity.md
-identity.tex
-indentity.md
-PLAN.md
-DEBUG.md
