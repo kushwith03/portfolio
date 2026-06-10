@@ -60,7 +60,7 @@ export async function getChatReply(message: string, history: any[], persona: str
   for (let attempt = 0; attempt <= 3; attempt++) {
     try {
       // Use fallback model if all retries on primary model failed
-      const modelName = attempt === 3 ? "gemini-1.5-flash-lite" : "gemini-1.5-flash";
+      const modelName = attempt === 3 ? "gemini-3.1-flash-lite" : "gemini-3.5-flash";
       const model = genAI.getGenerativeModel({ 
         model: modelName,
         systemInstruction: systemInstruction 
