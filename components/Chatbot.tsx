@@ -62,7 +62,7 @@ const Chatbot: React.FC = () => {
       });
 
       const data = await response.json();
-      const reply = data.success ? data.reply : "Apologies, I'm currently offline.";
+      const reply = data.reply || "Apologies, I'm currently offline.";
       setMessages(prev => [...prev, { id: Date.now() + 1, text: reply, sender: 'bot' }]);
     } catch (error) {
       console.error("Chat API error:", error);

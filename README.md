@@ -53,7 +53,7 @@ This project showcases an integrated engineering profile, project history, and a
 3. **Configure Environment Variables:**
    Create a `.env.local` file in the root directory:
    ```env
-   API_KEY=your_google_gemini_api_key
+   GEMINI_API_KEY=your_google_gemini_api_key
    ```
 
 4. **Run development server:**

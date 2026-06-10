@@ -2,14 +2,15 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 import projects from "../data/projects.json";
 import skills from "../data/skills.json";
 
-const genAI = process.env.API_KEY ? new GoogleGenerativeAI(process.env.API_KEY) : null;
+const apiKey = process.env.GEMINI_API_KEY || process.env.API_KEY;
+const genAI = apiKey ? new GoogleGenerativeAI(apiKey) : null;
+
+const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 export async function getChatReply(message: string, history: any[], persona: string = "default") {
   if (!genAI) {
-    return "I'm currently offline (API Key missing). Please contact Khushwith directly!";
+    return "I'm currently offline (API Key missing in environment).";
   }
-
-  const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
   const contextData = `
     MY PROFILE:
@@ -53,17 +54,51 @@ export async function getChatReply(message: string, history: any[], persona: str
     Give concrete engineering improvements.`;
   }
 
-  const chat = model.startChat({
-    history: history.map((msg) => ({
-      role: msg.role === "user" ? "user" : "model",
-      parts: [{ text: msg.text }],
-    })),
-    generationConfig: {
-      maxOutputTokens: 500,
-    },
-  });
+  const delays = [2000, 4000, 8000];
+  let lastError: any = null;
 
-  const result = await chat.sendMessage(message);
-  const response = await result.response;
-  return response.text();
+  for (let attempt = 0; attempt <= 3; attempt++) {
+    try {
+      // Use fallback model if all retries on primary model failed
+      const modelName = attempt === 3 ? "gemini-1.5-flash-lite" : "gemini-1.5-flash";
+      const model = genAI.getGenerativeModel({ 
+        model: modelName,
+        systemInstruction: systemInstruction 
+      });
+
+      const chat = model.startChat({
+        history: history.map((msg) => ({
+          role: msg.role === "user" ? "user" : "model",
+          parts: [{ text: msg.text }],
+        })),
+        generationConfig: {
+          maxOutputTokens: 500,
+        },
+      });
+
+      const result = await chat.sendMessage(message);
+      const response = await result.response;
+      return response.text();
+    } catch (error: any) {
+      lastError = error;
+      const status = error?.status || error?.response?.status;
+      
+      // Retry logic for rate limits or temporary service unavailability
+      if (attempt < 2 && (status === 429 || status === 503)) {
+        await wait(delays[attempt]);
+        continue;
+      }
+      
+      // Final attempt fallback to Lite model
+      if (attempt === 2 && (status === 429 || status === 503)) {
+        await wait(delays[attempt]);
+        continue;
+      }
+
+      console.error("Gemini API Error:", error);
+      return `AI Error: ${error.message || "I encountered a temporary error. Please try again later."}`;
+    }
+  }
+
+  return "I'm currently having trouble connecting to my brain. Please try again in a moment!";
 }
