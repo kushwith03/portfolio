@@ -197,11 +197,8 @@ const Chatbot: React.FC = () => {
                     <span className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 bg-emerald-400 rounded-full border-2 border-slate-900" />
                   </div>
                   <div>
-                    <h3 className="font-bold text-sm text-white tracking-tight flex items-center gap-1.5">
+                    <h3 className="font-bold text-sm text-white tracking-tight">
                       Khushwith AI
-                      <span className="px-1.5 py-0.5 text-[10px] font-mono rounded-md bg-sky-500/20 text-sky-300 border border-sky-400/30">
-                        v2.0
-                      </span>
                     </h3>
                     <p className="text-[11px] font-mono text-slate-300">
                       Powered by Google Gemini
