@@ -52,7 +52,7 @@ const Hero: React.FC = () => {
           
           {/* Left Column: Headline, Bio & Primary CTAs */}
           <motion.div
-            className="md:max-w-2xl md:mx-auto lg:col-span-7 lg:text-left relative z-20 text-center lg:text-left"
+            className="w-full lg:col-span-7 relative z-20 text-left"
             variants={containerVariants}
             initial="hidden"
             animate="visible"
@@ -79,18 +79,18 @@ const Hero: React.FC = () => {
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-600 via-indigo-600 to-purple-600 dark:from-sky-400 dark:via-indigo-400 dark:to-purple-400">
                 Khushwith
               </span>
-              <div className="mt-2 text-2xl sm:text-3xl md:text-4xl xl:text-5xl font-bold font-mono">
-                <span className="text-sky-600 dark:text-sky-400">
+              <div className="mt-2 text-2xl sm:text-3xl md:text-4xl xl:text-5xl font-bold font-mono min-h-[1.3em] flex items-center">
+                <span className="text-sky-600 dark:text-sky-400 inline-block">
                   <TypeAnimation
                     sequence={[
                       "Full-Stack Engineer",
-                      1400,
+                      1500,
                       "Backend Architect",
-                      1400,
-                      "AI & CARLA Simulation Builder",
-                      1400,
-                      "Problem Solver (250+ DSA)",
-                      1400,
+                      1500,
+                      "AI & CARLA Builder",
+                      1500,
+                      "250+ DSA Solver",
+                      1500,
                     ]}
                     speed={50}
                     repeat={Infinity}
@@ -102,7 +102,7 @@ const Hero: React.FC = () => {
             {/* Bio Description */}
             <motion.p
               variants={itemVariants}
-              className="mt-6 text-base sm:text-lg text-slate-600 dark:text-slate-300 max-w-xl mx-auto lg:mx-0 leading-relaxed font-normal"
+              className="mt-6 text-base sm:text-lg text-slate-600 dark:text-slate-300 max-w-xl leading-relaxed font-normal"
             >
               Computer Science & Data Science graduate from <strong>RNSIT (8.6 CGPA)</strong>. Specialized in architecting scalable MERN & PostgreSQL web applications, low-latency microservices, and deep learning autonomous vehicle pipelines.
             </motion.p>
@@ -110,7 +110,7 @@ const Hero: React.FC = () => {
             {/* Action Buttons */}
             <motion.div
               variants={itemVariants}
-              className="mt-8 flex flex-col sm:flex-row gap-3.5 justify-center lg:justify-start items-center"
+              className="mt-8 flex flex-col sm:flex-row gap-3.5 justify-start items-center"
             >
               <motion.a
                 href="#projects"
@@ -138,7 +138,7 @@ const Hero: React.FC = () => {
             {/* Social Proof & Quick Repositories */}
             <motion.div
               variants={itemVariants}
-              className="mt-10 flex flex-wrap items-center justify-center lg:justify-start gap-3 pt-6 border-t border-slate-200/80 dark:border-white/[0.08]"
+              className="mt-10 flex flex-wrap items-center justify-start gap-3 pt-6 border-t border-slate-200/80 dark:border-white/[0.08]"
             >
               <a
                 href="https://github.com/kushwith03"
