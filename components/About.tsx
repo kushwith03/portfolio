@@ -21,7 +21,7 @@ const About: React.FC = () => {
   return (
     <section
       id="about"
-      className="py-24 bg-[#ffffff] dark:bg-[#030712] transition-colors duration-300 relative overflow-hidden"
+      className="py-24 bg-[#f8fafc] dark:bg-[#030712] transition-colors duration-300 relative overflow-hidden"
     >
       {/* Background ambient lighting */}
       <div className="absolute top-1/2 left-0 w-96 h-96 bg-sky-500/5 dark:bg-sky-500/10 rounded-full blur-3xl pointer-events-none" />

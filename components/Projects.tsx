@@ -37,7 +37,7 @@ const Projects: React.FC = () => {
   return (
     <section
       id="projects"
-      className="py-24 bg-[#ffffff] dark:bg-[#030712] transition-colors duration-300 relative overflow-hidden"
+      className="py-24 bg-[#f8fafc] dark:bg-[#030712] transition-colors duration-300 relative overflow-hidden"
     >
       {/* Ambient background lighting */}
       <div className="absolute top-1/4 -left-32 w-96 h-96 bg-indigo-500/5 dark:bg-indigo-500/10 rounded-full blur-3xl pointer-events-none" />

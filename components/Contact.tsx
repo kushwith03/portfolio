@@ -51,7 +51,7 @@ const Contact: React.FC = () => {
   return (
     <section
       id="contact"
-      className="py-24 bg-[#ffffff] dark:bg-[#030712] transition-colors duration-300 relative overflow-hidden"
+      className="py-24 bg-[#f8fafc] dark:bg-[#030712] transition-colors duration-300 relative overflow-hidden"
     >
       {/* Background ambient lighting */}
       <div className="absolute bottom-0 left-1/4 w-96 h-96 bg-sky-500/5 dark:bg-sky-500/10 rounded-full blur-3xl pointer-events-none" />

@@ -45,13 +45,13 @@ const Hero: React.FC = () => {
   return (
     <section
       id="hero"
-      className="relative min-h-[92vh] flex items-center bg-[#ffffff] dark:bg-[#030712] overflow-hidden bg-grid-subtle transition-colors duration-300 pt-20 pb-16"
+      className="relative min-h-[92vh] flex items-center bg-[#f8fafc] dark:bg-[#030712] overflow-hidden bg-grid-subtle transition-colors duration-300 pt-20 pb-16"
     >
       {/* Ambient Iridescent Lighting Mesh */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-[-15%] right-[-10%] w-[650px] h-[650px] bg-sky-500/10 dark:bg-sky-500/[0.12] rounded-full blur-[140px] pointer-events-none" />
-        <div className="absolute top-[25%] left-[-15%] w-[550px] h-[550px] bg-indigo-500/10 dark:bg-indigo-600/[0.1] rounded-full blur-[130px] pointer-events-none" />
-        <div className="absolute bottom-[-10%] right-[20%] w-[450px] h-[450px] bg-purple-500/10 dark:bg-purple-600/[0.08] rounded-full blur-[120px] pointer-events-none" />
+        <div className="absolute top-[-15%] right-[-10%] w-[650px] h-[650px] bg-sky-400/[0.05] dark:bg-sky-500/[0.12] rounded-full blur-[140px] pointer-events-none" />
+        <div className="absolute top-[25%] left-[-15%] w-[550px] h-[550px] bg-indigo-400/[0.04] dark:bg-indigo-600/[0.1] rounded-full blur-[130px] pointer-events-none" />
+        <div className="absolute bottom-[-10%] right-[20%] w-[450px] h-[450px] bg-purple-400/[0.04] dark:bg-purple-600/[0.08] rounded-full blur-[120px] pointer-events-none" />
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
@@ -66,7 +66,7 @@ const Hero: React.FC = () => {
           >
             {/* Status Pill Badge */}
             <motion.div variants={itemVariants} className="inline-block">
-              <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-slate-900/[0.04] dark:bg-white/[0.05] border border-slate-200 dark:border-white/[0.1] text-slate-700 dark:text-slate-200 text-xs sm:text-sm font-medium shadow-sm backdrop-blur-xl">
+              <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-white dark:bg-white/[0.05] border border-slate-200/90 dark:border-white/[0.1] text-slate-700 dark:text-slate-200 text-xs sm:text-sm font-medium shadow-sm backdrop-blur-xl">
                 <span className="relative flex h-2 w-2">
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                   <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
@@ -83,11 +83,11 @@ const Hero: React.FC = () => {
               className="mt-6 text-4xl sm:text-5xl md:text-6xl xl:text-7xl font-extrabold tracking-tight text-slate-900 dark:text-white leading-[1.08]"
             >
               <span>Hi, I&apos;m </span>
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-400 via-indigo-400 to-purple-400">
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-600 via-indigo-600 to-purple-600 dark:from-sky-400 dark:via-indigo-400 dark:to-purple-400">
                 Khushwith
               </span>
               <div className="mt-2 text-2xl sm:text-3xl md:text-4xl xl:text-5xl font-bold font-mono">
-                <span className="text-sky-500 dark:text-sky-400">
+                <span className="text-sky-600 dark:text-sky-400">
                   <TypeAnimation
                     sequence={[
                       "Full-Stack Engineer",
