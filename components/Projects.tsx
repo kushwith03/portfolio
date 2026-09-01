@@ -6,19 +6,8 @@ import { Github, ArrowUpRight, FolderGit2 } from "lucide-react";
 import { motion } from "framer-motion";
 import projectsData from "../lib/data/projects.json";
 
-const categories = ["All", "Full Stack", "AI / ML", "Backend & APIs"];
-
 const Projects: React.FC = () => {
-  const [selectedCategory, setSelectedCategory] = useState("All");
   const [projects] = useState<Project[]>(projectsData as Project[]);
-
-  const filteredProjects = projects.filter((project) => {
-    if (selectedCategory === "All") return true;
-    if (selectedCategory === "Full Stack") return project.tags.some(t => ["React.js", "Next.js", "Full Stack"].includes(t));
-    if (selectedCategory === "AI / ML") return project.tags.some(t => ["PyTorch", "Computer Vision", "Deep Learning", "Gemini AI", "CARLA"].includes(t));
-    if (selectedCategory === "Backend & APIs") return project.tags.some(t => ["Node.js", "Express.js", "PostgreSQL", "JWT"].includes(t));
-    return true;
-  });
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -46,7 +35,7 @@ const Projects: React.FC = () => {
         
         {/* Section Header */}
         <motion.div
-          className="text-center mb-12"
+          className="text-center mb-16"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -57,28 +46,11 @@ const Projects: React.FC = () => {
             <span>Featured Engineering</span>
           </div>
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-slate-900 dark:text-white tracking-tight">
-            Production & AI Systems
+            Production &amp; AI Systems
           </h2>
           <p className="mt-3 text-base text-slate-600 dark:text-slate-400 max-w-xl mx-auto">
             Highlighted software platforms, autonomous simulations, and full-stack applications.
           </p>
-
-          {/* Filter Pills */}
-          <div className="mt-8 flex flex-wrap justify-center gap-2">
-            {categories.map((cat) => (
-              <button
-                key={cat}
-                onClick={() => setSelectedCategory(cat)}
-                className={`px-4 py-1.5 rounded-full text-xs font-mono font-medium transition-all ${
-                  selectedCategory === cat
-                    ? "bg-sky-500 text-white shadow-md shadow-sky-500/25 border border-sky-400"
-                    : "bg-slate-100 dark:bg-white/[0.04] text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-white/[0.08] hover:text-slate-900 dark:hover:text-white hover:border-slate-300 dark:hover:border-white/[0.15]"
-                }`}
-              >
-                {cat}
-              </button>
-            ))}
-          </div>
         </motion.div>
 
         {/* Project Cards Grid */}
@@ -89,7 +61,7 @@ const Projects: React.FC = () => {
           whileInView="visible"
           viewport={{ once: true, margin: "-40px" }}
         >
-          {filteredProjects.map((project) => (
+          {projects.map((project) => (
             <motion.div
               key={project.id}
               variants={cardVariants}
