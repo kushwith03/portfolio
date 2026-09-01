@@ -1,29 +1,28 @@
 {
   "technical": {
-    "languages": ["Java", "JavaScript (ES6+)", "Python", "SQL", "C++"],
-    "frontend": ["React.js", "HTML5", "CSS3", "Tailwind CSS", "Bootstrap"],
-    "backend": ["Node.js", "Express.js", "REST APIs", "JWT", "MVC Architecture"],
-    "db_cloud": ["PostgreSQL", "MongoDB", "MySQL", "AWS S3", "CloudFront", "Cloudflare CDN", "GitHub Actions", "Vercel", "Render"],
-    "tools": ["Git", "Postman", "Linux CLI", "VS Code"]
+    "languages": ["Java (Core & OOP)", "Node.js", "JavaScript (ES6+)", "Python", "SQL", "C++"],
+    "backend": ["Express.js", "RESTful APIs", "PostgreSQL", "JWT Authentication", "MVC Architecture", "Microservices"],
+    "db_cloud": ["PostgreSQL", "MongoDB", "MySQL", "AWS S3", "CloudFront", "Cloudflare CDN", "GitHub Actions CI/CD", "Docker"],
+    "problem_solving": ["250+ LeetCode Solved", "Data Structures", "Algorithms", "Dynamic Programming", "Graphs & Trees"],
+    "frontend_tools": ["HTML5", "CSS3", "Tailwind CSS", "React.js", "Git", "Postman", "Linux CLI"]
   },
   "achievements": [
-    { "title": "250+ LeetCode / DSA Problems", "desc": "Advanced problem-solving across core algorithms and data structures." },
+    { "title": "250+ LeetCode DSA Problems", "desc": "Strong algorithmic logic in Java across Arrays, Trees, Graphs, and DP." },
     { "title": "Microsoft Certified", "desc": "Azure AI Fundamentals (AI-900) & Azure Data Fundamentals (DP-900)." },
     { "title": "State-Level Athlete", "desc": "Powerlifting and Kabaddi competitor representing RNSIT." }
   ],
   "experience": [
     {
-      "role": "Software Engineering Intern — Full Stack",
+      "role": "Software Engineering Intern — Backend & Full-Stack",
       "company": "ATSPL (Angadi Technological Solution Private Limited)",
       "period": "Jan 2026 -- May 2026",
-      "location": "Bengaluru, India (Remote)",
+      "location": "Bengaluru, India (Hybrid)",
       "details": [
-        "Architected and shipped production-ready features using React.js and Node.js/Express.",
-        "Engineered RESTful APIs and optimized PostgreSQL relational schemas for high performance.",
-        "Automated deployment pipelines using GitHub Actions, ensuring consistent CI/CD workflows.",
-        "Optimized frontend delivery and asset caching using AWS S3, CloudFront, and Cloudflare CDN.",
-        "Implemented high-reliability transactional email systems via Zoho ZeptoMail integration.",
-        "Successfully ported core web functionalities into cross-platform desktop applications using Electron.js."
+        "Engineered robust RESTful APIs and designed relational database schemas in PostgreSQL.",
+        "Automated deployment and testing pipelines with GitHub Actions CI/CD workflows.",
+        "Managed asset delivery and frontend caching with AWS S3, CloudFront, and Cloudflare CDN.",
+        "Implemented reliable transactional email delivery systems via Zoho ZeptoMail.",
+        "Ported core web workflows into cross-platform desktop applications using Electron.js."
       ]
     }
   ],

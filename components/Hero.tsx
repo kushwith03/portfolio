@@ -83,13 +83,15 @@ const Hero: React.FC = () => {
                 <span className="text-sky-600 dark:text-sky-400 inline-block">
                   <TypeAnimation
                     sequence={[
-                      "Full-Stack Engineer",
+                      "Java & Backend Engineer",
                       1500,
-                      "Backend Architect",
+                      "Node.js & Express Architect",
+                      1500,
+                      "250+ DSA in Java",
+                      1500,
+                      "PostgreSQL & System Design",
                       1500,
                       "AI & CARLA Builder",
-                      1500,
-                      "250+ DSA Solver",
                       1500,
                     ]}
                     speed={50}
@@ -104,7 +106,7 @@ const Hero: React.FC = () => {
               variants={itemVariants}
               className="mt-6 text-base sm:text-lg text-slate-600 dark:text-slate-300 max-w-xl leading-relaxed font-normal"
             >
-              Computer Science & Data Science graduate from <strong>RNSIT (8.6 CGPA)</strong>. Specialized in architecting scalable MERN & PostgreSQL web applications, low-latency microservices, and deep learning autonomous vehicle pipelines.
+              Computer Science & Data Science graduate from <strong>RNSIT (8.6 CGPA)</strong>. Specialized in building robust backend services with <strong>Java, Node.js & PostgreSQL</strong>, RESTful microservices, and solving 250+ algorithmic data structure problems.
             </motion.p>
 
             {/* Action Buttons */}
@@ -178,36 +180,36 @@ const Hero: React.FC = () => {
             transition={{ duration: 0.7, delay: 0.15 }}
           >
             {/* Ambient Spotlight */}
-            <div className="absolute inset-0 bg-gradient-to-tr from-sky-500/20 via-indigo-500/20 to-purple-500/20 rounded-3xl blur-2xl transform rotate-2 pointer-events-none" />
+            <div className="absolute -inset-1.5 bg-gradient-to-r from-sky-500 to-indigo-600 rounded-3xl opacity-20 dark:opacity-30 blur-2xl group-hover:opacity-40 transition duration-1000" />
 
             {/* Terminal Container */}
-            <div className="relative w-full max-w-md bg-white/90 dark:bg-[#070e20]/90 backdrop-blur-2xl rounded-3xl border border-slate-200 dark:border-white/[0.12] shadow-2xl overflow-hidden">
+            <div className="relative w-full max-w-md bg-white dark:bg-[#070e20]/95 backdrop-blur-2xl rounded-3xl border border-slate-200/90 dark:border-white/[0.12] shadow-xl dark:shadow-2xl overflow-hidden">
               
-              {/* Terminal Header Tabs */}
-              <div className="flex items-center justify-between px-4 py-3 bg-slate-100/80 dark:bg-white/[0.03] border-b border-slate-200 dark:border-white/[0.08]">
+              {/* Terminal Window Header with Interactive Tab Switcher */}
+              <div className="flex items-center justify-between px-4 py-3 bg-slate-100/80 dark:bg-white/[0.03] border-b border-slate-200/80 dark:border-white/[0.06]">
                 <div className="flex items-center gap-2">
                   <div className="w-3 h-3 rounded-full bg-rose-500/80" />
                   <div className="w-3 h-3 rounded-full bg-amber-500/80" />
                   <div className="w-3 h-3 rounded-full bg-emerald-500/80" />
                 </div>
 
-                <div className="flex items-center gap-1 bg-slate-200/60 dark:bg-white/[0.06] p-1 rounded-lg">
+                <div className="flex items-center gap-1 bg-slate-200/60 dark:bg-black/40 p-1 rounded-xl border border-slate-300/40 dark:border-white/[0.05] text-[11px] font-mono">
                   <button
                     onClick={() => setActiveTab("profile")}
-                    className={`px-2.5 py-1 rounded-md text-[11px] font-mono font-medium transition-all ${
+                    className={`px-2.5 py-1 rounded-lg transition-all ${
                       activeTab === "profile"
-                        ? "bg-white dark:bg-slate-800 text-sky-600 dark:text-sky-400 shadow-sm"
-                        : "text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
+                        ? "bg-white dark:bg-white/[0.15] text-sky-600 dark:text-sky-300 shadow-sm font-semibold"
+                        : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
                     }`}
                   >
                     profile.json
                   </button>
                   <button
                     onClick={() => setActiveTab("code")}
-                    className={`px-2.5 py-1 rounded-md text-[11px] font-mono font-medium transition-all ${
+                    className={`px-2.5 py-1 rounded-lg transition-all ${
                       activeTab === "code"
-                        ? "bg-white dark:bg-slate-800 text-sky-600 dark:text-sky-400 shadow-sm"
-                        : "text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
+                        ? "bg-white dark:bg-white/[0.15] text-sky-600 dark:text-sky-300 shadow-sm font-semibold"
+                        : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
                     }`}
                   >
                     stack.ts
@@ -215,12 +217,12 @@ const Hero: React.FC = () => {
                 </div>
               </div>
 
-              {/* Terminal Tab Content */}
+              {/* Tab 1: Profile Bento View */}
               {activeTab === "profile" ? (
-                <div className="p-6">
-                  {/* Avatar + Info */}
+                <div className="p-6 space-y-5">
+                  {/* Avatar & Title Row */}
                   <div className="flex items-center gap-4">
-                    <div className="relative w-20 h-20 sm:w-24 sm:h-24 rounded-2xl overflow-hidden border-2 border-sky-400/40 shadow-lg shadow-sky-500/20 flex-shrink-0">
+                    <div className="relative w-16 h-16 rounded-2xl overflow-hidden border-2 border-sky-400/40 shadow-md">
                       <Image
                         src="/profile.jpg"
                         alt="R Khushwith Kumar"
@@ -230,23 +232,21 @@ const Hero: React.FC = () => {
                       />
                     </div>
                     <div>
-                      <div className="flex items-center gap-2">
-                        <h3 className="text-xl font-bold text-slate-900 dark:text-white tracking-tight">
-                          Khushwith Kumar
-                        </h3>
-                        <span className="flex h-2 w-2 rounded-full bg-emerald-500" title="Online" />
-                      </div>
+                      <h3 className="text-base font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                        Khushwith Kumar
+                        <span className="w-2 h-2 rounded-full bg-emerald-400" />
+                      </h3>
                       <p className="text-xs font-mono text-sky-600 dark:text-sky-400 mt-0.5">
-                        Software Engineer @ ATSPL Intern
+                        Backend &amp; Full-Stack Software Engineer
                       </p>
-                      <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-1">
-                        B.E. CSE (Data Science) • RNSIT
+                      <p className="text-[11px] text-slate-500 dark:text-slate-400">
+                        ATSPL Intern • RNSIT B.E. (CSE Data Science)
                       </p>
                     </div>
                   </div>
 
-                  {/* Highlight Stat Grid */}
-                  <div className="mt-6 grid grid-cols-3 gap-2.5 text-center">
+                  {/* 3 Metric Pills */}
+                  <div className="grid grid-cols-3 gap-2.5 text-center">
                     <div className="p-3 rounded-2xl bg-slate-50 dark:bg-white/[0.03] border border-slate-200/80 dark:border-white/[0.06]">
                       <p className="text-lg font-bold font-mono text-sky-500 dark:text-sky-400">
                         8.6
@@ -261,7 +261,7 @@ const Hero: React.FC = () => {
                         250+
                       </p>
                       <p className="text-[10px] uppercase tracking-wider font-semibold text-slate-500 dark:text-slate-400 mt-0.5">
-                        DSA Solved
+                        DSA (Java)
                       </p>
                     </div>
 
@@ -278,16 +278,16 @@ const Hero: React.FC = () => {
                   {/* Core Architecture Badges */}
                   <div className="mt-4 pt-4 border-t border-slate-100 dark:border-white/[0.06] flex flex-wrap gap-1.5">
                     <span className="px-2.5 py-1 text-[11px] font-mono rounded-lg bg-sky-500/10 text-sky-600 dark:text-sky-300 border border-sky-500/20">
-                      React / Next.js 14
+                      Java (Core &amp; OOP)
                     </span>
                     <span className="px-2.5 py-1 text-[11px] font-mono rounded-lg bg-indigo-500/10 text-indigo-600 dark:text-indigo-300 border border-indigo-500/20">
-                      Node / PostgreSQL
+                      Node.js &amp; Express
                     </span>
                     <span className="px-2.5 py-1 text-[11px] font-mono rounded-lg bg-purple-500/10 text-purple-600 dark:text-purple-300 border border-purple-500/20">
-                      PyTorch / CV
+                      PostgreSQL &amp; SQL
                     </span>
                     <span className="px-2.5 py-1 text-[11px] font-mono rounded-lg bg-emerald-500/10 text-emerald-600 dark:text-emerald-300 border border-emerald-500/20">
-                      AWS S3 & Cloudflare
+                      AWS S3 &amp; Cloudflare
                     </span>
                   </div>
                 </div>
@@ -304,25 +304,28 @@ const Hero: React.FC = () => {
                     <span className="text-emerald-500 dark:text-emerald-400">&quot;R Khushwith Kumar&quot;</span>,
                   </div>
                   <div className="pl-4">
-                    <span className="text-slate-600 dark:text-slate-400">focus:</span>{" "}
-                    <span className="text-emerald-500 dark:text-emerald-400">&quot;Full-Stack &amp; Scalable Systems&quot;</span>,
-                  </div>
-                  <div className="pl-4">
-                    <span className="text-slate-600 dark:text-slate-400">coreStack:</span> [
-                    <span className="text-amber-500 dark:text-amber-400">&quot;React&quot;</span>,{" "}
-                    <span className="text-amber-500 dark:text-amber-400">&quot;Next.js&quot;</span>,{" "}
+                    <span className="text-slate-600 dark:text-slate-400">primaryLangs:</span> [
+                    <span className="text-amber-500 dark:text-amber-400">&quot;Java&quot;</span>,{" "}
                     <span className="text-amber-500 dark:text-amber-400">&quot;Node.js&quot;</span>,{" "}
-                    <span className="text-amber-500 dark:text-amber-400">&quot;PostgreSQL&quot;</span>],
+                    <span className="text-amber-500 dark:text-amber-400">&quot;SQL&quot;</span>,{" "}
+                    <span className="text-amber-500 dark:text-amber-400">&quot;Python&quot;</span>],
                   </div>
                   <div className="pl-4">
-                    <span className="text-slate-600 dark:text-slate-400">aiMlStack:</span> [
-                    <span className="text-amber-500 dark:text-amber-400">&quot;PyTorch&quot;</span>,{" "}
-                    <span className="text-amber-500 dark:text-amber-400">&quot;CARLA Simulator&quot;</span>],
+                    <span className="text-slate-600 dark:text-slate-400">coreBackend:</span> [
+                    <span className="text-amber-500 dark:text-amber-400">&quot;Express.js&quot;</span>,{" "}
+                    <span className="text-amber-500 dark:text-amber-400">&quot;REST APIs&quot;</span>,{" "}
+                    <span className="text-amber-500 dark:text-amber-400">&quot;PostgreSQL&quot;</span>,{" "}
+                    <span className="text-amber-500 dark:text-amber-400">&quot;JWT Auth&quot;</span>],
                   </div>
                   <div className="pl-4">
-                    <span className="text-slate-600 dark:text-slate-400">metrics:</span> &#123;{" "}
-                    <span className="text-sky-400">dsaSolved:</span> 250+,{" "}
-                    <span className="text-sky-400">cgpa:</span> 8.6 &#125;,
+                    <span className="text-slate-600 dark:text-slate-400">dsaProblems:</span>{" "}
+                    <span className="text-emerald-500 dark:text-emerald-400">&quot;250+ Solved (Java)&quot;</span>,
+                  </div>
+                  <div className="pl-4">
+                    <span className="text-slate-600 dark:text-slate-400">cloudAndOps:</span> [
+                    <span className="text-amber-500 dark:text-amber-400">&quot;AWS S3&quot;</span>,{" "}
+                    <span className="text-amber-500 dark:text-amber-400">&quot;CloudFront&quot;</span>,{" "}
+                    <span className="text-amber-500 dark:text-amber-400">&quot;GitHub Actions&quot;</span>],
                   </div>
                   <div>&#125;;</div>
                 </div>

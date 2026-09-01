@@ -8,7 +8,6 @@ import {
   Layout,
   Server,
   Database,
-  Wrench,
   Award,
   Briefcase,
   Calendar,
@@ -28,17 +27,17 @@ const categoryConfig: Record<
     color: "text-sky-400",
     badge: "bg-sky-500/10 text-sky-400 border-sky-500/20",
   },
-  frontend: {
-    title: "Frontend Engineering",
-    icon: Layout,
-    color: "text-indigo-400",
-    badge: "bg-indigo-500/10 text-indigo-400 border-indigo-500/20",
-  },
   backend: {
-    title: "Backend & Systems",
+    title: "Backend & Distributed Systems",
     icon: Server,
     color: "text-purple-400",
     badge: "bg-purple-500/10 text-purple-400 border-purple-500/20",
+  },
+  problem_solving: {
+    title: "DSA & Problem Solving",
+    icon: Cpu,
+    color: "text-amber-400",
+    badge: "bg-amber-500/10 text-amber-400 border-amber-500/20",
   },
   db_cloud: {
     title: "Databases & Cloud / DevOps",
@@ -46,11 +45,11 @@ const categoryConfig: Record<
     color: "text-emerald-400",
     badge: "bg-emerald-500/10 text-emerald-400 border-emerald-500/20",
   },
-  tools: {
-    title: "Developer Tools & Workflow",
-    icon: Wrench,
-    color: "text-amber-400",
-    badge: "bg-amber-500/10 text-amber-400 border-amber-500/20",
+  frontend_tools: {
+    title: "Frontend & Developer Tools",
+    icon: Layout,
+    color: "text-indigo-400",
+    badge: "bg-indigo-500/10 text-indigo-400 border-indigo-500/20",
   },
 };
 
