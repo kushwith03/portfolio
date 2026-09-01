@@ -96,7 +96,7 @@ const Footer: React.FC = () => {
             </span>
           </p>
 
-          {visits !== null && (
+          {typeof visits === "number" && (
             <div className="flex items-center space-x-2 bg-gray-50 dark:bg-gray-800/60 px-3 py-1 rounded-full border border-gray-200/60 dark:border-gray-700/60">
               <Eye className="h-3.5 w-3.5 text-primary" />
               <span className="font-mono text-xs text-gray-700 dark:text-gray-300">

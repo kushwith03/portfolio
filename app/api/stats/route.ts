@@ -78,13 +78,14 @@ export async function GET() {
 
     return NextResponse.json({
       success: true,
+      visits: 1480,
       github: githubStats,
       leetcode: leetcodeStats,
       timestamp: new Date().toISOString(),
     });
   } catch {
     return NextResponse.json(
-      { success: false, error: "Failed to load live metrics" },
+      { success: false, visits: 1480, error: "Failed to load live metrics" },
       { status: 500 }
     );
   }
