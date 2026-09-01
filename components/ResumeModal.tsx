@@ -22,9 +22,9 @@ import skillsData from "../lib/data/skills.json";
 import projectsData from "../lib/data/projects.json";
 
 const GOOGLE_DRIVE_VIEW_URL =
-  "https://drive.google.com/file/d/1KIrah5JSk8Qcujq6jZp00YOJRz4Y-BCQ/view?usp=sharing";
+  "https://drive.google.com/file/d/1KI78-3MJJS8nd_3zXIjNTlj1XmfWBkVB/view?usp=sharing";
 const GOOGLE_DRIVE_PREVIEW_URL =
-  "https://drive.google.com/file/d/1KIrah5JSk8Qcujq6jZp00YOJRz4Y-BCQ/preview";
+  "https://drive.google.com/file/d/1KI78-3MJJS8nd_3zXIjNTlj1XmfWBkVB/preview";
 
 const plainTextResume = `===============================================================
 R KHUSHWITH KUMAR — SOFTWARE ENGINEER
