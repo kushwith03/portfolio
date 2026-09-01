@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { Send, CheckCircle, AlertCircle, Mail, MapPin } from "lucide-react";
+import { Send, CheckCircle, Mail, MapPin } from "lucide-react";
 import { motion } from "framer-motion";
 
 const Contact: React.FC = () => {
@@ -61,11 +61,11 @@ const Contact: React.FC = () => {
                 Get in Touch
               </h2>
               <h3 className="mt-2 text-3xl md:text-4xl font-extrabold text-gray-900 dark:text-white">
-                Let's work together
+                Let&apos;s work together
               </h3>
               <p className="mt-4 text-lg text-gray-600 dark:text-gray-300">
                 Have a project in mind or want to discuss a potential
-                opportunity? I'm available for full-time roles and collaborations.
+                opportunity? I&apos;m available for full-time roles and collaborations.
               </p>
             </div>
 

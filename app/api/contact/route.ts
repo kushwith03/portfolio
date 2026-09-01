@@ -13,7 +13,7 @@ function readMessages() {
   }
 }
 
-function writeMessages(data: any) {
+function writeMessages(data: unknown) {
   try {
     const dir = path.dirname(MESSAGES_PATH);
     if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });

@@ -1,12 +1,11 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { Menu, X, Code2, Sun, Moon, Github, Sparkles } from "lucide-react";
+import { Menu, X, Code2, Sun, Moon, Github } from "lucide-react";
 import {
   motion,
   AnimatePresence,
   useScroll,
-  useTransform,
 } from "framer-motion";
 import { twMerge } from "tailwind-merge";
 

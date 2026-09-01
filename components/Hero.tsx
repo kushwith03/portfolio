@@ -2,7 +2,7 @@
 
 import React from "react";
 import { TypeAnimation } from "react-type-animation";
-import { Github, Linkedin, Mail, FileText, ArrowRight, Sparkles, Code2, Terminal, ShieldCheck } from "lucide-react";
+import { Github, Linkedin, Mail, ArrowRight, Code2 } from "lucide-react";
 import { motion } from "framer-motion";
 import Image from "next/image";
 
@@ -65,7 +65,7 @@ const Hero: React.FC = () => {
               variants={itemVariants}
               className="mt-6 text-4xl sm:text-5xl md:text-6xl xl:text-7xl font-extrabold tracking-tight text-gray-900 dark:text-white leading-[1.1]"
             >
-              <span>Hi, I'm </span>
+              <span>Hi, I&apos;m </span>
               <span className="text-gradient">Khushwith</span>
               <div className="mt-2 text-2xl sm:text-3xl md:text-4xl xl:text-5xl font-bold text-gray-800 dark:text-gray-200">
                 <span className="text-primary font-mono font-semibold">

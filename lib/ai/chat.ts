@@ -7,7 +7,16 @@ const genAI = apiKey ? new GoogleGenerativeAI(apiKey) : null;
 
 const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
-export async function getChatReply(message: string, history: any[], persona: string = "default") {
+interface ChatMessage {
+  role: string;
+  text: string;
+}
+
+export async function getChatReply(
+  message: string,
+  history: ChatMessage[],
+  persona: string = "default"
+) {
   if (!genAI) {
     return "I'm currently offline (API Key missing in environment).";
   }
@@ -55,12 +64,11 @@ export async function getChatReply(message: string, history: any[], persona: str
   }
 
   const delays = [2000, 4000, 8000];
-  let lastError: any = null;
 
   for (let attempt = 0; attempt <= 3; attempt++) {
     try {
       // Use fallback model if all retries on primary model failed
-      const modelName = attempt === 3 ? "gemini-3.1-flash-lite" : "gemini-3.5-flash";
+      const modelName = attempt === 3 ? "gemini-1.5-flash-8b" : "gemini-1.5-flash";
       const model = genAI.getGenerativeModel({ 
         model: modelName,
         systemInstruction: systemInstruction 
@@ -79,9 +87,9 @@ export async function getChatReply(message: string, history: any[], persona: str
       const result = await chat.sendMessage(message);
       const response = await result.response;
       return response.text();
-    } catch (error: any) {
-      lastError = error;
-      const status = error?.status || error?.response?.status;
+    } catch (error: unknown) {
+      const err = error as { status?: number; response?: { status?: number }; message?: string };
+      const status = err?.status || err?.response?.status;
       
       // Retry logic for rate limits or temporary service unavailability
       if (attempt < 2 && (status === 429 || status === 503)) {
@@ -96,7 +104,7 @@ export async function getChatReply(message: string, history: any[], persona: str
       }
 
       console.error("Gemini API Error:", error);
-      return `AI Error: ${error.message || "I encountered a temporary error. Please try again later."}`;
+      return `AI Error: ${err?.message || "I encountered a temporary error. Please try again later."}`;
     }
   }
 
