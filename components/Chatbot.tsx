@@ -1,174 +1,345 @@
-'use client';
+"use client";
 
-import React, { useState, useRef, useEffect } from 'react';
-import { MessageCircle, X, Send, Bot, Settings2 } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useState, useRef, useEffect } from "react";
+import {
+  MessageCircle,
+  X,
+  Send,
+  Bot,
+  User,
+  Trash2,
+  Sparkles,
+  Briefcase,
+  Code2,
+  GraduationCap,
+  FileSearch,
+} from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 
 interface Message {
   id: number;
   text: string;
-  sender: 'user' | 'bot';
+  sender: "user" | "bot";
 }
 
-type Persona = 'professional' | 'recruiter' | 'mentor' | 'developer' | 'resume-reviewer';
+type Persona = "professional" | "recruiter" | "mentor" | "developer" | "resume-reviewer";
+
+const personaMeta: Record<
+  Persona,
+  { label: string; icon: React.ElementType; description: string; color: string }
+> = {
+  professional: {
+    label: "Professional",
+    icon: Sparkles,
+    description: "Overview of skills, experience, and projects",
+    color: "from-sky-500 to-indigo-600",
+  },
+  recruiter: {
+    label: "Recruiter Mode",
+    icon: Briefcase,
+    description: "ROI, ATS-match, production ownership & impact",
+    color: "from-emerald-500 to-teal-600",
+  },
+  developer: {
+    label: "Developer",
+    icon: Code2,
+    description: "Architecture, database schemas, and performance",
+    color: "from-indigo-500 to-purple-600",
+  },
+  mentor: {
+    label: "Tech Lead",
+    icon: GraduationCap,
+    description: "Engineering trade-offs & problem solving",
+    color: "from-amber-500 to-orange-600",
+  },
+  "resume-reviewer": {
+    label: "ATS Reviewer",
+    icon: FileSearch,
+    description: "Paste a resume snippet for instant critique",
+    color: "from-purple-500 to-pink-600",
+  },
+};
+
+const starterPrompts = [
+  "What were Khushwith's contributions at ATSPL?",
+  "Explain the Autonomous Vehicle AI architecture",
+  "What is his core tech stack and DSA experience?",
+  "How can I contact Khushwith for an interview?",
+];
 
 const welcomeMessages: Record<Persona, string> = {
-  professional: "Hi! I'm Khushwith's AI Assistant. How can I help you today?",
-  recruiter: "Hello! I can provide data on Khushwith's ROI and project impact. What are you looking for?",
-  mentor: "Greetings. I'm ready to dive into the architecture and code decisions of my projects.",
-  developer: "Hey! Let's talk tech stacks, APIs, and algorithms.",
-  'resume-reviewer': "Paste your resume below for ATS-focused feedback."
+  professional:
+    "Hi there! 👋 I'm **Khushwith's AI Technical Representative**.\n\nAsk me anything about his full-stack engineering at **ATSPL**, his **Autonomous Vehicle AI simulation**, tech stack, or background at **RNSIT (8.6 CGPA)**!",
+  recruiter:
+    "Hello! 💼 As Khushwith's Technical Representative, I'm ready to discuss **production deliverables**, **system scalability**, and how he can deliver immediate value to your engineering team. What role are you hiring for?",
+  mentor:
+    "Greetings! 🛠️ Let's discuss system architecture, API optimization, or deep learning autoencoders in the CARLA simulation.",
+  developer:
+    "Hey dev! 💻 Let's talk Next.js 14 server components, PostgreSQL indexing, PyTorch computer vision, and CI/CD pipelines.",
+  "resume-reviewer":
+    "Welcome! 📝 Paste your resume bullet or bio below and I'll analyze it for ATS keywords, action verbs, and impact metrics.",
 };
 
 const Chatbot: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [persona, setPersona] = useState<Persona>('professional');
+  const [persona, setPersona] = useState<Persona>("professional");
   const [messages, setMessages] = useState<Message[]>([
-    { id: 1, text: welcomeMessages.professional, sender: 'bot' }
+    { id: 1, text: welcomeMessages.professional, sender: "bot" },
   ]);
-  const [input, setInput] = useState('');
+  const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, isOpen, loading]);
 
-  // Update welcome message when persona changes
   useEffect(() => {
-    setMessages([{ id: Date.now(), text: welcomeMessages[persona], sender: 'bot' }]);
+    setMessages([{ id: Date.now(), text: welcomeMessages[persona], sender: "bot" }]);
   }, [persona]);
 
-  const handleSendMessage = async (e?: React.FormEvent) => {
-    if (e) e.preventDefault();
-    if (!input.trim()) return;
+  const handleSendMessage = async (textToSend?: string) => {
+    const text = textToSend || input;
+    if (!text.trim()) return;
 
-    const userMessage: Message = { id: Date.now(), text: input, sender: 'user' };
-    setMessages(prev => [...prev, userMessage]);
-    setInput('');
+    const userMessage: Message = { id: Date.now(), text, sender: "user" };
+    setMessages((prev) => [...prev, userMessage]);
+    if (!textToSend) setInput("");
     setLoading(true);
 
     try {
-      // Exclude the initial welcome message from history
-      const history = messages.slice(1).map(msg => ({
-        role: msg.sender === 'user' ? 'user' : 'model',
-        text: msg.text
+      const history = messages.slice(1).map((msg) => ({
+        role: msg.sender === "user" ? "user" : "model",
+        text: msg.text,
       }));
 
-      const response = await fetch('/api/chat', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      const response = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ message: userMessage.text, history, persona }),
       });
 
       const data = await response.json();
-      const reply = data.reply || "Apologies, I'm currently offline.";
-      setMessages(prev => [...prev, { id: Date.now() + 1, text: reply, sender: 'bot' }]);
+      const reply = data.reply || "Apologies, I encountered an issue. Please try again.";
+      setMessages((prev) => [...prev, { id: Date.now() + 1, text: reply, sender: "bot" }]);
     } catch (error) {
       console.error("Chat API error:", error);
-      setMessages(prev => [...prev, { id: Date.now() + 1, text: "Sorry, I couldn't connect to the server.", sender: 'bot' }]);
+      setMessages((prev) => [
+        ...prev,
+        {
+          id: Date.now() + 1,
+          text: "I am having trouble reaching the network right now. Please try again shortly!",
+          sender: "bot",
+        },
+      ]);
     } finally {
       setLoading(false);
     }
   };
 
+  const clearChat = () => {
+    setMessages([{ id: Date.now(), text: welcomeMessages[persona], sender: "bot" }]);
+  };
+
+  // Helper to render basic markdown bold and bullet points
+  const renderFormattedText = (text: string) => {
+    const lines = text.split("\n");
+    return lines.map((line, idx) => {
+      // Bold replacer: **bold text**
+      const parts = line.split(/(\*\*[^*]+\*\*)/g);
+      const formattedLine = parts.map((part, pIdx) => {
+        if (part.startsWith("**") && part.endsWith("**")) {
+          return (
+            <strong key={pIdx} className="font-semibold text-slate-900 dark:text-white">
+              {part.slice(2, -2)}
+            </strong>
+          );
+        }
+        return part;
+      });
+
+      if (line.startsWith("- ") || line.startsWith("• ")) {
+        return (
+          <div key={idx} className="flex items-start gap-2 my-1 pl-1">
+            <span className="text-sky-500 dark:text-sky-400 font-bold">•</span>
+            <span>{formattedLine}</span>
+          </div>
+        );
+      }
+
+      return (
+        <p key={idx} className={line === "" ? "h-2" : "my-0.5"}>
+          {formattedLine}
+        </p>
+      );
+    });
+  };
+
+  const CurrentIcon = personaMeta[persona].icon;
+
   return (
-    <div className="fixed bottom-6 left-6 z-50 flex flex-col items-end font-sans">
+    <div className="fixed bottom-5 left-5 sm:bottom-6 sm:left-6 z-50 flex flex-col items-start font-sans">
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            initial={{ opacity: 0, y: 20, scale: 0.9 }}
+            initial={{ opacity: 0, y: 30, scale: 0.92 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 20, scale: 0.9 }}
-            className="w-[90vw] sm:w-96 h-[550px] bg-white dark:bg-gray-900 rounded-2xl shadow-2xl border border-gray-200 dark:border-gray-700 flex flex-col overflow-hidden mb-4"
+            exit={{ opacity: 0, y: 20, scale: 0.92 }}
+            transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+            className="w-[94vw] sm:w-[420px] h-[580px] max-h-[85vh] bg-white/95 dark:bg-[#070e20]/95 backdrop-blur-2xl rounded-3xl shadow-2xl border border-slate-200/90 dark:border-white/[0.12] flex flex-col overflow-hidden mb-3.5"
           >
-            {/* Header */}
-            <div className="bg-gradient-to-r from-primary to-blue-600 p-4 text-white shadow-md">
+            {/* Top Header */}
+            <div className="p-4 bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 dark:from-[#050914] dark:to-[#0b142b] border-b border-white/[0.08] text-white">
               <div className="flex justify-between items-center mb-3">
-                <div className="flex items-center space-x-2">
-                  <div className="p-1.5 bg-white/20 rounded-full backdrop-blur-sm">
-                    <Bot className="h-5 w-5 text-white" />
+                <div className="flex items-center gap-3">
+                  <div className="relative flex items-center justify-center w-9 h-9 rounded-2xl bg-gradient-to-tr from-sky-500 to-indigo-600 text-white shadow-md shadow-sky-500/20 border border-white/20">
+                    <Bot className="h-5 w-5" />
+                    <span className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 bg-emerald-400 rounded-full border-2 border-slate-900" />
                   </div>
                   <div>
-                    <h3 className="font-bold text-sm">AI Assistant</h3>
-                    <div className="flex items-center text-xs text-blue-100 space-x-1">
-                      <span className="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse" />
-                      <span>Online • Powered by Gemini</span>
-                    </div>
+                    <h3 className="font-bold text-sm text-white tracking-tight flex items-center gap-1.5">
+                      Khushwith AI
+                      <span className="px-1.5 py-0.5 text-[10px] font-mono rounded-md bg-sky-500/20 text-sky-300 border border-sky-400/30">
+                        v2.0
+                      </span>
+                    </h3>
+                    <p className="text-[11px] font-mono text-slate-300">
+                      Powered by Google Gemini
+                    </p>
                   </div>
                 </div>
-                <button onClick={() => setIsOpen(false)} className="hover:bg-white/20 p-1.5 rounded-full transition">
-                  <X className="h-5 w-5" />
-                </button>
+
+                <div className="flex items-center gap-1">
+                  <button
+                    onClick={clearChat}
+                    className="p-2 rounded-xl hover:bg-white/[0.1] text-slate-400 hover:text-white transition-all text-xs"
+                    title="Clear conversation"
+                  >
+                    <Trash2 className="h-4 w-4" />
+                  </button>
+                  <button
+                    onClick={() => setIsOpen(false)}
+                    className="p-2 rounded-xl hover:bg-white/[0.1] text-slate-400 hover:text-white transition-all"
+                    title="Close Chat"
+                  >
+                    <X className="h-4 w-4" />
+                  </button>
+                </div>
               </div>
-              
-              <div className="flex items-center space-x-2 bg-black/20 rounded-lg p-2 border border-white/10">
-                <Settings2 className="h-4 w-4 text-blue-200" />
-                <select 
-                  value={persona} 
-                  onChange={(e) => setPersona(e.target.value as Persona)}
-                  className="bg-transparent text-xs text-white focus:outline-none w-full cursor-pointer appearance-none font-medium"
-                >
-                  <option value="professional" className="text-gray-900">Professional (Default)</option>
-                  <option value="recruiter" className="text-gray-900">Recruiter Mode</option>
-                  <option value="mentor" className="text-gray-900">Tech Mentor</option>
-                  <option value="developer" className="text-gray-900">Developer Mode</option>
-                  <option value="resume-reviewer" className="text-gray-900">Resume Reviewer</option>
-                </select>
+
+              {/* Persona Selector Strip */}
+              <div className="flex gap-1.5 overflow-x-auto pb-1 pt-1 scrollbar-none">
+                {(Object.keys(personaMeta) as Persona[]).map((pKey) => {
+                  const item = personaMeta[pKey];
+                  const Icon = item.icon;
+                  const isSelected = persona === pKey;
+                  return (
+                    <button
+                      key={pKey}
+                      onClick={() => setPersona(pKey)}
+                      className={`flex items-center gap-1.5 px-3 py-1 rounded-xl text-xs font-mono whitespace-nowrap transition-all ${
+                        isSelected
+                          ? "bg-sky-500 text-white font-semibold shadow-sm border border-sky-400"
+                          : "bg-white/[0.06] text-slate-300 hover:bg-white/[0.12] border border-white/[0.05]"
+                      }`}
+                    >
+                      <Icon className="h-3 w-3" />
+                      <span>{item.label}</span>
+                    </button>
+                  );
+                })}
               </div>
             </div>
 
-            {/* Messages */}
-            <div className="flex-1 p-4 overflow-y-auto bg-gray-50 dark:bg-gray-950 space-y-4">
+            {/* Chat Messages Body */}
+            <div className="flex-1 p-4 overflow-y-auto bg-slate-50/70 dark:bg-[#040814]/70 space-y-4">
               {messages.map((msg) => (
-                <motion.div 
-                  initial={{ opacity: 0, y: 10 }}
+                <motion.div
+                  initial={{ opacity: 0, y: 8 }}
                   animate={{ opacity: 1, y: 0 }}
-                  key={msg.id} 
-                  className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}
+                  key={msg.id}
+                  className={`flex ${msg.sender === "user" ? "justify-end" : "justify-start"}`}
                 >
-                  {msg.sender === 'bot' && (
-                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-primary to-purple-600 flex items-center justify-center text-white mr-2 flex-shrink-0 shadow-sm">
-                      <Bot className="h-4 w-4" />
+                  {msg.sender === "bot" && (
+                    <div className="w-7 h-7 rounded-xl bg-gradient-to-tr from-sky-500 to-indigo-600 flex items-center justify-center text-white mr-2.5 flex-shrink-0 mt-0.5 shadow-sm">
+                      <CurrentIcon className="h-3.5 w-3.5" />
                     </div>
                   )}
-                  <div className={`max-w-[80%] p-3.5 rounded-2xl text-sm leading-relaxed shadow-sm ${
-                    msg.sender === 'user' 
-                      ? 'bg-primary text-white rounded-br-none' 
-                      : 'bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 border border-gray-100 dark:border-gray-700 rounded-bl-none'
-                  }`}>
-                    <div className="whitespace-pre-wrap">{msg.text}</div>
+
+                  <div
+                    className={`max-w-[84%] p-3.5 rounded-2xl text-xs sm:text-sm leading-relaxed shadow-sm ${
+                      msg.sender === "user"
+                        ? "bg-gradient-to-r from-sky-500 to-indigo-600 text-white rounded-br-none font-medium"
+                        : "bg-white dark:bg-[#091024] text-slate-700 dark:text-slate-200 border border-slate-200/90 dark:border-white/[0.09] rounded-bl-none font-normal"
+                    }`}
+                  >
+                    <div>{renderFormattedText(msg.text)}</div>
                   </div>
+
+                  {msg.sender === "user" && (
+                    <div className="w-7 h-7 rounded-xl bg-slate-200 dark:bg-white/[0.08] flex items-center justify-center text-slate-700 dark:text-slate-300 ml-2.5 flex-shrink-0 mt-0.5">
+                      <User className="h-3.5 w-3.5" />
+                    </div>
+                  )}
                 </motion.div>
               ))}
+
               {loading && (
-                 <div className="flex justify-start">
-                   <div className="w-8 h-8 rounded-full bg-gradient-to-br from-primary to-purple-600 flex items-center justify-center text-white mr-2 shadow-sm">
-                      <Bot className="h-4 w-4" />
-                   </div>
-                   <div className="bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 p-4 rounded-2xl rounded-bl-none shadow-sm flex items-center space-x-1.5">
-                     <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
-                     <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
-                     <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
-                   </div>
-                 </div>
+                <div className="flex justify-start items-center">
+                  <div className="w-7 h-7 rounded-xl bg-gradient-to-tr from-sky-500 to-indigo-600 flex items-center justify-center text-white mr-2.5 shadow-sm">
+                    <CurrentIcon className="h-3.5 w-3.5" />
+                  </div>
+                  <div className="bg-white dark:bg-[#091024] border border-slate-200/90 dark:border-white/[0.09] p-3.5 rounded-2xl rounded-bl-none shadow-sm flex items-center space-x-1.5">
+                    <div className="w-2 h-2 bg-sky-400 rounded-full animate-bounce" style={{ animationDelay: "0ms" }} />
+                    <div className="w-2 h-2 bg-indigo-400 rounded-full animate-bounce" style={{ animationDelay: "150ms" }} />
+                    <div className="w-2 h-2 bg-purple-400 rounded-full animate-bounce" style={{ animationDelay: "300ms" }} />
+                  </div>
+                </div>
               )}
+
+              {/* Starter Prompts (shown when conversation is new) */}
+              {messages.length === 1 && !loading && (
+                <div className="pt-2">
+                  <p className="text-[11px] font-mono text-slate-500 dark:text-slate-400 mb-2 uppercase tracking-wider">
+                    Suggested Prompts:
+                  </p>
+                  <div className="flex flex-col gap-1.5">
+                    {starterPrompts.map((prompt, pIdx) => (
+                      <button
+                        key={pIdx}
+                        onClick={() => handleSendMessage(prompt)}
+                        className="text-left px-3 py-2 rounded-xl bg-white dark:bg-white/[0.04] hover:bg-sky-500/10 dark:hover:bg-sky-500/15 border border-slate-200/80 dark:border-white/[0.07] hover:border-sky-400/40 text-xs text-slate-700 dark:text-slate-300 hover:text-sky-600 dark:hover:text-sky-300 transition-all font-mono"
+                      >
+                        → {prompt}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+
               <div ref={messagesEndRef} />
             </div>
 
-            {/* Input */}
-            <form onSubmit={handleSendMessage} className="p-4 bg-white dark:bg-gray-900 border-t border-gray-100 dark:border-gray-800 flex items-center space-x-3">
+            {/* Input Bar */}
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                handleSendMessage();
+              }}
+              className="p-3 sm:p-3.5 bg-white dark:bg-[#070e20] border-t border-slate-200/80 dark:border-white/[0.08] flex items-center gap-2"
+            >
               <input
                 type="text"
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
-                placeholder="Type a message..."
-                className="flex-1 bg-gray-50 dark:bg-gray-800 border-transparent focus:bg-white dark:focus:bg-gray-900 border focus:border-primary dark:focus:border-primary rounded-full px-4 py-2.5 text-sm outline-none transition-all dark:text-white"
+                placeholder={`Ask Khushwith's AI (${personaMeta[persona].label})...`}
+                className="flex-1 bg-slate-100 dark:bg-white/[0.05] border border-slate-200/80 dark:border-white/[0.08] focus:border-sky-400 focus:outline-none rounded-2xl px-4 py-2.5 text-xs sm:text-sm text-slate-900 dark:text-white transition-all placeholder:text-slate-400"
               />
-              <button 
-                type="submit" 
+              <button
+                type="submit"
                 disabled={loading || !input.trim()}
-                className="bg-primary text-white p-2.5 rounded-full hover:bg-blue-700 hover:scale-105 transition-all disabled:opacity-50 disabled:scale-100 shadow-md"
+                className="bg-gradient-to-r from-sky-500 to-indigo-600 hover:from-sky-400 hover:to-indigo-500 text-white p-2.5 rounded-2xl transition-all disabled:opacity-40 shadow-md shadow-sky-500/20 flex-shrink-0"
+                aria-label="Send message"
               >
                 <Send className="h-4 w-4" />
               </button>
@@ -177,19 +348,28 @@ const Chatbot: React.FC = () => {
         )}
       </AnimatePresence>
 
+      {/* Floating Launcher Trigger */}
       <motion.button
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.95 }}
+        whileHover={{ scale: 1.08 }}
+        whileTap={{ scale: 0.92 }}
         onClick={() => setIsOpen(!isOpen)}
-        className="h-14 w-14 rounded-full bg-gradient-to-r from-primary to-blue-600 text-white shadow-xl shadow-primary/30 flex items-center justify-center z-50 group relative"
+        className="relative h-14 w-14 rounded-full bg-gradient-to-r from-sky-500 via-blue-600 to-indigo-600 text-white shadow-xl shadow-sky-500/30 flex items-center justify-center z-50 group border border-white/20"
+        aria-label="Toggle AI Chat"
       >
         {!isOpen && (
-          <span className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full border-2 border-white dark:border-gray-900 animate-pulse" />
+          <span className="absolute -top-1 -right-1 flex h-3.5 w-3.5">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+            <span className="relative inline-flex rounded-full h-3.5 w-3.5 bg-emerald-500 border-2 border-white dark:border-slate-900"></span>
+          </span>
         )}
-        {isOpen ? <X className="h-6 w-6" /> : <MessageCircle className="h-7 w-7 group-hover:rotate-12 transition-transform" />}
+        {isOpen ? (
+          <X className="h-6 w-6" />
+        ) : (
+          <MessageCircle className="h-6 w-6 group-hover:scale-110 transition-transform" />
+        )}
       </motion.button>
     </div>
   );
 };
 
-export default Chatbot;
+export default Chatbot;
