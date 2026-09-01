@@ -1,12 +1,8 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { Menu, X, Code2, Sun, Moon, Github } from "lucide-react";
-import {
-  motion,
-  AnimatePresence,
-  useScroll,
-} from "framer-motion";
+import { Menu, X, Code2, Sun, Moon, Github, Sparkles } from "lucide-react";
+import { motion, AnimatePresence, useScroll } from "framer-motion";
 import { twMerge } from "tailwind-merge";
 
 const navLinks = [
@@ -18,11 +14,8 @@ const navLinks = [
 
 const Navbar: React.FC = () => {
   const { scrollYProgress } = useScroll();
-  const scaleX = scrollYProgress;
-
   const [isOpen, setIsOpen] = useState(false);
-  const [isDark, setIsDark] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
+  const [isDark, setIsDark] = useState(true);
   const [activeSection, setActiveSection] = useState("");
 
   useEffect(() => {
@@ -38,9 +31,7 @@ const Navbar: React.FC = () => {
 
   useEffect(() => {
     const onScroll = () => {
-      setScrolled(window.scrollY > 15);
-
-      const offset = 140;
+      const offset = 160;
       const scrollPos = window.scrollY + offset;
 
       let current = "";
@@ -77,174 +68,146 @@ const Navbar: React.FC = () => {
 
   return (
     <>
-      {/* Dynamic Top Scroll Progress Indicator */}
-      <div className="fixed top-0 left-0 right-0 h-[3px] z-[70] bg-transparent">
+      {/* Top ambient scroll progress line */}
+      <div className="fixed top-0 left-0 right-0 h-[2px] z-[80] bg-transparent">
         <motion.div
-          className="h-full bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500 origin-[0%]"
-          style={{ scaleX }}
+          className="h-full bg-gradient-to-r from-sky-400 via-indigo-500 to-purple-500 origin-[0%]"
+          style={{ scaleX: scrollYProgress }}
         />
       </div>
 
-      <motion.nav
-        initial={{ y: -80, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.5, ease: "easeOut" }}
-        className={twMerge(
-          "sticky top-0 z-50 w-full transition-all duration-300",
-          scrolled
-            ? "bg-white/80 dark:bg-[#070b14]/80 glass-nav border-b border-gray-200/70 dark:border-gray-800/70 shadow-sm dark:shadow-[0_4px_20px_rgba(0,0,0,0.4)]"
-            : "bg-white/50 dark:bg-[#070b14]/50 backdrop-blur-md border-b border-transparent"
-        )}
-      >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      {/* Floating Island Navigation Dock */}
+      <header className="fixed top-4 sm:top-6 left-0 right-0 z-50 flex justify-center px-4 pointer-events-none">
+        <motion.div
+          initial={{ y: -30, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+          className="pointer-events-auto flex items-center justify-between gap-3 sm:gap-6 px-3 sm:px-5 py-2 sm:py-2.5 rounded-full bg-white/80 dark:bg-[#070e20]/80 backdrop-blur-2xl border border-gray-200/80 dark:border-white/[0.09] shadow-xl dark:shadow-[0_8px_30px_rgba(0,0,0,0.6)]"
+        >
+          {/* Brand Monogram */}
           <div
-            className={twMerge(
-              "flex items-center justify-between transition-all duration-300",
-              scrolled ? "h-16" : "h-20"
-            )}
+            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+            className="flex items-center gap-2 cursor-pointer group pr-1"
           >
-            {/* Logo */}
-            <div
-              className="flex items-center cursor-pointer group"
-              onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-            >
-              <div className="relative flex items-center justify-center p-2 rounded-xl bg-blue-500/10 dark:bg-blue-500/15 border border-blue-500/20 group-hover:border-blue-500/40 transition-all duration-300">
-                <Code2 className="h-5 w-5 text-primary group-hover:scale-110 transition-transform duration-300" />
-                <div className="absolute inset-0 bg-primary/20 rounded-xl blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-              </div>
-              <span className="ml-3 text-lg sm:text-xl font-extrabold tracking-tight text-gray-900 dark:text-white">
-                Khushwith<span className="text-primary">.dev</span>
-              </span>
+            <div className="relative flex items-center justify-center w-8 h-8 rounded-full bg-gradient-to-tr from-sky-500/20 to-indigo-500/20 border border-sky-400/30 group-hover:border-sky-400/60 transition-all duration-300">
+              <Code2 className="h-4 w-4 text-sky-400 group-hover:scale-110 transition-transform" />
             </div>
-
-            {/* Desktop Navigation */}
-            <div className="hidden md:flex items-center space-x-1 lg:space-x-2">
-              <div className="flex items-center bg-gray-100/70 dark:bg-gray-800/60 p-1.5 rounded-full border border-gray-200/50 dark:border-gray-700/50 backdrop-blur-md">
-                {navLinks.map((link) => {
-                  const isActive = activeSection === link.href.slice(1);
-                  return (
-                    <a
-                      key={link.name}
-                      href={link.href}
-                      className={twMerge(
-                        "relative px-4 py-1.5 text-xs lg:text-sm font-medium rounded-full transition-all duration-200",
-                        isActive
-                          ? "text-white"
-                          : "text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"
-                      )}
-                    >
-                      {isActive && (
-                        <motion.div
-                          layoutId="active-pill"
-                          className="absolute inset-0 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-full shadow-md shadow-blue-500/30"
-                          transition={{
-                            type: "spring",
-                            stiffness: 400,
-                            damping: 30,
-                          }}
-                        />
-                      )}
-                      <span className="relative z-10">{link.name}</span>
-                    </a>
-                  );
-                })}
-              </div>
-
-              {/* GitHub Link */}
-              <a
-                href="https://github.com/kushwith03"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="p-2.5 rounded-full text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800/80 transition-all"
-                aria-label="GitHub Profile"
-              >
-                <Github className="h-5 w-5" />
-              </a>
-
-              {/* Theme Toggle Button */}
-              <motion.button
-                onClick={toggleTheme}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="p-2.5 rounded-full bg-gray-100/80 dark:bg-gray-800/80 text-gray-700 dark:text-gray-200 hover:text-primary border border-gray-200/60 dark:border-gray-700/60 shadow-sm transition-all"
-                aria-label="Toggle Theme"
-              >
-                <AnimatePresence mode="wait">
-                  <motion.div
-                    key={isDark ? "sun" : "moon"}
-                    initial={{ y: -10, opacity: 0, rotate: -45 }}
-                    animate={{ y: 0, opacity: 1, rotate: 0 }}
-                    exit={{ y: 10, opacity: 0, rotate: 45 }}
-                    transition={{ duration: 0.2 }}
-                  >
-                    {isDark ? (
-                      <Sun className="h-4 w-4 text-amber-400" />
-                    ) : (
-                      <Moon className="h-4 w-4 text-indigo-600" />
-                    )}
-                  </motion.div>
-                </AnimatePresence>
-              </motion.button>
-            </div>
-
-            {/* Mobile Actions */}
-            <div className="md:hidden flex items-center space-x-2">
-              <button
-                onClick={toggleTheme}
-                className="p-2 rounded-xl bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-200 border border-gray-200 dark:border-gray-700"
-                aria-label="Toggle Theme"
-              >
-                {isDark ? (
-                  <Sun className="h-5 w-5 text-amber-400" />
-                ) : (
-                  <Moon className="h-5 w-5 text-indigo-600" />
-                )}
-              </button>
-
-              <button
-                onClick={() => setIsOpen(!isOpen)}
-                className="p-2 rounded-xl text-gray-700 dark:text-gray-200 bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700"
-                aria-label="Toggle Menu"
-              >
-                {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-              </button>
-            </div>
+            <span className="hidden sm:inline font-bold text-sm tracking-tight text-gray-900 dark:text-white group-hover:text-sky-400 transition-colors">
+              Khushwith<span className="text-sky-400">.dev</span>
+            </span>
           </div>
-        </div>
 
-        {/* Mobile Dropdown */}
-        <AnimatePresence>
-          {isOpen && (
-            <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: "auto" }}
-              exit={{ opacity: 0, height: 0 }}
-              className="md:hidden bg-white/95 dark:bg-[#070b14]/95 backdrop-blur-xl border-b border-gray-200 dark:border-gray-800 shadow-xl"
+          {/* Desktop Nav Links */}
+          <nav className="hidden md:flex items-center gap-1 bg-gray-100/60 dark:bg-white/[0.04] p-1 rounded-full border border-gray-200/40 dark:border-white/[0.04]">
+            {navLinks.map((link) => {
+              const isActive = activeSection === link.href.slice(1);
+              return (
+                <a
+                  key={link.name}
+                  href={link.href}
+                  className={twMerge(
+                    "relative px-3.5 py-1 text-xs font-medium rounded-full transition-all duration-200",
+                    isActive
+                      ? "text-white font-semibold"
+                      : "text-gray-600 dark:text-slate-400 hover:text-gray-900 dark:hover:text-white"
+                  )}
+                >
+                  {isActive && (
+                    <motion.div
+                      layoutId="nav-island-active"
+                      className="absolute inset-0 bg-gradient-to-r from-sky-500 to-indigo-600 rounded-full shadow-[0_0_12px_rgba(56,189,248,0.4)]"
+                      transition={{
+                        type: "spring",
+                        stiffness: 400,
+                        damping: 32,
+                      }}
+                    />
+                  )}
+                  <span className="relative z-10">{link.name}</span>
+                </a>
+              );
+            })}
+          </nav>
+
+          {/* Right Action Icons */}
+          <div className="flex items-center gap-1.5 sm:gap-2">
+            <a
+              href="https://github.com/kushwith03"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="p-2 rounded-full text-gray-600 dark:text-slate-400 hover:text-sky-400 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-white/[0.06] transition-all"
+              aria-label="GitHub Profile"
             >
-              <div className="px-4 pt-3 pb-6 space-y-2">
-                {navLinks.map((link) => (
-                  <a
-                    key={link.name}
-                    href={link.href}
-                    onClick={() => setIsOpen(false)}
-                    className={twMerge(
-                      "flex items-center px-4 py-3 rounded-xl text-sm font-medium transition-all",
-                      activeSection === link.href.slice(1)
-                        ? "bg-primary text-white"
-                        : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
-                    )}
-                  >
-                    {link.name}
-                  </a>
-                ))}
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </motion.nav>
+              <Github className="h-4 w-4" />
+            </a>
+
+            {/* Dark/Light Switch */}
+            <motion.button
+              onClick={toggleTheme}
+              whileTap={{ scale: 0.9 }}
+              className="p-2 rounded-full text-gray-600 dark:text-slate-400 hover:text-sky-400 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-white/[0.06] transition-all"
+              aria-label="Toggle Theme"
+            >
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={isDark ? "sun" : "moon"}
+                  initial={{ y: -6, opacity: 0, rotate: -30 }}
+                  animate={{ y: 0, opacity: 1, rotate: 0 }}
+                  exit={{ y: 6, opacity: 0, rotate: 30 }}
+                  transition={{ duration: 0.15 }}
+                >
+                  {isDark ? (
+                    <Sun className="h-4 w-4 text-amber-400" />
+                  ) : (
+                    <Moon className="h-4 w-4 text-indigo-600" />
+                  )}
+                </motion.div>
+              </AnimatePresence>
+            </motion.button>
+
+            {/* Mobile Menu Button */}
+            <button
+              onClick={() => setIsOpen(!isOpen)}
+              className="md:hidden p-2 rounded-full text-gray-700 dark:text-slate-300 hover:bg-gray-100 dark:hover:bg-white/[0.06]"
+              aria-label="Toggle Navigation"
+            >
+              {isOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
+            </button>
+          </div>
+        </motion.div>
+      </header>
+
+      {/* Mobile Drawer */}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: -10, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -10, scale: 0.95 }}
+            className="fixed top-20 left-4 right-4 z-50 md:hidden bg-white/95 dark:bg-[#070e20]/95 backdrop-blur-2xl border border-gray-200 dark:border-white/[0.1] rounded-2xl p-4 shadow-2xl space-y-1"
+          >
+            {navLinks.map((link) => (
+              <a
+                key={link.name}
+                href={link.href}
+                onClick={() => setIsOpen(false)}
+                className={twMerge(
+                  "block px-4 py-2.5 rounded-xl text-sm font-medium transition-all",
+                  activeSection === link.href.slice(1)
+                    ? "bg-sky-500/10 text-sky-400 font-semibold"
+                    : "text-gray-700 dark:text-slate-300 hover:bg-gray-100 dark:hover:bg-white/[0.04]"
+                )}
+              >
+                {link.name}
+              </a>
+            ))}
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   );
 };
 
 export default Navbar;
+
 
