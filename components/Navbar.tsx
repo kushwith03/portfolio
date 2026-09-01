@@ -12,7 +12,11 @@ const navLinks = [
   { name: "Contact", href: "#contact" },
 ];
 
-const Navbar: React.FC = () => {
+interface NavbarProps {
+  onOpenResume?: () => void;
+}
+
+const Navbar: React.FC<NavbarProps> = ({ onOpenResume }) => {
   const { scrollYProgress } = useScroll();
   const [isOpen, setIsOpen] = useState(false);
   const [isDark, setIsDark] = useState(true);
@@ -131,6 +135,13 @@ const Navbar: React.FC = () => {
 
           {/* Right Action Icons */}
           <div className="flex items-center gap-1.5 sm:gap-2">
+            <button
+              onClick={onOpenResume}
+              className="inline-flex items-center gap-1 px-3 py-1 text-xs font-mono font-medium rounded-full bg-slate-100 dark:bg-white/[0.06] hover:bg-sky-500/10 dark:hover:bg-sky-500/15 text-slate-700 dark:text-slate-300 hover:text-sky-600 dark:hover:text-sky-400 border border-slate-200/80 dark:border-white/[0.08] transition-all cursor-pointer"
+            >
+              Resume
+            </button>
+
             <a
               href="https://github.com/kushwith03"
               target="_blank"

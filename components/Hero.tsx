@@ -12,7 +12,11 @@ import {
 import { motion } from "framer-motion";
 import Image from "next/image";
 
-const Hero: React.FC = () => {
+interface HeroProps {
+  onOpenResume?: () => void;
+}
+
+const Hero: React.FC<HeroProps> = ({ onOpenResume }) => {
   const [activeTab, setActiveTab] = useState<"profile" | "code">("profile");
 
   const containerVariants = {
@@ -124,17 +128,16 @@ const Hero: React.FC = () => {
                 <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
               </motion.a>
 
-              <motion.a
-                href="https://drive.google.com/file/d/1rwW-rMO64I4ZwNR4NbUCu5IDRmCElqGf/view?usp=sharing"
-                target="_blank"
-                rel="noopener noreferrer"
+              <motion.button
+                type="button"
+                onClick={onOpenResume}
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                className="w-full sm:w-auto inline-flex items-center justify-center px-6 py-3.5 text-sm font-semibold text-slate-800 dark:text-slate-200 bg-white/80 dark:bg-white/[0.06] hover:bg-slate-100 dark:hover:bg-white/[0.1] border border-slate-300/80 dark:border-white/[0.12] rounded-xl transition-all shadow-sm backdrop-blur-xl group"
+                className="w-full sm:w-auto inline-flex items-center justify-center px-6 py-3.5 text-sm font-semibold text-slate-800 dark:text-slate-200 bg-white/80 dark:bg-white/[0.06] hover:bg-slate-100 dark:hover:bg-white/[0.1] border border-slate-300/80 dark:border-white/[0.12] rounded-xl transition-all shadow-sm backdrop-blur-xl group cursor-pointer"
               >
                 <FileDown className="mr-2 h-4 w-4 text-sky-500 dark:text-sky-400 group-hover:scale-110 transition-transform" />
                 <span>Resume / CV</span>
-              </motion.a>
+              </motion.button>
             </motion.div>
 
             {/* Social Proof & Quick Repositories */}
