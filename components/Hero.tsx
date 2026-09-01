@@ -7,13 +7,6 @@ import {
   Linkedin,
   Mail,
   ArrowRight,
-  Code2,
-  Terminal,
-  Sparkles,
-  ExternalLink,
-  Cpu,
-  Database,
-  Layers,
   FileDown,
 } from "lucide-react";
 import { motion } from "framer-motion";
@@ -301,7 +294,7 @@ const Hero: React.FC = () => {
               ) : (
                 /* Code Snippet Tab */
                 <div className="p-5 font-mono text-xs text-slate-800 dark:text-slate-200 space-y-2 overflow-x-auto">
-                  <div className="text-slate-400 dark:text-slate-500">// System Architecture Spec</div>
+                  <div className="text-slate-400 dark:text-slate-500">{"// System Architecture Spec"}</div>
                   <div>
                     <span className="text-purple-500 dark:text-purple-400">const</span>{" "}
                     <span className="text-sky-500 dark:text-sky-400">engineer</span> = &#123;

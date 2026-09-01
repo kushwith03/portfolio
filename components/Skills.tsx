@@ -11,7 +11,6 @@ import {
   Wrench,
   Award,
   Briefcase,
-  Sparkles,
   Calendar,
   MapPin,
   CheckCircle2,

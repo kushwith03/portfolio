@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { Project } from "../app/types";
-import { ExternalLink, Github, Sparkles, Layers, ArrowUpRight, FolderGit2 } from "lucide-react";
+import { Github, ArrowUpRight, FolderGit2 } from "lucide-react";
 import { motion } from "framer-motion";
 import projectsData from "../lib/data/projects.json";
 
